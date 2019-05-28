@@ -4,24 +4,25 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "/test",
     "start": "npm run build && node ./build/index.js",
-    "start-dev": "nodemon --exec babel-node index.js",
+    "dev": "nodemon --exec babel-node index.js",
     "build": "npm run clean && npm run build",
-    "clean": "rm -rf build"
+    "clean": "rm -rf build",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akpante3/Hello-Books.git"
+    "url": "git+https://github.com/los-deferal-02/Hello-Books.git"
   },
   "author": "Team-2",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/akpante3/Hello-Books/issues"
+    "url": "https://github.com/los-deferal-02/Hello-Books/issues"
   },
-  "homepage": "https://github.com/akpante3/Hello-Books#readme",
+  "homepage": "https://github.com/los-deferal-02/Hello-Books#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "@babel/polyfill": "^7.4.4",
     "dotenv": "^8.0.0",
     "express": "^4.17.1"
   },
@@ -29,13 +30,14 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
-    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.0",
     "babel-plugin-istanbul": "^5.1.1",
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }

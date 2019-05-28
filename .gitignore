@@ -2,3 +2,5 @@
 /build
 /dist
 .env
+.nyc_output
+.coveralls.yml

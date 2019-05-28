@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import routes from './routes/index';
 
@@ -9,8 +8,8 @@ const app = express();
 
 const { log } = console;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/v1', routes);
 
