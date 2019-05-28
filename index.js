@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import routes from './routes/index';
+import routes from './routes';
 
 dotenv.config();
 const port = process.env.PORT || 4000;
@@ -12,11 +12,17 @@ const { log } = console;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api/v1', routes);
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Hello Books Deferral'
+  });
+});
 
-app.use('*', (req, res) => {
+app.use('/api/v1/', routes);
+
+app.all('/*', (req, res) => {
   res.status(404).json({
-    message: 'Oops!!, the page you are looking for cannot be found',
+    error: 'Oops!! Page not found'
   });
 });
 

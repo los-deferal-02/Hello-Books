@@ -4,7 +4,7 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require @babel/register --colors --slow 400 --timeout 5000 --exit",
     "start": "npm run build && node ./build/index.js",
     "start-dev": "nodemon --exec babel-node index.js",
     "build": "npm run clean && npm run build",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akpante3/Hello-Books.git"
+    "url": "git+https://github.com/los-deferal-02/Hello-Books.git"
   },
   "author": "Team-2",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/akpante3/Hello-Books/issues"
+    "url": "https://github.com/los-deferal-02/Hello-Books/issues"
   },
-  "homepage": "https://github.com/akpante3/Hello-Books#readme",
+  "homepage": "https://github.com/los-deferal-02/Hello-Books#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
@@ -33,9 +33,13 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.0",
     "babel-plugin-istanbul": "^5.1.1",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-mocha": "^5.3.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.19.1"
   }
 }
