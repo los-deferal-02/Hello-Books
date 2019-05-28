@@ -16,7 +16,7 @@ app.use('/api/v1', routes);
 
 app.use('*', (req, res) => {
   res.status(404).json({
-    message: 'O0ps!!, the page you are looking for cannot be found',
+    message: 'Oops!!, the page you are looking for cannot be found',
   });
 });
 
