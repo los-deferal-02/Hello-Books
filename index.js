@@ -1,7 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import routes from './routes/index';
+import swaggerUi from 'swagger-ui-express';
+import routes from './server/routes';
+import swaggerDoc from './hello-books-swagger.json';
 
 dotenv.config();
 const port = process.env.PORT || 4000;
@@ -13,10 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1', routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use('*', (req, res) => {
   res.status(404).json({
-    message: 'Oops!!, the page you are looking for cannot be found',
+    message: 'Oops!!, the page you are looking for cannot be found'
   });
 });
 

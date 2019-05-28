@@ -34,3 +34,7 @@ $ npm run start-dev
 When the development server is up and running (i.e displays a success message on your command line), you can test the server response by visiting the following endpoint using Postman:
 
 `GET localhost:4000/`
+
+## API Endpoints
+
+A full Swagger documentation on the available API endpoints can be found by running the visiting the base URL of the app with the `/api-docs` suffix. E.g while the server is running in development mode, the API documentation will be viewable at `localhost:4000/api-docs`
