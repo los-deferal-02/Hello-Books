@@ -11,6 +11,8 @@ const app = express();
 
 const { log } = console;
 
+log(process.env.NODE_ENV);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
