@@ -7,10 +7,10 @@ import pool from '.';
  */
 const dropTable = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS USERS');
-    return 'Tables dropped successfully';
+    await pool.query('DROP TABLE IF EXISTS users');
+    console.log('Tables dropped successfully');
   } catch (error) {
-    return error;
+    console.log(error);
   }
 };
 
