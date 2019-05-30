@@ -12,8 +12,8 @@
     "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2018
   },
   "rules": {
     "one-var": 0,

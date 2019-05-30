@@ -4,12 +4,16 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node ./build/index.js",
-    "start-dev": "nodemon --exec babel-node index.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --exit",
+    "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
+    "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
-    "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build"
+    "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
+    "dropTables": "babel-node server/config/dropTables.js",
+    "seed": "babel-node server/config/seed.js",
+    "buildTables": "babel-node server/config/buildTables.js",
+    "migration": "npm run buildTables && npm run seed"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,7 @@
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "pg": "^7.11.0",
     "swagger-ui-express": "^4.0.5"
   },
   "devDependencies": {
@@ -35,6 +40,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.0",
     "babel-plugin-istanbul": "^5.1.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
