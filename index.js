@@ -11,7 +11,7 @@ const app = express();
 const { log } = console;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.status(200).json({
