@@ -1,7 +1,8 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import routes from './routes';
+import swaggerUi from 'swagger-ui-express';
+import routes from './server/routes';
+import swaggerDoc from './hello-books-swagger.json';
 
 dotenv.config();
 const port = process.env.PORT || 4000;
@@ -9,8 +10,8 @@ const app = express();
 
 const { log } = console;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -18,7 +19,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/', routes);
+app.use('/api/v1', routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.all('/*', (req, res) => {
   res.status(404).json({
