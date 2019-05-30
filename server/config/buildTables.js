@@ -3,12 +3,14 @@ import pool from '.';
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    user_name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password TEXT NOT NULL
-  )
+    password TEXT NOT NULL,
+    role int DEFAULT 0,
+    created_on TIMESTAMPTZ DEFAULT now() NOT NULL
+  );
 `;
 
 /**
@@ -19,9 +21,9 @@ const userTableQuery = `
 const createTable = async () => {
   try {
     await pool.query(`${userTableQuery}`);
-    return 'table created successfully';
+    console.log('Table created successfully');
   } catch (error) {
-    return error;
+    console.log(error);
   }
 };
 
