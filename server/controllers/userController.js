@@ -25,14 +25,12 @@ export default class UsersController {
       const { username, email, password } = data;
       const usernameExists = await userModel.findUserInput(username);
       const emailExists = await userModel.findUserInput(email);
-
       if (usernameExists) {
         return res.status(409).json({
           status: res.statusCode,
           error: 'Username is already taken'
         });
       }
-
       if (emailExists) {
         return res.status(409).json({
           status: res.statusCode,
@@ -42,6 +40,7 @@ export default class UsersController {
       data.password = await encryptPassword(password);
       const user = await userModel.create(data);
       const token = await generateToken(user);
+
       return res.status(201).json({
         status: res.statusCode,
         token
