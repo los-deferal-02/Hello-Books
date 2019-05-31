@@ -3,7 +3,6 @@ import encypt from '../helpers/encrypt';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
 
-
 /**
  *
  *
@@ -81,7 +80,6 @@ export default class UsersController {
           error: 'Invalid Login Details'
         });
       }
-      throw Error('Tetsing');
       const token = await generateToken(user);
       return res.status(200).json({
         status: res.statusCode,
