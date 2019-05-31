@@ -1,12 +1,28 @@
+/**
+  *  Error Handling Middleware
+  * @param {object} err
+  * @param {object} req
+  * @param {object} res
+  * @param {function} next
+  * @returns {object} Containing Error Message
+  */
 const errorHandler = (err, req, res, next) => {
   res.status(500).json({
     status: res.statusCode,
     error: err.message
-  })
+  });
 };
 
-const error404 =  (req, res)=> {
+/**
+  * Error Handler for unknown routes
+  * @param {object} req
+  * @param {object} res
+  * @returns {object} Containing Error Message
+  */
+const error404 = (req, res) => {
   res.status(404).json({
     message: 'Oops!!, the page you are looking for cannot be found'
   });
-}
+};
+
+export { errorHandler, error404 };

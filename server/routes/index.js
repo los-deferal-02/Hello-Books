@@ -8,7 +8,7 @@ const router = express.Router();
 // Hello-Books API Default Route
 router.get('/', (req, res) => {
   res.status(200).json({
-    message: 'Hello Books Deferral API Version 1'
+    message: 'Hello Books Deferral'
   });
 });
 
