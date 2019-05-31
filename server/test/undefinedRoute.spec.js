@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('Undefined Routes', () => {
-  it('should return status 404 and an error attribute', done => {
+  it('should return status 404 and an error attribute', (done) => {
     chai
       .request(app)
       .get('/randomRoute')

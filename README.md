@@ -1,6 +1,6 @@
+[![Build Status](https://travis-ci.com/los-deferal-02/Hello-Books.svg?branch=develop)](https://travis-ci.com/los-deferal-02/Hello-Books)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 [![Coverage Status](https://coveralls.io/repos/github/los-deferal-02/Hello-Books/badge.svg?branch=develop)](https://coveralls.io/github/los-deferal-02/Hello-Books?branch=develop)
-
 
 # Hello-Books
 
@@ -17,7 +17,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) instal
 $ git clone https://github.com/los-deferal-02/Hello-Books.git
 ```
 
-Refer to the [.env_sample](.env_sample) file for the required environment variables to get the application up and running.
+Refer to the [.env.sample](.env.sample) file for the required environment variables to get the application up and running.
 
 ## Installation
 
@@ -39,7 +39,18 @@ When the development server is up and running (i.e displays a success message on
 
 `GET localhost:4000/`
 
+## Running Tests
+
+Unit tests are available on this repository and dependencies to enable them work are included in the `package.json` file. To run unit tests, you can do the following:
+
+```bash
+# Enter the project's directory
+$ cd Hello-Books/
+
+# To run the available unit tests
+$ npm test
+```
+
 ## API Endpoints
 
 A full Swagger documentation on the available API endpoints can be found by running the visiting the base URL of the app with the `/api-docs` suffix. E.g while the server is running in development mode, the API documentation will be viewable at `localhost:4000/api-docs`
-
