@@ -4,6 +4,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Merge with develop
 /**
  *
  *
@@ -23,6 +27,10 @@ export default class encrypt {
     return bycrpt.hash(password, 10);
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Merge with develop
   /**
    *
    * Decrypt User Password
@@ -36,6 +44,10 @@ export default class encrypt {
     return bycrpt.compare(inputPassword, encryptedPassword);
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Merge with develop
   /**
    *
    * Generate user token

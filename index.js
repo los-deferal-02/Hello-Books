@@ -14,14 +14,9 @@ const { log } = console;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello Books Deferral'
-  });
-});
-
 app.use('/api/v1', routes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 app.all('/*', (req, res) => {
@@ -29,6 +24,9 @@ app.all('/*', (req, res) => {
     error: 'Oops!! Page not found'
   });
 });
+=======
+app.use(errorHandler, error404);
+>>>>>>> Merge with develop
 =======
 app.use(errorHandler, error404);
 >>>>>>> Merge with develop
