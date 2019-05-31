@@ -40,6 +40,7 @@ export default class UsersController {
       data.password = await encryptPassword(password);
       const user = await userModel.create(data);
       const token = await generateToken(user);
+
       return res.status(201).json({
         status: res.statusCode,
         token

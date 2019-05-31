@@ -4,7 +4,7 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha ./server/test --require @babel/register --colors --slow 400 --timeout 5000 --exit",
+    "test": "npm run clean-tables && cross-env NODE_ENV=test nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 5000 --exit",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
     "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
