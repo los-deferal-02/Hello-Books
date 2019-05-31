@@ -1,4 +1,4 @@
-import bycrpt from 'bcrypt';
+import bycrpt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -21,7 +21,7 @@ export default class encrypt {
    * @memberof encrypt
    */
   static encryptPassword(password) {
-    return bycrpt.hash(password, 10);
+    return bycrpt.hashSync(password, 10);
   }
 
 
@@ -35,7 +35,7 @@ export default class encrypt {
    * @memberof encrypt
    */
   static decryptPassword(inputPassword, encryptedPassword) {
-    return bycrpt.compare(inputPassword, encryptedPassword);
+    return bycrpt.compareSync(inputPassword, encryptedPassword);
   }
 
 

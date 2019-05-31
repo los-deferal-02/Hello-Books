@@ -27,7 +27,7 @@ describe('User Login Test', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
@@ -40,7 +40,7 @@ describe('User Login Test', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
@@ -53,7 +53,7 @@ describe('User Login Test', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(404);
-          expect(res.body).to.have.property('error')
+          expect(res.body.data).to.have.property('message')
             .to.deep.equal('Invalid Login Details');
           done();
         });
@@ -67,7 +67,7 @@ describe('User Login Test', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(401);
-          expect(res.body).to.have.property('error')
+          expect(res.body.data).to.have.property('message')
             .to.deep.equal('Invalid Login Details');
           done();
         });

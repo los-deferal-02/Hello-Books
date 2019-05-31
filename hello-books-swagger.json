@@ -1,9 +1,16 @@
 {
 	"swagger": "2.0",
 	"info": {
-		"description": "A Book Library Management System",
+		"description": "This is an API for a system that allows efficient, cost-effective management libraries",
 		"version": "1.0.0",
-		"title": "Hello Books Application API"
+		"title": "Hello Books Application API",
+		"contact": {
+			"email": "email@address"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
 	},
 	"host": "localhost:4000",
 	"basePath": "/api/v1",
@@ -11,10 +18,15 @@
 		"Bearer": {
 			"type": "apiKey",
 			"name": "Authorization",
-			"in": "header"
+			"in": "header",
+			"description": "For accessing the API routes other than Sign In and Sign Up, a valid JWT must be added in all the requests in the the Authorization Header"
 		}
 	},
 	"tags": [
+		{
+			"name": "Base",
+			"description": "Base Path for API endpoints"
+		},
 		{
 			"name": "Users",
 			"description": "Operations to be carried out only by the users"
@@ -25,6 +37,32 @@
 		"http"
 	],
 	"paths": {
+		"/": {
+			"get": {
+				"tags": [
+					"Base"
+				],
+				"summary": "API Endpoint Home Path",
+				"produces": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Hello Books API",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Hello Books API"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/auth/signup": {
 			"post": {
 				"tags": [
