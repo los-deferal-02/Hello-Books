@@ -7,7 +7,7 @@ import pool from '../config/index';
 
 chai.use(chaiHttp);
 
-const { validSignUpInputs, sameEmailSignup } = inputs;
+const { validSignUpInputs } = inputs;
 
 describe('User Registration Test', () => {
   describe('POST /api/v1/auth/signup', () => {
@@ -16,29 +16,7 @@ describe('User Registration Test', () => {
         .send(validSignUpInputs[0])
         .end((err, res) => {
           expect(res).to.have.status(201);
-          expect(res.body).to.have.property('token');
-          done();
-        });
-    });
-
-    it('respond with 409 error if username exists', (done) => {
-      chai.request(app).post('/api/v1/auth/signup')
-        .send(validSignUpInputs[0])
-        .end((err, res) => {
-          expect(res).to.have.status(409);
-          expect(res.body).to.have.property('error')
-            .to.deep.equal('Username is already taken');
-          done();
-        });
-    });
-
-    it('respond with 409 error if email exists', (done) => {
-      chai.request(app).post('/api/v1/auth/signup')
-        .send(sameEmailSignup)
-        .end((err, res) => {
-          expect(res).to.have.status(409);
-          expect(res.body).to.have.property('error')
-            .to.deep.equal('Email is already registered');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
