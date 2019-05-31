@@ -21,7 +21,7 @@ const errorHandler = (err, req, res, next) => {
   */
 const error404 = (req, res) => {
   res.status(404).json({
-    message: 'Oops!!, the page you are looking for cannot be found'
+    message: 'Oops!! Page not found'
   });
 };
 

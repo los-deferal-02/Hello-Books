@@ -14,7 +14,8 @@
     "seed": "babel-node server/config/seed.js",
     "buildTables": "babel-node server/config/buildTables.js",
     "migration": "npm run buildTables && npm run seed",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "clean-tables": "cross-env NODE_ENV=test npm run dropTables && cross-env NODE_ENV=test npm run buildTables"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,7 @@
     "eslint-plugin-mocha": "^5.3.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "sinon": "^7.3.2"
   }
 }
