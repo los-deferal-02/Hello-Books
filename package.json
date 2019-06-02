@@ -30,6 +30,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "bcryptjs": "^2.4.3",
+    "@hapi/joi": "^15.0.3",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
