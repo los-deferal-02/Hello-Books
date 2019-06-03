@@ -13,12 +13,18 @@ const { log } = console;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Hello Books Deferral'
+  });
+});
+
 app.use('/api/v1', routes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
-app.use('*', (req, res) => {
+app.all('/*', (req, res) => {
   res.status(404).json({
-    message: 'Oops!!, the page you are looking for cannot be found'
+    error: 'Oops!! Page not found'
   });
 });
 

@@ -15,6 +15,7 @@
     "sourceType": "module",
     "ecmaVersion": 2018
   },
+  "plugins": ["mocha"],
   "rules": {
     "one-var": 0,
     "one-var-declaration-per-line": 0,
@@ -45,6 +46,9 @@
         }
       }
     ],
-    "max-len": ["error", { "code": 80 }]
+    "max-len": ["error", { "code": 80 }],
+    "mocha/no-exclusive-tests": ["error"],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "should|expect" }],
+    "linebreak-style": 0
   }
 }
