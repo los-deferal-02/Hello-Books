@@ -20,6 +20,7 @@ const userTableQuery = `
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) UNIQUE NOT NULL,
     body VARCHAR(100) NOT NULL,
+<<<<<<< HEAD
     description VARCHAR(100) NOT NULL,
     genre VARCHAR(100) NOT NULL,
     pages NUMERIC(250) NOT NULL
@@ -56,6 +57,12 @@ CREATE TABLE IF NOT EXISTS books(
   genre VARCHAR(100) NOT NULL,
   pages NUMERIC(250) NOT NULL
 );
+=======
+    description TEXT NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    pages NUMERIC(250) NOT NULL
+  );
+>>>>>>> feature(Add new book):implement
 `;
 
 /**
