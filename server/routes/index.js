@@ -1,7 +1,6 @@
 import express from 'express';
-import userController from '../controllers/userController';
-
-const { signUp, login } = userController;
+import authRouter from './userAuthRouter';
+import booksRouter from './booksRouter';
 
 const router = express.Router();
 
@@ -13,7 +12,7 @@ router.get('/', (req, res) => {
 });
 
 // User Routes
-router.post('/auth/signup', signUp);
-router.post('/auth/login', login);
+router.use('/auth', authRouter);
+router.use('/books', booksRouter);
 
 export default router;
