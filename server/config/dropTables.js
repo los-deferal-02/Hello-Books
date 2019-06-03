@@ -9,7 +9,7 @@ const { log } = console;
  */
 const dropTable = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS users');
+    await pool.query('DROP TABLE IF EXISTS users, books');
     log('Tables dropped successfully');
   } catch (error) {
     log(error);

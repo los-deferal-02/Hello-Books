@@ -13,7 +13,7 @@
     "dropTables": "babel-node server/config/dropTables.js",
     "seed": "babel-node server/config/seed.js",
     "buildTables": "babel-node server/config/buildTables.js",
-    "migration": "npm run buildTables && npm run seed",
+    "migration": "npm run clean-tables && cross-env NODE_ENV=test npm run seed",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "clean-tables": "cross-env NODE_ENV=test npm run dropTables && cross-env NODE_ENV=test npm run buildTables"
   },

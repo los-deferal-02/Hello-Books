@@ -38,7 +38,14 @@ const inputs = {
       lastname: 'Doe',
       password: 'Books1',
     },
-  ]
+  ],
+  validAddBookInput: {
+    title: 'newBook',
+    body: 'The newbook from 1996',
+    description: 'The best book of the century',
+    genre: 'Fantacy',
+    pages: 500
+  }
 };
 
 export default inputs;

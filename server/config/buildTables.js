@@ -13,6 +13,14 @@ const userTableQuery = `
     role int DEFAULT 0,
     created_on TIMESTAMPTZ DEFAULT now() NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS books(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) UNIQUE NOT NULL,
+    body VARCHAR(100) NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    pages NUMERIC(250) NOT NULL
+  );
 `;
 
 /**
