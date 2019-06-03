@@ -1,5 +1,6 @@
 import userModel from '../models/users';
 import encypt from '../helpers/encrypt';
+import EmailModule from '../utilities/emailModule';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
 

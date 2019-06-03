@@ -10,9 +10,20 @@ const userTableQuery = `
     lastname VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    role int DEFAULT 0,
+    role INTEGER DEFAULT 0,
     created_on TIMESTAMPTZ DEFAULT now() NOT NULL
   );
+`;
+
+const bookTableQuery = `
+CREATE TABLE IF NOT EXISTS books(
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100) UNIQUE NOT NULL,
+  body VARCHAR(100) NOT NULL,
+  description VARCHAR(100) NOT NULL,
+  genre VARCHAR(100) NOT NULL,
+  pages NUMERIC(250) NOT NULL
+);
 `;
 
 /**
@@ -22,7 +33,7 @@ const userTableQuery = `
  */
 const createTable = async () => {
   try {
-    await pool.query(`${userTableQuery}`);
+    await pool.query(`${userTableQuery}${bookTableQuery}`);
     log('Tables created successfully');
   } catch (error) {
     log(error);
