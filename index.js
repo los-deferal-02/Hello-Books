@@ -19,12 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello Books'
-  });
-});
-
 app.use('/api/v1', routes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(serverError, error404);
