@@ -142,6 +142,33 @@
 					}
 				}
 			}
+		},
+		"/verifyEmail/:email/:verifyCode": {
+			"patch": {
+				"tags": [
+					"Users"
+				],
+				"summary": "Handles verification of email address provided by user during signup",
+				"description": "This endpoint verifies the user's email address",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Email Verified"
+					},
+					"404": {
+						"description": "User Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				}
+			}
 		}
 	},
 	"definitions": {
