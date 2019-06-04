@@ -1,7 +1,5 @@
 import pool from '.';
 
-const { log } = console;
-
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
@@ -31,9 +29,8 @@ const userTableQuery = `
 const createTable = async () => {
   try {
     await pool.query(`${userTableQuery}`);
-    log('Tables created successfully');
   } catch (error) {
-    log(error);
+    return error;
   }
 };
 
