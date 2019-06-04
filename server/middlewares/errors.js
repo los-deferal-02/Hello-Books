@@ -1,11 +1,11 @@
 /**
-  *  Error Handling Middleware
-  * @param {object} err
-  * @param {object} req
-  * @param {object} res
-  * @param {function} next
-  * @returns {object} Containing Error Message
-  */
+ *  Error Handling Middleware
+ * @param {object} err
+ * @param {object} req
+ * @param {object} res
+ * @param {function} next
+ * @returns {object} Containing Error Message
+ */
 const errorHandler = (err, req, res, next) => {
   res.status(500).json({
     status: 'error',
@@ -14,11 +14,11 @@ const errorHandler = (err, req, res, next) => {
 };
 
 /**
-  * Error Handler for unknown routes
-  * @param {object} req
-  * @param {object} res
-  * @returns {object} Containing Error Message
-  */
+ * Error Handler for unknown routes
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} Containing Error Message
+ */
 const error404 = (req, res) => {
   res.status(404).json({
     message: 'Oops!! Page not found'

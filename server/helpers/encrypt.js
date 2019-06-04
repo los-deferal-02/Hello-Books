@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 /**
  *
  *
@@ -24,7 +23,6 @@ export default class encrypt {
     return bycrpt.hashSync(password, 10);
   }
 
-
   /**
    *
    * Decrypt User Password
@@ -38,7 +36,6 @@ export default class encrypt {
     return bycrpt.compareSync(inputPassword, encryptedPassword);
   }
 
-
   /**
    *
    * Generate user token
@@ -49,8 +46,9 @@ export default class encrypt {
    */
   static generateToken(user) {
     const payload = { id: user.id, email: user.email, role: user.role };
-    const token = jwt.sign(payload,
-      process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '24h'
+    });
     return token;
   }
 }

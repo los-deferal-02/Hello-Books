@@ -4,7 +4,7 @@ const inputs = {
     email: 'reader1@gmail.com',
     firstname: 'John',
     lastname: 'Doe',
-    password: 'Books1',
+    password: 'Books1'
   },
   validSignUpInputs: [
     {
@@ -12,14 +12,14 @@ const inputs = {
       email: 'reader1@gmail.com',
       firstname: 'John',
       lastname: 'Doe',
-      password: 'Books1',
+      password: 'Books1'
     },
     {
       username: 'reader2',
       email: 'reader2@gmail.com',
       firstname: 'Mark',
       lastname: 'Diamond',
-      password: 'Books2',
+      password: 'Books2'
     }
   ],
 
@@ -29,15 +29,15 @@ const inputs = {
       email: 'reader1000@gmail.com',
       firstname: 'John',
       lastname: 'Doe',
-      password: 'Books1',
+      password: 'Books1'
     },
     {
       username: 'reader1000',
       email: 'reader1@gmail.com',
       firstname: 'John',
       lastname: 'Doe',
-      password: 'Books1',
-    },
+      password: 'Books1'
+    }
   ]
 };
 

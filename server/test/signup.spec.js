@@ -12,7 +12,9 @@ const { validSignUpInputs } = inputs;
 describe('User Registration Test', () => {
   describe('POST /api/v1/auth/signup', () => {
     it('respond with token when successful', (done) => {
-      chai.request(app).post('/api/v1/auth/signup')
+      chai
+        .request(app)
+        .post('/api/v1/auth/signup')
         .send(validSignUpInputs[0])
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -22,10 +24,12 @@ describe('User Registration Test', () => {
     });
 
     it('500 internal error if server encounters error', (done) => {
-      const stub = sinon.stub(pool, 'query')
-        .rejects(new Error('Just tesing'));
-      chai.request(app).post('/api/v1/auth/signup')
-        .send(validSignUpInputs[0]).end((err, res) => {
+      const stub = sinon.stub(pool, 'query').rejects(new Error('Just tesing'));
+      chai
+        .request(app)
+        .post('/api/v1/auth/signup')
+        .send(validSignUpInputs[0])
+        .end((err, res) => {
           expect(res).to.have.status(500);
           stub.restore();
           done();
