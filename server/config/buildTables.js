@@ -1,6 +1,7 @@
+import Debug from 'debug';
 import pool from '.';
 
-const { log } = console;
+const debug = Debug('dev');
 
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
@@ -35,9 +36,9 @@ CREATE TABLE IF NOT EXISTS books(
 const createTable = async () => {
   try {
     await pool.query(`${userTableQuery}${bookTableQuery}`);
-    log('Tables created successfully');
+    debug('Tables created successfully');
   } catch (error) {
-    log(error);
+    debug(error);
   }
 };
 

@@ -1,7 +1,8 @@
+import Debug from 'debug';
 import pool from '.';
 import encrypt from '../helpers/encrypt';
 
-const { log } = console;
+const debug = Debug('dev');
 const { encryptPassword } = encrypt;
 
 /**
@@ -23,9 +24,9 @@ const insertSeed = async () => {
 `;
   try {
     await pool.query(seed);
-    log('insert succeeded');
+    debug('insert succeeded');
   } catch (error) {
-    log(error);
+    debug(error);
   }
 };
 
