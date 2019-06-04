@@ -20,6 +20,13 @@ const inputs = {
       firstname: 'Mark',
       lastname: 'Diamond',
       password: 'Books2',
+    },
+    {
+      username: 'reader3',
+      email: 'toolzdman@gmail.com',
+      firstname: 'Rihanna',
+      lastname: 'Obayomi',
+      password: 'incorrect',
     }
   ],
 

@@ -1,29 +1,32 @@
 import pool from '.';
+import encrypt from '../helpers/encrypt';
 
 const { log } = console;
+const { encryptPassword } = encrypt;
 
 /**
  * Insert super admin after tables are created
  * @name insertSuperAdmin
  * @returns {String} details of insert
  */
-const insertSuperAdmin = async () => {
-  const adminInsert = `
+const insertSeed = async () => {
+  const hashedPassword = encryptPassword('nonsoDrums');
+  const seed = `
   INSERT INTO users(
-    username, firstname, lastname, email, password
+    "userName", "firstName", "lastName", email, password
   )
   VALUES (
-    'xwebyna', 'Tolu', 'Martins', 'nero.abdul@gmail.com', 'nonsoDRUMS'
+    'xwebyna', 'Tolu', 'Martins', 'nero.abdul@gmail.com', '${hashedPassword}'
     )
   ON CONFLICT (email)
   DO NOTHING;
 `;
   try {
-    await pool.query(adminInsert);
+    await pool.query(seed);
     log('insert succeeded');
   } catch (error) {
     log(error);
   }
 };
 
-insertSuperAdmin();
+insertSeed();

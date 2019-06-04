@@ -1,6 +1,6 @@
 import userModel from '../models/users';
 import encypt from '../helpers/encrypt';
-import EmailModule from '../utilities/emailModule';
+import EmailSender from '../utilities/emailSenders';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
 
@@ -25,9 +25,11 @@ export default class UsersController {
       const data = req.body;
       const { password } = data;
       data.password = await encryptPassword(password);
-      const user = await userModel.create(data);
-      const token = await generateToken(user);
-
+      const confirmCode = generateToken(req.body);
+      data.emailConfirmCode = confirmCode.slice(0, 64);
+      await userModel.create(data);
+      const token = generateToken(data);
+      EmailSender.sendVerifyEmail(data);
       return res.status(201).json({
         status: 'success',
         data: { token }
@@ -70,6 +72,36 @@ export default class UsersController {
       return res.status(200).json({
         status: 'success',
         data: { token }
+      });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  /**
+   * Verify Email middleware- verify user's email address
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   * @returns {JSON} Json response for email confirmation
+   * @memberof UsersController
+   */
+  static async verifyEmail(req, res, next) {
+    try {
+      const userDetails = req.params;
+      const { email, verifyCode } = userDetails;
+      const user = await userModel.findUserInput(email);
+      if (!user) {
+        return res.status(404).json({
+          status: 'fail',
+          data: { message: 'User not found' }
+        });
+      }
+      await userModel.verifyEmail(verifyCode);
+      return res.status(200).json({
+        status: 'success',
+        data: { message: 'Email verified' }
       });
     } catch (err) {
       return next(err);

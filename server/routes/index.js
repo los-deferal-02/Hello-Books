@@ -1,7 +1,7 @@
 import express from 'express';
 import userController from '../controllers/userController';
 
-const { signUp, login } = userController;
+const { signUp, login, verifyEmail } = userController;
 
 const router = express.Router();
 
@@ -15,5 +15,6 @@ router.get('/', (req, res) => {
 // User Routes
 router.post('/auth/signup', signUp);
 router.post('/auth/login', login);
+router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
 
 export default router;

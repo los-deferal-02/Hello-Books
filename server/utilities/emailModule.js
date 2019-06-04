@@ -24,7 +24,7 @@ class EmailModule {
    * @returns {string} Information about whether or not the operation succeeds
    * @memberof EmailModule
    */
-  static sendEmailToUser(receiver, subject, content) {
+  static async sendEmailToUser(receiver, subject, content) {
     const emailData = {
       to: receiver,
       from: 'Hello Books <hellobooks-care@hellobooks.com>',
@@ -32,16 +32,14 @@ class EmailModule {
       html: content
     };
 
-    sendGridMail
-      .send(emailData)
-      .then(() => {
-        log('Email sent successfully');
-        return 'Email sent successfully';
-      })
-      .catch((error) => {
-        log(error.response.body);
-        return 'Email could not be sent';
-      });
+    try {
+      await sendGridMail.send(emailData);
+      log('Email sent successfully');
+      return 'Email sent successfully';
+    } catch (error) {
+      log(error.response.body);
+      throw new Error(error.response.body);
+    }
   }
 }
 
