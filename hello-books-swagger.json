@@ -106,7 +106,7 @@
 					"Users"
 				],
 				"summary": "Handles users' sign in into the application",
-				"description": "This endpoint sign in users afer authentications",
+				"description": "This endpoint sign in users after authentications",
 				"consumes": [
 					"application/json"
 				],
@@ -139,6 +139,34 @@
 					},
 					"500": {
 						"description": "Internal Server Error"
+					}
+				}
+			}
+		}, 
+		"/books": {
+			"post": {
+				"tags": [
+					"Books"
+				],
+				"summary": "Handles books' Adding a new book to the application",
+				"description": "This endpoint adds a new book to the books to the library",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "This is the request body object containing books' addition information.",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/addBookRequest"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Book created successfully"
 					}
 				}
 			}
@@ -194,6 +222,39 @@
 			"example": {
 				"userLogin": "example@user.com",
 				"password": "hellobooks"
+			}
+		},
+		"addBookRequest": {
+			"title": "Add new book request",
+			"type": "object",
+			"properties": {
+				"title": {
+					"description": "Book title or name",
+					"type": "string"
+				},
+				"body": {
+					"description": "Some little details about the book",
+					"type": "string"
+				},
+				"description": {
+					"description": "Well descriptive details or information about the book and why it should be read",
+					"type": "string"
+				},
+				"genre": {
+					"description": "The style or category of the book",
+					"type": "string"
+				},
+				"pages": {
+					"description": "Number of pages the book has",
+					"type": "Number"
+				},
+				"example": {
+					"title": "Harry Potter",
+					"body": "Harry Potter and the order of Phoenix",
+					"description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+					"genre": "Science Fiction",
+					"pages": 475
+				}
 			}
 		}
 	}
