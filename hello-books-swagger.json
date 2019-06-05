@@ -32,20 +32,13 @@
       "description": "Operations to be carried out only by the users"
     }
   ],
-  "schemes": [
-    "https",
-    "http"
-  ],
+  "schemes": ["https", "http"],
   "paths": {
     "/": {
       "get": {
-        "tags": [
-          "Base"
-        ],
+        "tags": ["Base"],
         "summary": "API Endpoint Home Path",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -65,14 +58,10 @@
     },
     "/auth/signup": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Handles the creation of new user",
         "description": "This endpoint creates a new user and persist input data to the database",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -102,17 +91,11 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Handles users' sign in into the application",
         "description": "This endpoint sign in users afer authentications",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -145,17 +128,11 @@
     },
     "/verifyEmail/:email/:verifyCode": {
       "patch": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Handles verification of email address provided by user during signup",
         "description": "This endpoint verifies the user's email address",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -172,14 +149,10 @@
     },
     "/userProfile/{id}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Handles viewing user profile",
         "description": "This endpoint gets a user profile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -202,17 +175,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Handles editing user profile",
         "description": "This endpoint edits a user profile",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
