@@ -21,7 +21,7 @@ class EmailModule {
    * @param {object} receiver - Object contains "name" and "email" of receiver
    * @param {string} subject - Subject of the email
    * @param {string} content - Content of the email
-   * @returns {string} Information about whether or not the operation succeeds
+   * @returns {boolean} Information about whether or not the operation succeeds
    * @memberof EmailModule
    */
   static async sendEmailToUser(receiver, subject, content) {
@@ -35,10 +35,10 @@ class EmailModule {
     try {
       await sendGridMail.send(emailData);
       log('Email sent successfully');
-      return 'Email sent successfully';
+      return true;
     } catch (error) {
       log(error.response.body);
-      return 'Email could not be sent';
+      return false;
     }
   }
 }
