@@ -1,7 +1,10 @@
 import userModel from '../models/users';
 import encypt from '../helpers/encrypt';
+import ServerResponse from '../responseSpec';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
+const { findUserInput, create } = userModel;
+const { badPostRequest, successfulRequest } = ServerResponse;
 
 /**
  *
@@ -22,15 +25,25 @@ export default class UsersController {
   static async signUp(req, res, next) {
     try {
       const data = req.body;
-      const { password } = data;
+      const { password, userName, email } = data;
+      const foundUserEmail = await findUserInput(email);
+      const foundUserName = await findUserInput(userName);
+
+      if (foundUserEmail) {
+        return badPostRequest(res, 409, { email: 'Email already exists' });
+      }
+
+      if (foundUserName) {
+        return badPostRequest(res, 409, {
+          userName: 'Username already exists'
+        });
+      }
+
       data.password = await encryptPassword(password);
-      const user = await userModel.create(data);
+      const user = await create(data);
       const token = await generateToken(user);
 
-      return res.status(201).json({
-        status: 'success',
-        data: { token }
-      });
+      return successfulRequest(res, 201, { token });
     } catch (err) {
       return next(err);
     }
@@ -51,25 +64,16 @@ export default class UsersController {
       const data = req.body;
       const { userLogin, password } = data;
       // Login with username or email address
-      const user = await userModel.findUserInput(userLogin);
+      const user = await findUserInput(userLogin);
       if (!user) {
-        return res.status(404).json({
-          status: 'fail',
-          data: { message: 'Invalid Login Details' }
-        });
+        return badPostRequest(res, 404, { message: 'Invalid Login Details' });
       }
       const passwordValid = await decryptPassword(password, user.password);
       if (!passwordValid) {
-        return res.status(401).json({
-          status: 'fail',
-          data: { message: 'Invalid Login Details' }
-        });
+        return badPostRequest(res, 401, { message: 'Invalid Login Details' });
       }
       const token = await generateToken(user);
-      return res.status(200).json({
-        status: 'success',
-        data: { token }
-      });
+      return successfulRequest(res, 200, { token });
     } catch (err) {
       return next(err);
     }

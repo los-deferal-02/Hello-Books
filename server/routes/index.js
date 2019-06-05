@@ -1,7 +1,9 @@
 import express from 'express';
 import userController from '../controllers/userController';
+import AuthValidation from '../middleware/authValidation';
 
 const { signUp, login } = userController;
+const { validateRegistration, validateLogIn } = AuthValidation;
 
 const router = express.Router();
 
@@ -13,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 // User Routes
-router.post('/auth/signup', signUp);
-router.post('/auth/login', login);
+router.post('/auth/signup', validateRegistration, signUp);
+router.post('/auth/login', validateLogIn, login);
 
 export default router;

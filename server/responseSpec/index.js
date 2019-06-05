@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @description Server response according to defined JSend specs
  */
@@ -33,17 +34,46 @@ export default class ResponseSpec {
   }
 
   /**
-   * @description Response method for an unecxpected server error
+   * @description Response method for a a successful request
    * @param {object} res - Response object
-   * @param {string} message - Message to be sent back to the client
+   * @param {number} status - Status code of the response
+   * @param {(string|object)} data - Data or message sent back to the client
    * @static
    * @returns {object} - A response object sent to the client
    */
-  static serverError(res, message) {
+  static successfulRequest(res, status, data) {
+    return res.status(status).json({
+      status: 'success',
+      data
+    });
+  }
+
+  /**
+   * @description Response method for an unecxpected server error
+   * @param {object} err - The error object
+   * @param {object} req - Request object
+   * @param {object} res - The response object
+   * @param {function} next - The next function to be called
+   * @static
+   * @returns {object} - A response object sent to the client
+   */
+  static serverError(err, req, res, next) {
     return res.status(500).json({
       status: 'error',
-      message: `${message
-        || 'Sorry, something unusual happened, we are working on a fix'}`
+      message: 'Sorry, something unusual happened, we are working on a fix'
+    });
+  }
+
+  /**
+   * Error Handler for unknown routes
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Containing Error Message
+   */
+  static error404(req, res) {
+    res.status(404).json({
+      status: 'error',
+      message: 'Oops!! Page not found'
     });
   }
 }

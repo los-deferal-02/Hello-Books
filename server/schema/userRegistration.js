@@ -112,5 +112,33 @@ export default {
         }
       });
       return errors;
+    }),
+  userName: Joi.string()
+    .min(3)
+    .max(15)
+    .alphanum()
+    .required()
+    .error((errors) => {
+      errors.forEach((err) => {
+        switch (err.type) {
+          case 'any.empty':
+            err.message = 'Username is required';
+            break;
+          case 'any.required':
+            err.message = 'Username is required';
+            break;
+          case 'string.min':
+            err.message = 'Username cannot be less than 3 characters';
+            break;
+          case 'string.max':
+            err.message = `Username should not be more than ${
+              err.context.limit
+            } characters!`;
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
     })
 };
