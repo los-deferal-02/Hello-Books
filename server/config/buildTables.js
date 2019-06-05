@@ -11,7 +11,7 @@ const userTableQuery = `
     email VARCHAR(100) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     resetpasswordtoken VARCHAR(100),
-    resetpasswordexpires BIGINT,
+    resettokenexpires BIGINT,
     role int DEFAULT 0,
     created_on TIMESTAMPTZ DEFAULT now() NOT NULL
   );

@@ -74,9 +74,9 @@ export default class Users {
    * @returns {object} User data according to supplied credential
    * @memberof Users
    */
-  static async updatePasswordExpires(passwordExpires, email) {
+  static async updateTokenExpires(passwordExpires, email) {
     return pool.query(
-      `UPDATE users SET resetpasswordexpires = $1
+      `UPDATE users SET resettokenexpires = $1
                         WHERE email = $2
     `,
       [passwordExpires, email]

@@ -94,7 +94,7 @@ export default class UsersController {
       if (!user) {
         return res.status(404).json({
           status: 'fail',
-          data: { message: 'Invalid Login Details' }
+          data: { message: 'Email does not exist' }
         });
       }
       const token = await crypto.randomBytes(20).toString('hex');
@@ -109,7 +109,7 @@ export default class UsersController {
       `;
       await emailModule.sendEmailToUser(userLogin, mailSubject, mailContent);
       await userModel.updateToken(token, userLogin);
-      await userModel.updatePasswordExpires(Date.now() + 3600000, userLogin);
+      await userModel.updateTokenExpires(Date.now() + 3600000, userLogin);
       return res.status(200).json({
         status: 'success',
         data: { token }
@@ -133,7 +133,7 @@ export default class UsersController {
     if (req.body.newPassword !== req.body.confirmPassword) {
       return res.status(400).json({
         status: 'fail',
-        data: { message: 'Password does not match' }
+        data: { message: 'Confirm password and Password must match' }
       });
     }
     try {
@@ -144,7 +144,7 @@ export default class UsersController {
           data: { message: 'Token is not valid' }
         });
       }
-      if (Date.now() > user.rows[0].resetpasswordexpires) {
+      if (Date.now() > user.rows[0].resettokenexpires) {
         return res.status(401).json({
           status: 'fail',
           data: { message: 'Token has expired' }
