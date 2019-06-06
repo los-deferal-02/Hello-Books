@@ -3,7 +3,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
-import pool from '../config/index';
+import pool from '../config';
 
 chai.use(chaiHttp);
 
@@ -26,7 +26,7 @@ describe('User Registration Test', () => {
     });
 
     it('500 internal error if server encounters error', (done) => {
-      const stub = sinon.stub(pool, 'query').rejects(new Error('Just tesing'));
+      const stub = sinon.stub(pool, 'query').rejects(new Error('Just testing'));
       chai
         .request(app)
         .post(API_ROUTE)

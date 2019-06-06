@@ -1,6 +1,7 @@
+import Debug from 'debug';
 import pool from '.';
 
-const { log } = console;
+const debug = Debug('dev');
 
 /**
  * @name dropTable
@@ -10,9 +11,9 @@ const { log } = console;
 const dropTable = async () => {
   try {
     await pool.query('DROP TABLE IF EXISTS users');
-    log('Tables dropped successfully');
+    debug('Tables dropped successfully');
   } catch (error) {
-    log(error);
+    debug(error);
   }
 };
 
