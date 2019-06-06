@@ -9,11 +9,11 @@ const userTableQuery = `
     "userName" VARCHAR(100) UNIQUE NOT NULL,
     "firstName" VARCHAR(100) NOT NULL,
     "lastName" VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    role INTEGER DEFAULT 0,
+    "email" VARCHAR(100) UNIQUE NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" INTEGER DEFAULT 0,
     "emailConfirmCode" VARCHAR(64),
-    created_on TIMESTAMPTZ DEFAULT now() NOT NULL
+    "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
   );
 `;
 

@@ -17,10 +17,10 @@ export default class Users {
    */
   static async create(user) {
     const {
-      username,
+      userName,
       email,
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       password,
       emailConfirmCode
     } = user;
@@ -30,7 +30,7 @@ export default class Users {
     ("userName", email, "firstName", "lastName", password, "emailConfirmCode")
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *`,
-      [username, email, firstname, lastname, password, emailConfirmCode]
+      [userName, email, firstName, lastName, password, emailConfirmCode]
     );
     return rows[0];
   }

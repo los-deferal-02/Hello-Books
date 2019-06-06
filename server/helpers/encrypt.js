@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 /**
  *
  *
@@ -24,7 +23,6 @@ export default class encrypt {
     return bycrpt.hashSync(password, 10);
   }
 
-
   /**
    *
    * Decrypt User Password
@@ -37,7 +35,6 @@ export default class encrypt {
   static decryptPassword(inputPassword, encryptedPassword) {
     return bycrpt.compareSync(inputPassword, encryptedPassword);
   }
-
 
   /**
    *

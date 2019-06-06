@@ -7,7 +7,7 @@ const { encryptPassword } = encrypt;
 
 /**
  * Insert super admin after tables are created
- * @name insertSuperAdmin
+ * @name insertSeed
  * @returns {String} details of insert
  */
 const insertSeed = async () => {

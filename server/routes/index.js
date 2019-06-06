@@ -1,7 +1,10 @@
 import express from 'express';
 import userController from '../controllers/userController';
+import AuthValidation from '../middlewares/authValidation';
 
 const { signUp, login, verifyEmail } = userController;
+
+const { validateRegistration, validateLogIn } = AuthValidation;
 
 const router = express.Router();
 
@@ -13,8 +16,8 @@ router.get('/', (req, res) => {
 });
 
 // User Routes
-router.post('/auth/signup', signUp);
-router.post('/auth/login', login);
+router.post('/auth/signup', validateRegistration, signUp);
+router.post('/auth/login', validateLogIn, login);
 router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
 
 export default router;

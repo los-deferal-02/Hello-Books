@@ -1,50 +1,61 @@
 const inputs = {
   sameEmailSignup: {
-    username: 'readerUnknown',
+    userName: 'readerUnknown',
     email: 'reader1@gmail.com',
-    firstname: 'John',
-    lastname: 'Doe',
-    password: 'Books1',
+    firstName: 'John',
+    lastName: 'Doe',
+    password: 'Books123'
   },
   validSignUpInputs: [
     {
-      username: 'reader1',
+      userName: 'reader1',
       email: 'reader1@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books123'
     },
     {
-      username: 'reader2',
+      userName: 'reader2',
       email: 'reader2@gmail.com',
-      firstname: 'Mark',
-      lastname: 'Diamond',
-      password: 'Books2',
+      firstName: 'Mark',
+      lastName: 'Diamond',
+      password: 'Books231'
     },
     {
-      username: 'reader3',
+      userName: 'reader3',
       email: 'toolzdman@gmail.com',
-      firstname: 'Rihanna',
-      lastname: 'Obayomi',
-      password: 'incorrect',
+      firstName: 'Rihanna',
+      lastName: 'Obayomi',
+      password: 'Books123'
     }
   ],
 
   invalidSignupInputs: [
     {
-      username: 'reader1',
+      userName: 'reader1',
       email: 'reader1000@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1'
     },
     {
-      username: 'reader1000',
+      userName: 'reader1000',
       email: 'reader1@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1'
+    }
+  ],
+
+  validLoginInputs: [
+    {
+      userLogin: 'reader2',
+      password: 'Books231'
     },
+    {
+      userLogin: 'reader2@gmail.com',
+      password: 'Books231'
+    }
   ]
 };
 

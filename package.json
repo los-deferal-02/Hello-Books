@@ -4,18 +4,18 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "npm run clean-tables && cross-env NODE_ENV=test nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 5000 --color --exit",
+    "test": "cross-env NODE_ENV=test npm run clean-tables && nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 5000 --color --exit",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
-    "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node index.js",
+    "start-dev": "cross-env NODE_ENV=development DEBUG=dev nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
     "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
-    "dropTables": "babel-node server/config/dropTables.js",
+    "drop-tables": "babel-node server/config/dropTables.js",
+    "build-tables": "babel-node server/config/buildTables.js",
     "seed": "babel-node server/config/seed.js",
-    "buildTables": "babel-node server/config/buildTables.js",
-    "migration": "npm run buildTables && npm run seed",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "clean-tables": "cross-env NODE_ENV=test npm run dropTables && npm run buildTables"
+    "clean-tables": "npm run drop-tables && npm run build-tables",
+    "migration": "npm run clean-tables && npm run seed",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -30,11 +30,13 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@sendgrid/mail": "^6.4.0",
-    "bcryptjs": "^2.4.3",
     "debug": "^4.1.1",
+    "@hapi/joi": "^15.0.3",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
     "pg": "^7.11.0",
     "swagger-ui-express": "^4.0.5"
   },

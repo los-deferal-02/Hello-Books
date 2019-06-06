@@ -58,7 +58,9 @@ describe('Email verification test', () => {
       .end((err, res) => {
         expect(res).to.have.status(500);
         expect(res.body.status).to.equal('error');
-        expect(res.body.message).to.equal('Error verifying email');
+        expect(res.body.message).to.equal(
+          'Sorry, something unusual happened, we are working on a fix'
+        );
         done();
       });
   });
