@@ -11,10 +11,9 @@ describe('Undefined Routes', () => {
       .request(app)
       .get('/randomRoute')
       .end((err, res) => {
-        const { error } = res.body;
-
+        const { message } = res.body;
         expect(res).to.have.status(404);
-        expect(error).to.match(/Oops!! Page not found/i);
+        expect(message).to.match(/Oops!! Page not found/i);
         done();
       });
   });
