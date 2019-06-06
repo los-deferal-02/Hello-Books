@@ -17,14 +17,14 @@ export default class Users {
    */
   static async create(user) {
     const {
-      username, email, firstname, lastname, password
+      userName, email, firstName, lastName, password
     } = user;
     const { rows } = await pool.query(
       `INSERT INTO 
-    users( username, email, firstname, lastname, password)
+    users( "username", "email", "firstname", "lastname", "password")
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *`,
-      [username, email, firstname, lastname, password]
+      [userName, email, firstName, lastName, password]
     );
     return rows[0];
   }
@@ -38,7 +38,7 @@ export default class Users {
    * @memberof Users
    */
   static async findUserInput(userData) {
-    const column = userData.split('@').length === 2 ? 'email' : 'username';
+    const column = userData.split('@').length === 2 ? '"email"' : '"username"';
     const data = await pool.query(`SELECT * FROM users WHERE ${column} = $1`, [
       userData
     ]);

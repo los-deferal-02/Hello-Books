@@ -1,9 +1,12 @@
 import express from 'express';
 import userController from '../controllers/userController';
+import AuthValidation from '../middleware/authValidation';
 
 const {
   signUp, login, forgotPassword, resetPassword
 } = userController;
+
+const { validateRegistration, validateLogIn } = AuthValidation;
 
 const router = express.Router();
 
@@ -14,11 +17,8 @@ router.get('/', (req, res) => {
   });
 });
 
-// User Routes
-router.post('/auth/signup', signUp);
-router.post('/auth/login', login);
-
-// Forgot password routes
+router.post('/auth/signup', validateRegistration, signUp);
+router.post('/auth/login', validateLogIn, login);
 router.post('/auth/forgot', forgotPassword);
 router.post('/auth/reset/:token', resetPassword);
 

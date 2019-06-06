@@ -30,7 +30,11 @@
     "**/*.js": [
       "npm run lint:fix",
       "git add"
-    ]
+    ],
+    "buildTables": "babel-node server/config/buildTables.js",
+    "migration": "npm run buildTables && npm run seed",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "clean-tables": "cross-env NODE_ENV=test npm run dropTables && cross-env NODE_ENV=test npm run buildTables"
   },
   "repository": {
     "type": "git",
@@ -49,6 +53,8 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "@hapi/joi": "^15.0.3",
+    "morgan": "^1.9.1",
     "pg": "^7.11.0",
     "swagger-ui-express": "^4.0.5"
   },

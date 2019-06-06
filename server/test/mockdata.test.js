@@ -1,63 +1,63 @@
 import encypt from '../helpers/encrypt';
 
-const password1 = encypt.encryptPassword('1234');
-const password2 = encypt.encryptPassword('1235');
+const password1 = encypt.encryptPassword('Chinonso1234');
+const password2 = encypt.encryptPassword('Chinonso123456');
 
 const inputs = {
   sameEmailSignup: {
-    username: 'readerUnknown',
+    userName: 'readerUnknown',
     email: 'reader1@gmail.com',
-    firstname: 'John',
-    lastname: 'Doe',
-    password: 'Books1'
+    firstName: 'John',
+    lastName: 'Doe',
+    password: 'Books123'
   },
   validSignUpInputs: [
     {
-      username: 'reader1',
+      userName: 'reader1',
       email: 'reader1@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1'
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books123'
     },
     {
-      username: 'reader2',
+      userName: 'reader2',
       email: 'reader2@gmail.com',
-      firstname: 'Mark',
-      lastname: 'Diamond',
-      password: 'Books2'
+      firstName: 'Mark',
+      lastName: 'Diamond',
+      password: 'Books231'
     },
     {
-      username: 'reader3',
+      userName: 'chiboycalix',
       email: 'igwechinonso77@gmail.com',
-      firstname: 'Jane',
-      lastname: 'Doe',
-      password: 'Books3'
+      firstName: 'chinonso',
+      lastName: 'calix',
+      password: 'Chinonso123'
     }
   ],
 
   invalidSignupInputs: [
     {
-      username: 'reader1',
+      userName: 'reader1',
       email: 'reader1000@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1'
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1456'
     },
     {
-      username: 'reader1000',
-      email: 'reader1@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1'
+      email: 'reader3@gmail.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1567'
     },
     {
-      username: 'reader1000',
-      email: 'reader1@gmail.com',
-      firstname: 'John',
-      lastname: 'Doe',
-      password: 'Books1'
+      userName: 'reader1000',
+      email: 'reader4@gmail.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1567'
     }
   ],
+
   validResetPasswordInput: [
     {
       newPassword: password1,
