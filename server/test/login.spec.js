@@ -100,19 +100,5 @@ describe('User Login Test', () => {
           done();
         });
     });
-
-    // it('500 internal error if server encounters error', (done) => {
-    //   const stub = sinon.stub(pool, 'query')
-    //     .rejects(new Error('Just tesing'));
-    //   chai
-    //     .request(app)
-    //     .post(API_ROUTE)
-    //     .send(validSignUpInputs[1])
-    //     .end((err, res) => {
-    //       expect(res).to.have.status(500);
-    //       stub.restore();
-    //       done();
-    //     });
-    // });
   });
 });
