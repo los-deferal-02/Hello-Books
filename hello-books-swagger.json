@@ -1,219 +1,316 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"description": "This is an API for a system that allows efficient, cost-effective management libraries",
-		"version": "1.0.0",
-		"title": "Hello Books Application API",
-		"contact": {
-			"email": "email@address"
-		},
-		"license": {
-			"name": "Apache 2.0",
-			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-		}
+  "swagger": "2.0",
+  "info": {
+    "description": "This is an API for a system that allows efficient, cost-effective management libraries",
+    "version": "1.0.0",
+    "title": "Hello Books Application API",
+    "contact": {
+      "email": "email@address"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api/v1",
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "For accessing the API routes other than Sign In and Sign Up, a valid JWT must be added in all the requests in the the Authorization Header"
+    }
+  },
+  "tags": [
+    {
+      "name": "Base",
+      "description": "Base Path for API endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "Operations to be carried out only by the users"
+    }
+  ],
+  "schemes": ["https", "http"],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Base"],
+        "summary": "API Endpoint Home Path",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Hello Books API",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Hello Books API"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles the creation of new user",
+        "description": "This endpoint creates a new user and persist input data to the database",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' signup information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSignupRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User has been successfully resgistered"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Email or Username exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles users' sign in into the application",
+        "description": "This endpoint sign in users afer authentications",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/forgot": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles users' forgot password request",
+        "description": "This endpoint enables users to request for password reset",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserPasswordResetRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/reset/:token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles users' reset password",
+        "description": "This endpoint enables users to reset their password",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserResetPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/verifyEmail/:email/:verifyCode": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Handles verification of email address provided by user during signup",
+        "description": "This endpoint verifies the user's email address",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email Verified"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
 	},
-	"host": "localhost:4000",
-	"basePath": "/api/v1",
-	"securityDefinitions": {
-		"Bearer": {
-			"type": "apiKey",
-			"name": "Authorization",
-			"in": "header",
-			"description": "For accessing the API routes other than Sign In and Sign Up, a valid JWT must be added in all the requests in the the Authorization Header"
-		}
-	},
-	"tags": [
-		{
-			"name": "Base",
-			"description": "Base Path for API endpoints"
-		},
-		{
-			"name": "Users",
-			"description": "Operations to be carried out only by the users"
-		}
-	],
-	"schemes": [
-		"https",
-		"http"
-	],
-	"paths": {
-		"/": {
-			"get": {
-				"tags": [
-					"Base"
-				],
-				"summary": "API Endpoint Home Path",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "Hello Books API",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"message": {
-									"type": "string",
-									"example": "Hello Books API"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/signup": {
-			"post": {
-				"tags": [
-					"Users"
-				],
-				"summary": "Handles the creation of new user",
-				"description": "This endpoint creates a new user and persist input data to the database",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "body",
-						"description": "This is the request body object containing users' signup information",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/UserSignupRequest"
-						}
-					}
-				],
-				"responses": {
-					"201": {
-						"description": "User has been successfully resgistered"
-					},
-					"400": {
-						"description": "Bad Request"
-					},
-					"409": {
-						"description": "Email or Username exists"
-					},
-					"500": {
-						"description": "Internal Server Error"
-					}
-				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"tags": [
-					"Users"
-				],
-				"summary": "Handles users' sign in into the application",
-				"description": "This endpoint sign in users afer authentications",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "body",
-						"description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/UserLoginRequest"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "General Success"
-					},
-					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "User has entered incorrect details"
-					},
-					"404": {
-						"description": "User Not Found"
-					},
-					"500": {
-						"description": "Internal Server Error"
-					}
-				}
-			}
-		}
-	},
-	"definitions": {
-		"UserSignupRequest": {
-			"title": "User Signup Request",
-			"type": "object",
-			"properties": {
-				"username": {
-					"description": "username of the user",
-					"type": "string"
-				},
-				"email": {
-					"description": "Email of the user",
-					"type": "string"
-				},
-				"firstname": {
-					"description": "First name of the user",
-					"type": "string"
-				},
-				"lastname": {
-					"description": "Last name of the user",
-					"type": "string"
-				},
-				"password": {
-					"description": "Password of the user",
-					"type": "string"
-				}
-			},
-			"example": {
-				"username": "example",
-				"email": "example@user.com",
-				"firstname": "Marky",
-				"lastname": "Steve",
-				"password": "hellobooks"
-			}
-		},
-		"UserLoginRequest": {
-			"title": "User Login Request",
-			"type": "object",
-			"properties": {
-				"userLogin": {
-					"description": "Email or username of the user",
-					"type": "string"
-				},
-				"password": {
-					"description": "Password of the user",
-					"type": "string"
-				}
-			},
-			"example": {
-				"userLogin": "example@user.com",
-				"password": "hellobooks"
-			}
-		},
-		"UserPasswordResetRequest": {
-			"title": "User Password Reset Request",
-			"type": "object",
-			"properties": {
-				"userLogin": {
-					"description": "Email of an already existing user",
-					"type": "string"
-				},
-				"resetPassword": {
-					"description": "newPassword and confirmPassword",
-					"type": "string or number"
-				},
-				"example": {
-					"userLogin":"example@user.com",
-					"newPassword": "1234",
-					"confirmPassword": "1234"
-				}
-			}
-		}
-	}
+  "definitions": {
+    "UserSignupRequest": {
+      "title": "User Signup Request",
+      "type": "object",
+      "properties": {
+        "userName": {
+          "description": "username of the user",
+          "type": "string"
+        },
+        "email": {
+          "description": "Email of the user",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "First name of the user",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Last name of the user",
+          "type": "string"
+        },
+        "password": {
+          "description": "Password of the user",
+          "type": "string"
+        }
+      },
+      "example": {
+        "userName": "example",
+        "email": "example@user.com",
+        "firstName": "Marky",
+        "lastName": "Steve",
+        "password": "hellobooks"
+      }
+    },
+    "UserLoginRequest": {
+      "title": "User Login Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email or username of the user",
+          "type": "string"
+        },
+        "password": {
+          "description": "Password of the user",
+          "type": "string"
+        }
+      },
+      "example": {
+        "userLogin": "example@user.com",
+        "password": "hellobooks"
+      }
+    },
+    "UserPasswordResetRequest": {
+      "title": "User Password Reset Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin":"example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    },
+    "UserResetPassword": {
+      "title": "User Reset Password Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin":"example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    }
+  }
 }

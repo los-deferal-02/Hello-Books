@@ -1,9 +1,13 @@
 import express from 'express';
 import userController from '../controllers/userController';
-import AuthValidation from '../middleware/authValidation';
+import AuthValidation from '../middlewares/authValidation';
 
 const {
-  signUp, login, forgotPassword, resetPassword
+  signUp,
+  login,
+  forgotPassword,
+  resetPassword,
+  verifyEmail
 } = userController;
 
 const { validateRegistration, validateLogIn } = AuthValidation;
@@ -21,5 +25,6 @@ router.post('/auth/signup', validateRegistration, signUp);
 router.post('/auth/login', validateLogIn, login);
 router.post('/auth/forgot', forgotPassword);
 router.post('/auth/reset/:token', resetPassword);
+router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
 
 export default router;

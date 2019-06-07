@@ -1,20 +1,33 @@
+import Debug from 'debug';
 import pool from '.';
 
-const { log } = console;
+const debug = Debug('dev');
 
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
-    userName VARCHAR(100) UNIQUE NOT NULL,
-    firstName VARCHAR(100) NOT NULL,
-    lastName VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    resetpasswordtoken VARCHAR(100),
-    resettokenexpires BIGINT,
-    role int DEFAULT 0,
-    created_on TIMESTAMPTZ DEFAULT now() NOT NULL
+    "userName" VARCHAR(100) UNIQUE NOT NULL,
+    "firstName" VARCHAR(100) NOT NULL,
+    "lastName" VARCHAR(100) NOT NULL,
+    "email" VARCHAR(100) UNIQUE NOT NULL,
+    "password" TEXT NOT NULL,
+    "resetpasswordtoken" VARCHAR(100),
+    "resettokenexpires" BIGINT,
+    "role" INTEGER DEFAULT 0,
+    "emailConfirmCode" VARCHAR(64),
+    "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
   );
+`;
+
+const bookTableQuery = `
+CREATE TABLE IF NOT EXISTS books(
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100) UNIQUE NOT NULL,
+  body VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  genre VARCHAR(100) NOT NULL,
+  pages NUMERIC(250) NOT NULL
+);
 `;
 
 /**
@@ -24,10 +37,10 @@ const userTableQuery = `
  */
 const createTable = async () => {
   try {
-    await pool.query(`${userTableQuery}`);
-    log('Tables created successfully');
+    await pool.query(`${userTableQuery}${bookTableQuery}`);
+    debug('Tables created successfully');
   } catch (error) {
-    log(error);
+    debug(error);
   }
 };
 

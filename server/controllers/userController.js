@@ -1,12 +1,13 @@
 import crypto from 'crypto';
 import userModel from '../models/users';
 import encypt from '../helpers/encrypt';
-import emailModule from '../utilities/EmailModule';
+import emailModule from '../utilities/emailModule';
+import EmailSender from '../utilities/emailSenders';
 import ServerResponse from '../responseSpec';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
 const { findUserInput, create } = userModel;
-const { badPostRequest, successfulRequest } = ServerResponse;
+const { badPostRequest, badGetRequest, successfulRequest } = ServerResponse;
 
 /**
  *
@@ -32,7 +33,9 @@ export default class UsersController {
       const foundUserName = await findUserInput(userName);
 
       if (foundUserEmail) {
-        return badPostRequest(res, 409, { email: 'Email already exists' });
+        return badPostRequest(res, 409, {
+          email: 'Email already exists'
+        });
       }
 
       if (foundUserName) {
@@ -40,11 +43,12 @@ export default class UsersController {
           userName: 'Username already exists'
         });
       }
-
-      data.password = await encryptPassword(password);
+      data.password = encryptPassword(password);
+      const confirmCode = generateToken(req.body);
+      data.emailConfirmCode = confirmCode.slice(0, 64);
       const user = await create(data);
-      const token = await generateToken(user);
-
+      const token = generateToken(user);
+      EmailSender.sendVerifyEmail(data);
       return successfulRequest(res, 201, { token });
     } catch (err) {
       return next(err);
@@ -82,6 +86,30 @@ export default class UsersController {
   }
 
   /**
+   * Verify Email middleware- verify user's email address
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   * @returns {JSON} Json response for email confirmation
+   * @memberof UsersController
+   */
+  static async verifyEmail(req, res, next) {
+    try {
+      const userDetails = req.params;
+      const { email, verifyCode } = userDetails;
+      const user = await userModel.findUserInput(email);
+      if (!user) {
+        return badGetRequest(res, 404, { message: 'User not found' });
+      }
+      await userModel.verifyEmail(verifyCode);
+      return successfulRequest(res, 200, { message: 'Email verified' });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  /**
    *
    * Forgot Password Middleware - Enables users request new password
    * @static
@@ -108,7 +136,7 @@ export default class UsersController {
        If you did not request this, please Ignore this email and your
        password will remain unchanged.
       `;
-      await emailModule.sendEmailToUser(userLogin, mailSubject, mailContent);
+      emailModule.sendEmailToUser(userLogin, mailSubject, mailContent);
       await userModel.updateToken(token, userLogin);
       await userModel.updateTokenExpires(Date.now() + 3600000, userLogin);
 

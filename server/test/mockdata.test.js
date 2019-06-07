@@ -32,6 +32,13 @@ const inputs = {
       firstName: 'chinonso',
       lastName: 'calix',
       password: 'Chinonso123'
+    },
+    {
+      userName: 'reader3',
+      email: 'toolzdman@gmail.com',
+      firstName: 'Rihanna',
+      lastName: 'Obayomi',
+      password: 'Books123'
     }
   ],
 
