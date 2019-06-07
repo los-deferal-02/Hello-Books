@@ -39,7 +39,7 @@ const inputs = {
       password: 'Books1'
     },
     {
-      userName: 'reader1000',
+      userName: 'reader100',
       email: 'reader1@gmail.com',
       firstName: 'John',
       lastName: 'Doe',
