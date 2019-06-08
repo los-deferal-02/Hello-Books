@@ -1,10 +1,15 @@
 import express from 'express';
 import userController from '../controllers/userController';
 import AuthValidation from '../middlewares/authValidation';
+import Auth from '../middlewares/auth';
 
-const { signUp, login, verifyEmail } = userController;
+const {
+  signUp, login, verifyEmail, editUserProfile, viewUserProfile
+} = userController;
 
 const { validateRegistration, validateLogIn } = AuthValidation;
+
+const { verifyToken } = Auth;
 
 const router = express.Router();
 
@@ -19,5 +24,7 @@ router.get('/', (req, res) => {
 router.post('/auth/signup', validateRegistration, signUp);
 router.post('/auth/login', validateLogIn, login);
 router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
+router.patch('/userProfile/:id', verifyToken, editUserProfile);
+router.get('/userProfile/:id', viewUserProfile);
 
 export default router;
