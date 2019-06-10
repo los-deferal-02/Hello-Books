@@ -17,6 +17,19 @@ const userTableQuery = `
   );
 `;
 
+const userProfileTableQuery = `
+  CREATE TABLE IF NOT EXISTS user_profiles(
+    "userId" INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    "bio" VARCHAR,
+    "avatarUrl" VARCHAR,
+    "favoriteBook" VARCHAR(100),
+    "favoriteGenre" VARCHAR(100),
+    "favoriteAuthor" VARCHAR(100),
+    "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL,
+    PRIMARY KEY ("userId")
+  );
+`;
+
 const bookTableQuery = `
 CREATE TABLE IF NOT EXISTS books(
   id SERIAL PRIMARY KEY,
@@ -35,7 +48,9 @@ CREATE TABLE IF NOT EXISTS books(
  */
 const createTable = async () => {
   try {
-    await pool.query(`${userTableQuery}${bookTableQuery}`);
+    await pool.query(`${userTableQuery}
+    ${userProfileTableQuery}
+    ${bookTableQuery}`);
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
