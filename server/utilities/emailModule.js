@@ -37,8 +37,7 @@ class EmailModule {
       debug('Email sent successfully');
       return 'Email sent successfully';
     } catch (error) {
-      debug(error.response.body);
-      throw new Error(error.response.body);
+      debug(error.response);
     }
   }
 }
