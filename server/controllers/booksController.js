@@ -1,4 +1,8 @@
 import bookModel from '../models/books';
+import ServerResponse from '../responseSpec';
+
+
+const { successfulRequest } = ServerResponse;
 
 /**
  *
@@ -29,16 +33,13 @@ export default class BooksController {
         author,
       } = data;
       await bookModel.create(data);
-      return res.status(201).json({
-        status: res.statusCode,
-        data: {
-          bookTitle: title,
-          bookBody: body,
-          bookDescription: description,
-          bookGenre: genre,
-          bookPages: pages,
-          bookAuthor: author,
-        }
+      return successfulRequest(res, 201, {
+        bookTitle: title,
+        bookBody: body,
+        bookDescription: description,
+        bookGenre: genre,
+        bookPages: pages,
+        bookAuthor: author,
       });
     } catch (err) {
       return next(err);

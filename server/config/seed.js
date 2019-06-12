@@ -31,7 +31,6 @@ const insertSeed = async () => {
 };
 
 insertSeed();
-import pool from './index';
 
 (async () => {
   let result;
