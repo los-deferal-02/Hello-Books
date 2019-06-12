@@ -77,7 +77,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "This is the request body object containing users' signup information",
+            "description": "This is the request body object containing users' signup information. Role can 'patron' or 'author'",
             "required": true,
             "schema": {
               "$ref": "#/definitions/UserSignupRequest"
@@ -271,6 +271,10 @@
           "description": "Last name of the user",
           "type": "string"
         },
+        "role": {
+          "description": "role of the user",
+          "type": "string"
+        },
         "password": {
           "description": "Password of the user",
           "type": "string"
@@ -281,7 +285,8 @@
         "email": "example@user.com",
         "firstName": "Marky",
         "lastName": "Steve",
-        "password": "hellobooks"
+        "role": "author",
+        "password": "Hellobooks2019"
       }
     },
     "UserLoginRequest": {

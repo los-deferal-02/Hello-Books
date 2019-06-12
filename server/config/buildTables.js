@@ -11,7 +11,8 @@ const userTableQuery = `
     "lastName" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) UNIQUE NOT NULL,
     "password" TEXT NOT NULL,
-    "role" INTEGER DEFAULT 0,
+    role INTEGER NOT NULL,
+    "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
   );
@@ -29,6 +30,14 @@ const userProfileTableQuery = `
     PRIMARY KEY ("userId")
   );
 `;
+
+const rolesTableQuery = `
+    CREATE TABLE IF NOT EXISTS roles(
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100) UNIQUE NOT NULL
+    );
+`;
+
 
 const bookTableQuery = `
 CREATE TABLE IF NOT EXISTS books(
@@ -50,7 +59,9 @@ const createTable = async () => {
   try {
     await pool.query(`${userTableQuery}
     ${userProfileTableQuery}
-    ${bookTableQuery}`);
+    ${bookTableQuery}
+    ${rolesTableQuery}
+ `);
     debug('Tables created successfully');
   } catch (error) {
     debug(error);

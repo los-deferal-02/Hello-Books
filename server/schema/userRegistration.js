@@ -140,5 +140,10 @@ export default {
         }
       });
       return errors;
-    })
+    }),
+
+  role: Joi.string()
+    .valid('patron', 'author')
+    .trim()
+    .required()
 };
