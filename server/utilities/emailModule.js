@@ -5,6 +5,7 @@ import Debug from 'debug';
 dotenv.config();
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 const debug = Debug('dev');
+
 /**
  * Contains methods for handling user email services
  *
@@ -21,7 +22,7 @@ class EmailModule {
    * @param {object} receiver - Object contains "name" and "email" of receiver
    * @param {string} subject - Subject of the email
    * @param {string} content - Content of the email
-   * @returns {string} Information about whether or not the operation succeeds
+   * @returns {boolean} Information about whether or not the operation succeeds
    * @memberof EmailModule
    */
   static async sendEmailToUser(receiver, subject, content) {
@@ -35,10 +36,10 @@ class EmailModule {
     try {
       await sendGridMail.send(emailData);
       debug('Email sent successfully');
-      return 'Email sent successfully';
+      return true;
     } catch (error) {
       debug(error.response.body);
-      throw new Error(error.response.body);
+      return false;
     }
   }
 }
