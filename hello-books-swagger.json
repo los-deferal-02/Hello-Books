@@ -77,7 +77,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "This is the request body object containing users' signup information. Role can 'patron' or 'author'",
+            "description": "This is the request body object containing users' signup information. Role can be 'patron' or 'author'",
             "required": true,
             "schema": {
               "$ref": "#/definitions/UserSignupRequest"
