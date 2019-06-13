@@ -10,7 +10,7 @@ const debug = Debug('dev');
  */
 const dropTable = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS users');
+    await pool.query('DROP TABLE IF EXISTS user_profiles, users');
     debug('Tables dropped successfully');
   } catch (error) {
     debug(error);

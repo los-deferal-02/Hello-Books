@@ -6,7 +6,13 @@ import EmailSender from '../utilities/emailSenders';
 import ServerResponse from '../responseSpec';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
-const { findUserInput, create } = userModel;
+const {
+  findUserInput,
+  create,
+  createProfile,
+  editProfile,
+  viewProfile
+} = userModel;
 const { badPostRequest, badGetRequest, successfulRequest } = ServerResponse;
 
 /**
@@ -47,6 +53,7 @@ export default class UsersController {
       const confirmCode = generateToken(req.body);
       data.emailConfirmCode = confirmCode.slice(0, 64);
       const user = await create(data);
+      await createProfile(user.id);
       const token = generateToken(user);
       EmailSender.sendVerifyEmail(data);
       return successfulRequest(res, 201, { token });
@@ -112,6 +119,7 @@ export default class UsersController {
   /**
    *
    * Forgot Password Middleware - Enables users request new password
+   * Edit user profile
    * @static
    * @param {object} req
    * @param {object} res
@@ -148,7 +156,40 @@ export default class UsersController {
 
   /**
    *
+   * Edit user Profile
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} Object containing token to the user
+   * @memberof UsersController
+   */
+  static async editUserProfile(req, res, next) {
+    try {
+      const data = req.body;
+      const { id } = req.params;
+      const { userId } = req;
+      if (parseInt(id, 10) !== userId) {
+        return badPostRequest(res, 401, {
+          message: 'Unauthorized access'
+        });
+      }
+      const userProfile = await editProfile(id, data);
+      if (!userProfile) {
+        return badPostRequest(res, 400, {
+          message: 'Profile failed to update'
+        });
+      }
+      return successfulRequest(res, 200, { ...userProfile });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  /**
+   *
    * Reset Password Middleware - Enables users reset their password
+   * View user profile
    * @static
    * @param {object} req
    * @param {object} res
@@ -177,6 +218,31 @@ export default class UsersController {
       });
     } catch (error) {
       return next(error);
+    }
+  }
+
+  /**
+   *
+   * View User
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} Object containing token to the user
+   * @memberof UsersController
+   */
+  static async viewUserProfile(req, res, next) {
+    try {
+      const { id } = req.params;
+      const userProfile = await viewProfile(id);
+      if (!userProfile) {
+        return badPostRequest(res, 404, {
+          message: 'Profile not found'
+        });
+      }
+      return successfulRequest(res, 200, { ...userProfile });
+    } catch (err) {
+      return next(err);
     }
   }
 }

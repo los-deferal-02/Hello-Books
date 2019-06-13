@@ -76,6 +76,17 @@ const inputs = {
       newPassword: password1,
       confirmPassword: password2
     }
+  ],
+
+  validLoginInputs: [
+    {
+      userLogin: 'reader2',
+      password: 'Books231'
+    },
+    {
+      userLogin: 'reader2@gmail.com',
+      password: 'Books231'
+    }
   ]
 };
 

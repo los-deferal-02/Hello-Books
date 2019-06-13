@@ -32,13 +32,20 @@
       "description": "Operations to be carried out only by the users"
     }
   ],
-  "schemes": ["https", "http"],
+  "schemes": [
+    "https",
+    "http"
+  ],
   "paths": {
     "/": {
       "get": {
-        "tags": ["Base"],
+        "tags": [
+          "Base"
+        ],
         "summary": "API Endpoint Home Path",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -58,10 +65,14 @@
     },
     "/auth/signup": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles the creation of new user",
         "description": "This endpoint creates a new user and persist input data to the database",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -91,11 +102,17 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles users' sign in into the application",
         "description": "This endpoint sign in users afer authentications",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -124,6 +141,140 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/books": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Handles books' Adding a new book to the application",
+        "description": "This endpoint adds a new book to the books to the library",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing books' addition information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addBookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book created successfully"
+          }
+        }
+      }
+    },
+    "/verifyEmail/:email/:verifyCode": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Handles verification of email address provided by user during signup",
+        "description": "This endpoint verifies the user's email address",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email Verified"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/userProfile/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Handles viewing user profile",
+        "description": "This endpoint gets a user profile",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Profile Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Handles editing user profile",
+        "description": "This endpoint edits a user profile",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "This is the request body object containing users profile information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully"
+          },
+          "401": {
+            "description": "Unathorized access"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/auth/forgot": {
@@ -199,29 +350,8 @@
           }
         }
       }
-    },
-    "/verifyEmail/:email/:verifyCode": {
-      "patch": {
-        "tags": ["Users"],
-        "summary": "Handles verification of email address provided by user during signup",
-        "description": "This endpoint verifies the user's email address",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Email Verified"
-          },
-          "404": {
-            "description": "User Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
     }
-	},
+  },
   "definitions": {
     "UserSignupRequest": {
       "title": "User Signup Request",
@@ -273,6 +403,76 @@
         "userLogin": "example@user.com",
         "password": "hellobooks"
       }
+    },
+    "UserProfile": {
+      "title": "User profile",
+      "type": "object",
+      "properties": {
+        "bio": {
+          "description": "User bio",
+          "type": "string"
+        },
+        "avatarUrl": {
+          "description": "Image URL",
+          "type": "string"
+        },
+        "favoriteBook": {
+          "description": "Name of favorite book",
+          "type": "string"
+        },
+        "favoriteGenre": {
+          "description": "Name of favorite genre",
+          "type": "string"
+        },
+        "favoriteAuthor": {
+          "description": "Name of favorite author",
+          "type": "string"
+        }
+      },
+      "example": {
+        "bio": "Reading and Chilling",
+        "avatarUrl": "external link",
+        "favoriteBook": "JS",
+        "favoriteGenre": "Code",
+        "favoriteAuthor": "Medium"
+      }
+    },
+    "AddBookRequest": {
+			"title": "Add new book request",
+			"type": "object",
+			"properties": {
+				"title": {
+					"description": "Book title or name",
+					"type": "string"
+				},
+				"body": {
+					"description": "Some little details about the book",
+					"type": "string"
+				},
+				"description": {
+					"description": "Well descriptive details or information about the book and why it should be read",
+					"type": "string"
+				},
+				"genre": {
+					"description": "The style or category of the book",
+					"type": "string"
+				},
+				"pages": {
+					"description": "Number of pages the book has",
+					"type": "Number"
+        },
+        "author": {
+					"description": "The person that wrote the book (book owner)",
+					"type": "String"
+				},
+				"example": {
+					"title": "Harry Potter",
+					"body": "Harry Potter and the order of Phoenix",
+					"description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+					"genre": "Science Fiction",
+					"pages": 475
+				}
+			}
     },
     "UserPasswordResetRequest": {
       "title": "User Password Reset Request",

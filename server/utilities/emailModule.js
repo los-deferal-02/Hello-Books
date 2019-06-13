@@ -1,10 +1,10 @@
 import sendGridMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
-import Debug from 'debug';
 
 dotenv.config();
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
-const debug = Debug('dev');
+const { log } = console;
+
 /**
  * Contains methods for handling user email services
  *
@@ -34,11 +34,11 @@ class EmailModule {
 
     try {
       await sendGridMail.send(emailData);
-      debug('Email sent successfully');
+      log('Email sent successfully');
       return 'Email sent successfully';
     } catch (error) {
-      debug(error.response.body);
-      throw new Error(error.response.body);
+      log(error.response.body);
+      return 'Email could not be sent';
     }
   }
 }
