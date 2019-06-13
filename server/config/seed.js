@@ -2,7 +2,7 @@ import Debug from 'debug';
 import pool from '.';
 import encrypt from '../helpers/encrypt';
 
-const debug = Debug('dev');
+const debug = Debug('db');
 const { encryptPassword } = encrypt;
 
 /**
@@ -48,7 +48,6 @@ insertSeed();
     result = await pool.query(`INSERT INTO users 
     (username, email, firstname, lastname, password)
       VALUES ($1, $2, $3, $4, $5)`, params);
-
     return result;
   } catch (error) {
     return error;
@@ -67,7 +66,6 @@ insertSeed();
     result = await pool.query(`INSERT INTO books 
       (title, body, description, genre, pages)
         VALUES ($1, $2, $3, $4, $5)`, params);
-
     return result;
   } catch (error) {
     return error;

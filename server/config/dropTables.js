@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import pool from '.';
 
-const debug = Debug('dev');
+const debug = Debug('db');
 
 /**
  * @name dropTable

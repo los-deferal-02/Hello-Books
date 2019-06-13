@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import pool from '.';
 
-const debug = Debug('dev');
+const debug = Debug('db');
 
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
@@ -46,7 +46,6 @@ const rolesTableQuery = `
       name VARCHAR(100) UNIQUE NOT NULL
     );
 `;
-
 
 const bookTableQuery = `
 CREATE TABLE IF NOT EXISTS books(
