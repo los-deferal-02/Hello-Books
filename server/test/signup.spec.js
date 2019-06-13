@@ -25,6 +25,18 @@ describe('User Registration Test', () => {
         });
     });
 
+    it('should respond with token for successful author signup', (done) => {
+      chai
+        .request(app)
+        .post(API_ROUTE)
+        .send(validSignUpInputs[3])
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.data).to.have.property('token');
+          done();
+        });
+    });
+
     it('500 internal error if server encounters error', (done) => {
       const stub = sinon.stub(pool, 'query').rejects(new Error('Just testing'));
       chai

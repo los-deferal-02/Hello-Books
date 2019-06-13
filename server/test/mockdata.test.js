@@ -31,6 +31,14 @@ const inputs = {
       lastName: 'Obayomi',
       password: 'Books123',
       role: 'patron'
+    },
+    {
+      userName: 'darthVad3r',
+      email: 'darthvad3r@gmail.com',
+      firstName: 'Darth',
+      lastName: 'Vader',
+      password: 'Empire231',
+      role: 'author'
     }
   ],
 
@@ -62,7 +70,14 @@ const inputs = {
       userLogin: 'reader2@gmail.com',
       password: 'Books231'
     }
-  ]
+  ],
+  validAddBookInput: {
+    title: 'newBook',
+    body: 'The newbook from 1996',
+    description: 'The best book of the century',
+    genre: 'Fantacy',
+    pages: 500
+  }
 };
 
 export default inputs;
