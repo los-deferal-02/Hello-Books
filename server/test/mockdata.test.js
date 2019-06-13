@@ -62,7 +62,14 @@ const inputs = {
       userLogin: 'reader2@gmail.com',
       password: 'Books231'
     }
-  ]
+  ],
+  validAddBookInput: {
+    title: 'newBook',
+    body: 'The newbook from 1996',
+    description: 'The best book of the century',
+    genre: 'Fantacy',
+    pages: 500
+  }
 };
 
 export default inputs;
