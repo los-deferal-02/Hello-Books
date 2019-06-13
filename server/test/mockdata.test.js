@@ -31,6 +31,14 @@ const inputs = {
       lastName: 'Obayomi',
       password: 'Books123',
       role: 'patron'
+    },
+    {
+      userName: 'darthVad3r',
+      email: 'darthvad3r@gmail.com',
+      firstName: 'Darth',
+      lastName: 'Vader',
+      password: 'Empire231',
+      role: 'author'
     }
   ],
 
