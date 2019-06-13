@@ -9,7 +9,8 @@ const inputs = {
     email: 'reader1@gmail.com',
     firstName: 'John',
     lastName: 'Doe',
-    password: 'Books123'
+    password: 'Books123',
+    role: 'author'
   },
   validSignUpInputs: [
     {
@@ -17,28 +18,32 @@ const inputs = {
       email: 'reader1@gmail.com',
       firstName: 'John',
       lastName: 'Doe',
-      password: 'Books123'
+      password: 'Books123',
+      role: 'patron'
     },
     {
       userName: 'reader2',
       email: 'reader2@gmail.com',
       firstName: 'Mark',
       lastName: 'Diamond',
-      password: 'Books231'
+      password: 'Books231',
+      role: 'author'
     },
     {
       userName: 'chiboycalix',
       email: 'igwechinonso77@gmail.com',
       firstName: 'chinonso',
       lastName: 'calix',
-      password: 'Chinonso123'
+      password: 'Chinonso123',
+      role: 'patron'
     },
     {
       userName: 'reader3',
       email: 'toolzdman@gmail.com',
       firstName: 'Rihanna',
       lastName: 'Obayomi',
-      password: 'Books123'
+      password: 'Books123',
+      role: 'patron'
     }
   ],
 

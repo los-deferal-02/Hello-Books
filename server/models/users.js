@@ -24,13 +24,20 @@ export default class Users {
       password,
       emailConfirmCode
     } = user;
+    let { role } = user;
+    if (role === 'patron') {
+      role = 1;
+    } else if (role === 'author') {
+      role = 2;
+    }
     const { rows } = await pool.query(
       `INSERT INTO 
     users
-    ("userName", email, "firstName", "lastName", "password", "emailConfirmCode")
-    VALUES ($1, $2, $3, $4, $5, $6)
+    ("userName", email, "firstName", "lastName", password, "emailConfirmCode",
+    role)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *`,
-      [userName, email, firstName, lastName, password, emailConfirmCode]
+      [userName, email, firstName, lastName, password, emailConfirmCode, role]
     );
     return rows[0];
   }

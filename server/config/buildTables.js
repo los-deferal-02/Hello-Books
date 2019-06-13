@@ -14,6 +14,7 @@ const userTableQuery = `
     "resetpasswordtoken" VARCHAR(100),
     "resettokenexpires" BIGINT,
     "role" INTEGER DEFAULT 0,
+    "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
   );
@@ -30,6 +31,13 @@ const userProfileTableQuery = `
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL,
     PRIMARY KEY ("userId")
   );
+`;
+
+const rolesTableQuery = `
+    CREATE TABLE IF NOT EXISTS roles(
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100) UNIQUE NOT NULL
+    );
 `;
 
 const bookTableQuery = `
@@ -52,7 +60,9 @@ const createTable = async () => {
   try {
     await pool.query(`${userTableQuery}
     ${userProfileTableQuery}
-    ${bookTableQuery}`);
+    ${bookTableQuery}
+    ${rolesTableQuery}
+ `);
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
