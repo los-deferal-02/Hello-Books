@@ -2,6 +2,10 @@ import express from 'express';
 import userController from '../controllers/userController';
 import AuthValidation from '../middlewares/authValidation';
 import Auth from '../middlewares/auth';
+import authRouter from './userAuthRouter';
+import booksRouter from './booksRouter';
+import emailVerificationRouter from './emailVerificationRouter';
+import profileRouter from './profileRouter';
 
 const {
   signUp,
@@ -33,5 +37,9 @@ router.post('/auth/reset/:token', resetPassword);
 router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
 router.patch('/userProfile/:id', verifyToken, editUserProfile);
 router.get('/userProfile/:id', viewUserProfile);
+router.use('/auth', authRouter);
+router.use('/books', booksRouter);
+router.use('/userProfile', profileRouter);
+router.use('/verifyEmail', emailVerificationRouter);
 
 export default router;

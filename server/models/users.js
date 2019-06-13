@@ -1,4 +1,7 @@
+import Debug from 'debug';
 import pool from '../config';
+
+const debug = Debug('db');
 
 /**
  *
@@ -135,6 +138,7 @@ export default class Users {
       `SELECT * FROM users WHERE "${column}" = $1`,
       [userData]
     );
+    debug(data.rows);
     if (data.rowCount < 1) {
       return false;
     }

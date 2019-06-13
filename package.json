@@ -8,7 +8,7 @@
     "lint": "eslint **/*.js",
     "lint:fix": "prettier-eslint **/*.js --write",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
-    "dev": "cross-env NODE_ENV=development DEBUG=dev nodemon --exec babel-node index.js",
+    "dev": "cross-env NODE_ENV=development DEBUG=d* nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
     "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
