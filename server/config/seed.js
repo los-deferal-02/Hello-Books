@@ -2,7 +2,7 @@ import Debug from 'debug';
 import pool from '.';
 import encrypt from '../helpers/encrypt';
 
-const debug = Debug('dev');
+const debug = Debug('db');
 const { encryptPassword } = encrypt;
 
 /**
@@ -43,12 +43,16 @@ insertSeed();
     'martins@gmail.com',
     'martins',
     'obayomi',
-    'martinsPw'];
+    'martinsPw'
+  ];
   try {
-    result = await pool.query(`INSERT INTO users 
+    result = await pool.query(
+      `INSERT INTO users 
     (username, email, firstname, lastname, password)
-      VALUES ($1, $2, $3, $4, $5)`, params);
-
+      VALUES ($1, $2, $3, $4, $5)`,
+      params
+    );
+    debug(result);
     return result;
   } catch (error) {
     return error;
@@ -62,12 +66,16 @@ insertSeed();
     'Harry potter and the goblet of fire',
     'This is the best series in the harry potter book',
     'Sci-fiction',
-    350];
+    350
+  ];
   try {
-    result = await pool.query(`INSERT INTO books 
+    result = await pool.query(
+      `INSERT INTO books 
       (title, body, description, genre, pages)
-        VALUES ($1, $2, $3, $4, $5)`, params);
-
+        VALUES ($1, $2, $3, $4, $5)`,
+      params
+    );
+    debug(result);
     return result;
   } catch (error) {
     return error;

@@ -1,6 +1,8 @@
 import express from 'express';
 import authRouter from './userAuthRouter';
 import booksRouter from './booksRouter';
+import emailVerificationRouter from './emailVerificationRouter';
+import profileRouter from './profileRouter';
 
 const router = express.Router();
 
@@ -11,8 +13,9 @@ router.get('/', (req, res) => {
   });
 });
 
-// User Routes
 router.use('/auth', authRouter);
 router.use('/books', booksRouter);
+router.use('/userProfile', profileRouter);
+router.use('/verifyEmail', emailVerificationRouter);
 
 export default router;

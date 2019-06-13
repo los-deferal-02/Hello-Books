@@ -1,4 +1,7 @@
+import Debug from 'debug';
 import pool from '../config';
+
+const debug = Debug('db');
 
 /**
  *
@@ -22,7 +25,7 @@ export default class Users {
       firstName,
       lastName,
       password,
-      emailConfirmCode,
+      emailConfirmCode
     } = user;
     let { role } = user;
     if (role === 'patron') {
@@ -88,7 +91,7 @@ export default class Users {
       avatarUrl,
       favoriteBook,
       favoriteGenre,
-      favoriteAuthor,
+      favoriteAuthor
     } = profile;
     const data = await pool.query(
       `UPDATE user_profiles 
@@ -135,6 +138,7 @@ export default class Users {
       `SELECT * FROM users WHERE "${column}" = $1`,
       [userData]
     );
+    debug(data.rows);
     if (data.rowCount < 1) {
       return false;
     }
