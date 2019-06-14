@@ -1,11 +1,17 @@
+import crypto from 'crypto';
 import userModel from '../models/users';
 import encypt from '../helpers/encrypt';
+import emailModule from '../utilities/emailModule';
 import EmailSender from '../utilities/emailSenders';
 import ServerResponse from '../responseSpec';
 
 const { encryptPassword, decryptPassword, generateToken } = encypt;
 const {
-  findUserInput, create, createProfile, editProfile, viewProfile
+  findUserInput,
+  create,
+  createProfile,
+  editProfile,
+  viewProfile
 } = userModel;
 const { badPostRequest, badGetRequest, successfulRequest } = ServerResponse;
 
@@ -112,12 +118,50 @@ export default class UsersController {
 
   /**
    *
+   * Forgot Password Middleware - Enables users request new password
    * Edit user profile
    * @static
    * @param {object} req
    * @param {object} res
    * @param {function} next
-   * @returns {object} Object containing user profile
+   * @returns {object} Object containing token to the user
+   * @memberof UsersController
+   */
+  static async forgotPassword(req, res, next) {
+    try {
+      const { userLogin } = req.body;
+      const user = await userModel.findUserInput(userLogin);
+      if (!user) {
+        return badPostRequest(res, 404, { message: 'Email does not exist' });
+      }
+      const token = await crypto.randomBytes(20).toString('hex');
+      const mailSubject = 'Reset your password';
+      const mailContent = `You are receiving this mail because you requested
+       for a password change. Please Click on the link below or paste it
+       in a browser to complete the process <br />
+        http://${req.headers.host}/reset/${token} <br/>
+        Link expires in 1 hour time. <br />
+       If you did not request this, please Ignore this email and your
+       password will remain unchanged.
+      `;
+      emailModule.sendEmailToUser(userLogin, mailSubject, mailContent);
+      await userModel.updateToken(token, userLogin);
+      await userModel.updateTokenExpires(Date.now() + 3600000, userLogin);
+
+      return successfulRequest(res, 200, { token });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  /**
+   *
+   * Edit user Profile
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} Object containing token to the user
    * @memberof UsersController
    */
   static async editUserProfile(req, res, next) {
@@ -144,12 +188,47 @@ export default class UsersController {
 
   /**
    *
+   * Reset Password Middleware - Enables users reset their password
    * View user profile
    * @static
    * @param {object} req
    * @param {object} res
    * @param {function} next
-   * @returns {object} Object containing user profile
+   * @returns {object} Object containing token to the user
+   * @memberof UsersController
+   */
+  static async resetPassword(req, res, next) {
+    if (req.body.newPassword !== req.body.confirmPassword) {
+      return badPostRequest(res, 400, {
+        message: 'Confirm password and Password must match'
+      });
+    }
+    try {
+      const user = await userModel.findUserToken(req.params.token);
+      if (user.rows.length < 1) {
+        return badPostRequest(res, 401, { message: 'Token is not valid' });
+      }
+      if (Date.now() > user.rows[0].resettokenexpires) {
+        return badPostRequest(res, 401, { message: 'Token has expired' });
+      }
+      const password = await encryptPassword(req.body.newPassword);
+      await userModel.changePassword(password, user.rows[0].resetpasswordtoken);
+      return successfulRequest(res, 200, {
+        message: 'Password successfully changed'
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  /**
+   *
+   * View User
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} Object containing token to the user
    * @memberof UsersController
    */
   static async viewUserProfile(req, res, next) {

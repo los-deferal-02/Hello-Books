@@ -14,13 +14,13 @@ const { validSignUpInputs } = inputs;
 
 describe('Email verification test', () => {
   let emailConfirmCode;
-  const { email } = validSignUpInputs[2];
+  const { email } = validSignUpInputs[3];
   before(async () => {
-    const code = generateToken(validSignUpInputs[2]);
+    const code = generateToken(validSignUpInputs[3]);
     emailConfirmCode = code.slice(0, 64);
     const data = {
       emailConfirmCode,
-      ...validSignUpInputs[2]
+      ...validSignUpInputs[3]
     };
     await userModel.create(data);
   });
@@ -28,7 +28,7 @@ describe('Email verification test', () => {
     chai
       .request(app)
       .patch(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
-      .send(validSignUpInputs[2])
+      .send(validSignUpInputs[3])
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.have.property('message');
@@ -41,7 +41,7 @@ describe('Email verification test', () => {
     chai
       .request(app)
       .patch(`/api/v1/verifyEmail/marsman@yahoo.com/${email}`)
-      .send(validSignUpInputs[2])
+      .send(validSignUpInputs[3])
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.status).to.equal('fail');
@@ -54,7 +54,7 @@ describe('Email verification test', () => {
     chai
       .request(app)
       .patch(`/api/v1/verifyEmail/${email}/${email}`)
-      .send(validSignUpInputs[2])
+      .send(validSignUpInputs[3])
       .end((err, res) => {
         expect(res).to.have.status(500);
         expect(res.body.status).to.equal('error');
@@ -72,7 +72,7 @@ describe('Email verification test', () => {
     chai
       .request(app)
       .patch(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
-      .send(validSignUpInputs[2])
+      .send(validSignUpInputs[3])
       .end((err, res) => {
         expect(res).to.have.status(500);
         stub.restore();

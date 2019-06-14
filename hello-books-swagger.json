@@ -244,26 +244,76 @@
         ]
       }
     },
-    "/books": {
+    "/auth/forgot": {
       "post": {
-        "tags": ["Books"],
-        "summary": "Handles books' Adding a new book to the application",
-        "description": "This endpoint adds a new book to the books to the library",
+        "tags": ["Users"],
+        "summary": "Handles users' forgot password request",
+        "description": "This endpoint enables users to request for password reset",
         "consumes": ["application/json"],
-        "produces": [
+        "produces": ["application/json"],
+        "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "This is the request body object containing books' addition information.",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/addBookRequest"
+              "$ref": "#/definitions/UserPasswordResetRequest"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Book created successfully"
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/reset/:token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles users' reset password",
+        "description": "This endpoint enables users to reset their password",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserResetPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -387,14 +437,52 @@
 					"description": "The person that wrote the book (book owner)",
 					"type": "String"
 				},
-				"example": {
-					"title": "Harry Potter",
-					"body": "Harry Potter and the order of Phoenix",
-					"description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
-					"genre": "Science Fiction",
-					"pages": 475
-				}
-			}
-		}
+        "example": {
+          "title": "Harry Potter",
+          "body": "Harry Potter and the order of Phoenix",
+          "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+          "genre": "Science Fiction",
+          "pages": 475
+        }
+      }
+    },
+    "UserPasswordResetRequest": {
+      "title": "User Password Reset Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin":"example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    },
+    "UserResetPassword": {
+      "title": "User Reset Password Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin":"example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    }
   }
 }
