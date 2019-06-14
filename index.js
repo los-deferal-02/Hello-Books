@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import Debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
 import logger from 'morgan';
-import routes from './server/routes';
+import routes from './server/routes/index';
 import swaggerDoc from './hello-books-swagger.json';
 import ResponseSpec from './server/responseSpec';
 

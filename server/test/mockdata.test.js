@@ -106,6 +106,7 @@ const inputs = {
     body: 'The newbook from 1996',
     description: 'The best book of the century',
     genre: 'Fantacy',
+    author: 'justin',
     pages: 500
   }
 };

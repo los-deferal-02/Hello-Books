@@ -22,9 +22,10 @@ const userTableQuery = `
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) UNIQUE NOT NULL,
     body VARCHAR(100) NOT NULL,
-    description VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
     genre VARCHAR(100) NOT NULL,
-    pages NUMERIC(250) NOT NULL
+    pages NUMERIC(250) NOT NULL,
+    author VARCHAR(100) NOT NULL
   );
 `;
 
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS books(
   body VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
   genre VARCHAR(100) NOT NULL,
+  author VARCHAR(100) NOT NULL,
   pages NUMERIC(250) NOT NULL
 );
 `;
@@ -74,6 +76,7 @@ const createTable = async () => {
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
+    await pool.query(`${userTableQuery}`);
   }
 };
 
