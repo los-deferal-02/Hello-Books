@@ -10,12 +10,14 @@
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
     "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
-    "drop-tables": "babel-node server/config/dropTables.js",
-    "build-tables": "babel-node server/config/buildTables.js",
+    "dropTables": "cross-env NODE_ENV=development babel-node server/config/dropTables.js",
+    "buildTables": "cross-env NODE_ENV=development babel-node server/config/buildTables.js",
     "seed": "babel-node server/config/seed.js",
-    "clean-tables": "npm run drop-tables && npm run build-tables",
-    "migration": "DEBUG=db npm run clean-tables && npm run seed",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "dropTables-test": "cross-env NODE_ENV=test babel-node server/config/dropTables.js",
+    "buildTables-test": "cross-env NODE_ENV=test babel-node server/config/buildTables.js",
+    "migration": "npm run dropTables && npm run buildTables",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "clean-tables": "cross-env NODE_ENV=test npm run dropTables-test && cross-env NODE_ENV=test npm run buildTables-test"
   },
   "repository": {
     "type": "git",

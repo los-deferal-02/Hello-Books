@@ -21,13 +21,14 @@ export default class Books {
       body,
       description,
       genre,
-      pages
+      pages,
+      author,
     } = book;
     const { rows } = await pool.query(`INSERT INTO books
-    (title, body, description, genre, pages) 
-    VALUES ($1, $2, $3, $4, $5)
+    (title, body, description, genre, pages, author) 
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *`,
-    [title, body, description, genre, pages]);
+    [title, body, description, genre, pages, author]);
     return rows[0];
   }
 }

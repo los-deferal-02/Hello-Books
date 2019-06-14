@@ -14,6 +14,7 @@ const dropTable = async () => {
     debug('Tables dropped successfully');
   } catch (error) {
     debug(error);
+    await pool.query('DROP TABLE IF EXISTS users, books');
   }
 };
 
