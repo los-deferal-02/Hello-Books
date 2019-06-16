@@ -1,4 +1,12 @@
 const inputs = {
+  userSignupInputforAuthor: {
+    userName: 'test',
+    email: 'testing@yahoo.com',
+    firstName: 'namey',
+    lastName: 'Lastname',
+    password: 'Njdudubb82828',
+    role: 'patron'
+  },
   sameEmailSignup: {
     userName: 'readerUnknown',
     email: 'reader1@gmail.com',
@@ -22,7 +30,7 @@ const inputs = {
       firstName: 'Mark',
       lastName: 'Diamond',
       password: 'Books231',
-      role: 'author'
+      role: 'patron'
     },
     {
       userName: 'reader3',
