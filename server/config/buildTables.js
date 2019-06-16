@@ -13,19 +13,10 @@ const userTableQuery = `
     "password" TEXT NOT NULL,
     "resetpasswordtoken" VARCHAR(100),
     "resettokenexpires" BIGINT,
-    "role" INTEGER DEFAULT 0,
+    role INTEGER NOT NULL REFERENCES roles (id) ON DELETE CASCADE,
     "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS books(
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) UNIQUE NOT NULL,
-    body VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    genre VARCHAR(100) NOT NULL,
-    pages NUMERIC(250) NOT NULL,
-    author VARCHAR(100) NOT NULL
   );
 `;
 
@@ -43,21 +34,36 @@ const userProfileTableQuery = `
 `;
 
 const rolesTableQuery = `
-    CREATE TABLE IF NOT EXISTS roles(
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(100) UNIQUE NOT NULL
-    );
+  CREATE TABLE IF NOT EXISTS roles(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+  );
 `;
 
 const bookTableQuery = `
 CREATE TABLE IF NOT EXISTS books(
   id SERIAL PRIMARY KEY,
-  title VARCHAR(100) UNIQUE NOT NULL,
+  title VARCHAR(100) NOT NULL,
   body VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
   genre VARCHAR(100) NOT NULL,
-  author VARCHAR(100) NOT NULL,
+  "authorId" INTEGER NOT NULL REFERENCES authors (id) ON DELETE CASCADE,
   pages NUMERIC(250) NOT NULL
+);
+`;
+
+const authorsTableQuery = `
+CREATE TABLE IF NOT EXISTS authors(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL
+);
+`;
+
+const favouriteAuthorsTableQuery = `
+CREATE TABLE IF NOT EXISTS favourite_authors(
+  "userId" INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  "authorId" INTEGER NOT NULL REFERENCES authors (id) ON DELETE CASCADE,
+  PRIMARY KEY ("userId", "authorId")
 );
 `;
 
@@ -68,10 +74,13 @@ CREATE TABLE IF NOT EXISTS books(
  */
 const createTable = async () => {
   try {
-    await pool.query(`${userTableQuery}
-    ${userProfileTableQuery}
-    ${bookTableQuery}
+    await pool.query(`
     ${rolesTableQuery}
+    ${userTableQuery}
+    ${userProfileTableQuery}
+    ${authorsTableQuery}
+    ${bookTableQuery}
+    ${favouriteAuthorsTableQuery}
  `);
     debug('Tables created successfully');
   } catch (error) {
