@@ -103,6 +103,25 @@ describe('User Login Test', () => {
         });
     });
 
+    it('should redirect users to log in with Google account', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/auth/google')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it('redirect users to log in with their FaceBook account', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/auth/facebook')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
     it('500 internal error if server encounters error', (done) => {
       const stub = sinon.stub(pool, 'query').rejects(new Error('Just tesing'));
       chai
