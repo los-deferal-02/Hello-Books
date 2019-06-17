@@ -17,7 +17,7 @@ const debug = Debug('dev');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(logger('dev'));
+// app.use(logger('dev'));
 
 app.use('/api/v1', routes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));

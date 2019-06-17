@@ -1,4 +1,8 @@
 /* eslint-disable no-unused-vars */
+import Debug from 'debug';
+
+const debug = Debug('dev');
+
 /**
  * @description Server response according to defined JSend specs
  */
@@ -58,6 +62,7 @@ export default class ResponseSpec {
    * @returns {object} - A response object sent to the client
    */
   static serverError(err, req, res, next) {
+    debug(err.message);
     return res.status(500).json({
       status: 'error',
       message: 'Sorry, something unusual happened, we are working on a fix'

@@ -3,6 +3,13 @@ import pool from '.';
 
 const debug = Debug('db');
 
+const rolesTableQuery = `
+  CREATE TABLE IF NOT EXISTS roles(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+  );
+`;
+
 const userTableQuery = `
   CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
@@ -15,15 +22,6 @@ const userTableQuery = `
     "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS books(
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) UNIQUE NOT NULL,
-    body VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    genre VARCHAR(100) NOT NULL,
-    pages NUMERIC(250) NOT NULL,
-    author VARCHAR(100) NOT NULL
   );
 `;
 
@@ -40,23 +38,25 @@ const userProfileTableQuery = `
   );
 `;
 
-const rolesTableQuery = `
-    CREATE TABLE IF NOT EXISTS roles(
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(100) UNIQUE NOT NULL
-    );
+const bookTableQuery = `
+  CREATE TABLE IF NOT EXISTS books(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) UNIQUE NOT NULL,
+    body VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    pages NUMERIC(250) NOT NULL
+  );
 `;
 
-const bookTableQuery = `
-CREATE TABLE IF NOT EXISTS books(
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(100) UNIQUE NOT NULL,
-  body VARCHAR(100) NOT NULL,
-  description TEXT NOT NULL,
-  genre VARCHAR(100) NOT NULL,
-  author VARCHAR(100) NOT NULL,
-  pages NUMERIC(250) NOT NULL
-);
+const bookRequestTableQuery = `
+  CREATE TABLE IF NOT EXISTS book_request(
+    id SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) UNIQUE NOT NULL,
+    author VARCHAR(150) NOT NULL
+  );
 `;
 
 /**
@@ -66,15 +66,16 @@ CREATE TABLE IF NOT EXISTS books(
  */
 const createTable = async () => {
   try {
-    await pool.query(`${userTableQuery}
-    ${userProfileTableQuery}
-    ${bookTableQuery}
-    ${rolesTableQuery}
- `);
+    await pool.query(`
+      ${rolesTableQuery}
+      ${userTableQuery}
+      ${userProfileTableQuery}
+      ${bookTableQuery}
+      ${bookRequestTableQuery}
+    `);
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
-    await pool.query(`${userTableQuery}`);
   }
 };
 

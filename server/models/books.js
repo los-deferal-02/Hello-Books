@@ -31,4 +31,55 @@ export default class Books {
     [title, body, description, genre, pages, author]);
     return rows[0];
   }
+
+  /**
+   * Store book request made by user to the database
+   *
+   * @static
+   * @async
+   * @name createBookRequest
+   * @param {object} bookRequestEntity - Details of the book request
+   * @returns {object} Details of the book request entity from database
+   * @memberof Books
+   */
+  static async createBookRequest(bookRequestEntity) {
+    const { userId, title, author } = bookRequestEntity;
+    const { rows } = await pool.query(
+      `INSERT INTO book_request
+        ("userId", title, author) 
+      VALUES
+        ($1, $2, $3)
+      RETURNING *`,
+      [userId, title.toLowerCase(), author]
+    );
+
+    return rows[0];
+  }
+
+  /**
+   * Store book request made by user to the database
+   *
+   * @static
+   * @async
+   * @name findABookRequest
+   * @param {string} bookTitle - Title of the book that was requested
+   * @returns {object} Details of the book that was searched
+   * @memberof Books
+   */
+  static async findABookRequest(bookTitle) {
+    const { rows } = await pool.query(
+      `SELECT
+        id,
+        "userId",
+        title,
+        author
+      FROM
+        book_request
+      WHERE
+        title = $1;`,
+      [bookTitle.toLowerCase()]
+    );
+
+    return rows[0];
+  }
 }

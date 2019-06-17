@@ -3,6 +3,10 @@ import pool from '.';
 
 const debug = Debug('db');
 
+const rolesTableQuery = 'DROP TABLE IF EXISTS roles CASCADE;';
+const userTableQuery = 'DROP TABLE IF EXISTS users CASCADE;';
+const otherTables = 'DROP TABLE IF EXISTS user_profiles, books, book_request;';
+
 /**
  * @name dropTable
  * @async
@@ -10,11 +14,14 @@ const debug = Debug('db');
  */
 const dropTable = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS user_profiles, users, books, roles');
+    await pool.query(`
+      ${rolesTableQuery}
+      ${userTableQuery}
+      ${otherTables}
+    `);
     debug('Tables dropped successfully');
   } catch (error) {
     debug(error);
-    await pool.query('DROP TABLE IF EXISTS users, books');
   }
 };
 

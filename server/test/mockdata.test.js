@@ -71,6 +71,7 @@ const inputs = {
       password: 'Books231'
     }
   ],
+
   validAddBookInput: {
     title: 'newBook',
     body: 'The newbook from 1996',
@@ -78,6 +79,27 @@ const inputs = {
     genre: 'Fantacy',
     author: 'justin',
     pages: 500
+  },
+
+  validNewBookRequestInput: {
+    userId: 1,
+    title: "You don't know JS: Up & Going",
+    author: 'Kylie Simpson'
+  },
+
+  userTableSeed: {
+    userName: 'oluphetty360',
+    email: 'oluphetty360@domain.com',
+    firstName: 'Olu',
+    lastName: 'Phetty',
+    password: 'Oluphetty360',
+    role: 'patron'
+  },
+
+  duplicateNewBookRequestInput: {
+    userId: 1,
+    title: "You don't know JS: Scope & Closures",
+    author: 'Kylie Simpson'
   }
 };
 
