@@ -146,6 +146,74 @@ export default class Users {
   }
 
   /**
+   *
+   *
+   * @static
+   * @param {string} token
+   * @param {string} email
+   * @returns {object} User data according to supplied credential
+   * @memberof Users
+   */
+  static async updateToken(token, email) {
+    return pool.query(
+      `UPDATE users SET resetpasswordtoken = $1
+      WHERE email = $2`,
+      [token, email]
+    );
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {string} tokenExpires
+   * @param {string} email
+   * @returns {object} User data according to supplied credential
+   * @memberof Users
+   */
+  static async updateTokenExpires(tokenExpires, email) {
+    return pool.query(
+      `UPDATE users SET resettokenexpires = $1
+                        WHERE email = $2
+    `,
+      [tokenExpires, email]
+    );
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {string} userToken
+   * @returns {object} User data according to supplied credential
+   * @memberof Users
+   */
+  static async findUserToken(userToken) {
+    return pool.query('SELECT * FROM users WHERE resetpasswordtoken = $1', [
+      userToken
+    ]);
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {string} userPassword
+   * @param {string} token
+   * @returns {object} User data according to supplied credential
+   * @memberof Users
+   */
+  static async changePassword(userPassword, token) {
+    return pool.query(
+      `UPDATE users SET password = $1
+      WHERE resetpasswordtoken = $2`,
+      [userPassword, token]
+    );
+  }
+
+  /**
+   *
+   *
    * @static
    * @param {String} confirmCode
    * @returns {Boolean} true or false to indicate state of operation

@@ -8,13 +8,18 @@ import emailVerificationRouter from './emailVerificationRouter';
 import profileRouter from './profileRouter';
 
 const {
-  signUp, login, verifyEmail, editUserProfile, viewUserProfile
+  signUp,
+  login,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+  editUserProfile,
+  viewUserProfile
 } = userController;
 
 const { validateRegistration, validateLogIn } = AuthValidation;
 
 const { verifyToken } = Auth;
-
 
 const router = express.Router();
 
@@ -25,9 +30,10 @@ router.get('/', (req, res) => {
   });
 });
 
-// User Routes
 router.post('/auth/signup', validateRegistration, signUp);
 router.post('/auth/login', validateLogIn, login);
+router.post('/auth/forgot', forgotPassword);
+router.post('/auth/reset/:token', resetPassword);
 router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
 router.patch('/userProfile/:id', verifyToken, editUserProfile);
 router.get('/userProfile/:id', viewUserProfile);

@@ -1,3 +1,8 @@
+import encypt from '../helpers/encrypt';
+
+const password1 = encypt.encryptPassword('Chinonso1234');
+const password2 = encypt.encryptPassword('Chinonso123456');
+
 const inputs = {
   sameEmailSignup: {
     userName: 'readerUnknown',
@@ -25,6 +30,14 @@ const inputs = {
       role: 'author'
     },
     {
+      userName: 'chiboycalix',
+      email: 'igwechinonso77@gmail.com',
+      firstName: 'chinonso',
+      lastName: 'calix',
+      password: 'Chinonso123',
+      role: 'patron'
+    },
+    {
       userName: 'reader3',
       email: 'toolzdman@gmail.com',
       firstName: 'Rihanna',
@@ -48,16 +61,33 @@ const inputs = {
       email: 'reader1000@gmail.com',
       firstName: 'John',
       lastName: 'Doe',
-      password: 'Books1',
-      role: 'author'
+      password: 'Books1456'
     },
     {
-      userName: 'reader100',
-      email: 'reader1@gmail.com',
+      email: 'reader3@gmail.com',
       firstName: 'John',
       lastName: 'Doe',
-      password: 'Books1',
-      role: 'patron'
+      password: 'Books1567'
+    },
+    {
+      userName: 'reader1000',
+      email: 'reader4@gmail.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'Books1567'
+    }
+  ],
+
+  validResetPasswordInput: [
+    {
+      newPassword: password1,
+      confirmPassword: password1
+    }
+  ],
+  invalidResetPasswordInput: [
+    {
+      newPassword: password1,
+      confirmPassword: password2
     }
   ],
 
