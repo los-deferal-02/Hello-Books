@@ -1,11 +1,13 @@
+import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
+import pool from '../config/index';
 
 chai.use(chaiHttp);
 
-const { validSignUpInputs } = inputs;
+const { validSignUpInputs, validLoginInputs } = inputs;
 const API_ROUTE = '/api/v1/auth/login';
 
 describe('User Login Test', () => {
@@ -25,8 +27,8 @@ describe('User Login Test', () => {
         .request(app)
         .post(API_ROUTE)
         .send({
-          userLogin: validSignUpInputs[1].email,
-          password: validSignUpInputs[1].password
+          userLogin: validLoginInputs[1].userLogin,
+          password: validLoginInputs[1].password
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -40,8 +42,8 @@ describe('User Login Test', () => {
         .request(app)
         .post(API_ROUTE)
         .send({
-          userLogin: validSignUpInputs[1].userName,
-          password: validSignUpInputs[1].password
+          userLogin: validLoginInputs[0].userLogin,
+          password: validLoginInputs[0].password
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -56,7 +58,7 @@ describe('User Login Test', () => {
         .post(API_ROUTE)
         .send({
           userLogin: 'Ayodeji',
-          password: validSignUpInputs[1].password
+          password: validLoginInputs[1].password
         })
         .end((err, res) => {
           expect(res).to.have.status(404);
@@ -72,7 +74,7 @@ describe('User Login Test', () => {
         .request(app)
         .post(API_ROUTE)
         .send({
-          userLogin: validSignUpInputs[1].email,
+          userLogin: validLoginInputs[1].userLogin,
           password: 'wrongPassword'
         })
         .end((err, res) => {
