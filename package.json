@@ -4,18 +4,37 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test npm run clean-tables && nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 8000 --color --exit",
+    "test": "npm run clean-tables && cross-env NODE_ENV=test nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 5000 --exit",
+    "lint": "eslint **/*.js",
+    "lint:fix": "prettier-eslint **/*.js --write",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
     "dev": "cross-env NODE_ENV=development DEBUG=d* nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
     "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
-    "drop-tables": "babel-node server/config/dropTables.js",
-    "build-tables": "babel-node server/config/buildTables.js",
+    "dropTables": "cross-env NODE_ENV=development babel-node server/config/dropTables.js",
     "seed": "babel-node server/config/seed.js",
-    "clean-tables": "npm run drop-tables && npm run build-tables",
-    "migration": "DEBUG=db npm run clean-tables && npm run seed",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "dropTables-test": "cross-env NODE_ENV=test babel-node server/config/dropTables.js",
+    "buildTables-test": "cross-env NODE_ENV=test babel-node server/config/buildTables.js",
+    "buildTables": "cross-env NODE_ENV=development babel-node server/config/buildTables.js",
+    "migration": "npm run dropTables && npm run buildTables",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "clean-tables": "cross-env NODE_ENV=test npm run dropTables-test && cross-env NODE_ENV=test npm run buildTables-test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "npm run lint:fix",
+      "git add"
+    ],
+    "buildTables": "babel-node server/config/buildTables.js",
+    "migration": "npm run buildTables && npm run seed",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "clean-tables": "cross-env NODE_ENV=test npm run dropTables && cross-env NODE_ENV=test npm run buildTables"
   },
   "repository": {
     "type": "git",
@@ -59,9 +78,13 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-mocha": "^5.3.0",
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",
-    "sinon": "^7.3.2"
+    "sinon": "^7.3.2",
+    "prettier-eslint": "^8.8.2",
+    "prettier-eslint-cli": "^4.7.1"
   }
 }

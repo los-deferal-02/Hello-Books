@@ -116,8 +116,9 @@ describe('Edit user profile routes', () => {
       .end((err, response) => {
         expect(response).to.have.status(401);
         expect(response.body.data).to.have.property('message');
-        expect(response.body.data.message)
-          .to.equal('Failed to authenticate token.');
+        expect(response.body.data.message).to.equal(
+          'Failed to authenticate token.'
+        );
         done();
       });
   });

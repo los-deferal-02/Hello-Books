@@ -11,7 +11,9 @@ const userTableQuery = `
     "lastName" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) UNIQUE NOT NULL,
     "password" TEXT NOT NULL,
-    role INTEGER NOT NULL,
+    "resetpasswordtoken" VARCHAR(100),
+    "resettokenexpires" BIGINT,
+    "role" INTEGER DEFAULT 0,
     "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
@@ -20,9 +22,10 @@ const userTableQuery = `
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) UNIQUE NOT NULL,
     body VARCHAR(100) NOT NULL,
-    description VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
     genre VARCHAR(100) NOT NULL,
-    pages NUMERIC(250) NOT NULL
+    pages NUMERIC(250) NOT NULL,
+    author VARCHAR(100) NOT NULL
   );
 `;
 
@@ -53,6 +56,7 @@ CREATE TABLE IF NOT EXISTS books(
   body VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
   genre VARCHAR(100) NOT NULL,
+  author VARCHAR(100) NOT NULL,
   pages NUMERIC(250) NOT NULL
 );
 `;
@@ -72,6 +76,7 @@ const createTable = async () => {
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
+    await pool.query(`${userTableQuery}`);
   }
 };
 
