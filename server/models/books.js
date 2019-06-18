@@ -17,18 +17,15 @@ export default class Books {
    */
   static async create(book) {
     const {
-      title,
-      body,
-      description,
-      genre,
-      pages,
-      author,
+      title, body, description, genre, pages, author
     } = book;
-    const { rows } = await pool.query(`INSERT INTO books
+    const { rows } = await pool.query(
+      `INSERT INTO books
     (title, body, description, genre, pages, author) 
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *`,
-    [title, body, description, genre, pages, author]);
+      [title, body, description, genre, pages, author]
+    );
     return rows[0];
   }
 

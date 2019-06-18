@@ -24,14 +24,12 @@ export default class BookValidation {
   static validateBookRequest(req, res, next) {
     const userInputs = {
       title: req.body.title,
-      author: req.body.author,
+      author: req.body.author
     };
 
-    const { error } = Joi.validate(
-      userInputs,
-      bookRequestSchema,
-      { abortEarly: false }
-    );
+    const { error } = Joi.validate(userInputs, bookRequestSchema, {
+      abortEarly: false
+    });
 
     if (error) {
       const errors = {};

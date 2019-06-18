@@ -128,28 +128,59 @@
     },
     "/books": {
       "post": {
-        "tags": [
-          "Books"
-        ],
-        "summary": "Handles books' Adding a new book to the application",
-        "description": "This endpoint adds a new book to the books to the library",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
+        "tags": ["Users"],
+        "summary": "Handles addition of books",
+        "description": "This endpoint adds a new book to the library",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "This is the request body object containing books' addition information.",
+            "description": "This is the request body object containing book's information.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/addBookRequest"
+              "$ref": "#/definitions/AddBook"
             }
           }
         ],
         "responses": {
           "201": {
             "description": "Book created successfully"
+          }
+        }
+      }
+    },
+    "/books/request": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles the creation of book request by users",
+        "description": "This endpoint enables user to be able to make request for a book that is not yet in the library",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "This is the body of the request object containing information about the book the user wants to request for.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book request was created successfully"
+          },
+          "409": {
+            "description": "Duplicate request was made for a book"
+          },
+          "422": {
+            "description": "Invalid data format"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -244,26 +275,76 @@
         ]
       }
     },
-    "/books": {
+    "/auth/forgot": {
       "post": {
-        "tags": ["Books"],
-        "summary": "Handles books' Adding a new book to the application",
-        "description": "This endpoint adds a new book to the books to the library",
+        "tags": ["Users"],
+        "summary": "Handles users' forgot password request",
+        "description": "This endpoint enables users to request for password reset",
         "consumes": ["application/json"],
-        "produces": [
+        "produces": ["application/json"],
+        "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "This is the request body object containing books' addition information.",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/addBookRequest"
+              "$ref": "#/definitions/UserPasswordResetRequest"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Book created successfully"
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/reset/:token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles users' reset password",
+        "description": "This endpoint enables users to reset their password",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing users' sign in information. UserLogin can be email or username",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserResetPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "General Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User has entered incorrect details"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -359,42 +440,98 @@
         "favoriteAuthor": "Medium"
       }
     },
-    "AddBookRequest": {
-			"title": "Add new book request",
-			"type": "object",
-			"properties": {
-				"title": {
-					"description": "Book title or name",
-					"type": "string"
-				},
-				"body": {
-					"description": "Some little details about the book",
-					"type": "string"
-				},
-				"description": {
-					"description": "Well descriptive details or information about the book and why it should be read",
-					"type": "string"
-				},
-				"genre": {
-					"description": "The style or category of the book",
-					"type": "string"
-				},
-				"pages": {
-					"description": "Number of pages the book has",
-					"type": "Number"
+    "AddBook": {
+      "title": "Add new book",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Book title or name",
+          "type": "string"
+        },
+        "body": {
+          "description": "Some little details about the book",
+          "type": "string"
+        },
+        "description": {
+          "description": "Well descriptive details or information about the book and why it should be read",
+          "type": "string"
+        },
+        "genre": {
+          "description": "The style or category of the book",
+          "type": "string"
+        },
+        "pages": {
+          "description": "Number of pages the book has",
+          "type": "Number"
         },
         "author": {
-					"description": "The person that wrote the book (book owner)",
-					"type": "String"
-				},
-				"example": {
-					"title": "Harry Potter",
-					"body": "Harry Potter and the order of Phoenix",
-					"description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
-					"genre": "Science Fiction",
-					"pages": 475
-				}
-			}
-		}
+          "description": "The person that wrote the book (book owner)",
+          "type": "String"
+        },
+        "example": {
+          "title": "Harry Potter",
+          "body": "Harry Potter and the order of Phoenix",
+          "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+          "genre": "Science Fiction",
+          "pages": 475
+        }
+      }
+    },
+    "BookRequest": {
+      "title": "Make new book request",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Title of the book",
+          "type": "String"
+        },
+        "author": {
+          "description": "The author of the book",
+          "type": "String"
+        }
+      },
+      "example": {
+        "title": "You don't know JS: Scope & Closures",
+        "author": "Kylie Simpson"
+      }
+    },
+    "UserPasswordResetRequest": {
+      "title": "User Password Reset Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin": "example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    },
+    "UserResetPassword": {
+      "title": "User Reset Password Request",
+      "type": "object",
+      "properties": {
+        "userLogin": {
+          "description": "Email of an already existing user",
+          "type": "string"
+        },
+        "resetPassword": {
+          "description": "newPassword and confirmPassword",
+          "type": "string or number"
+        },
+        "example": {
+          "userLogin": "example@user.com",
+          "newPassword": "1234",
+          "confirmPassword": "1234"
+        }
+      }
+    }
   }
 }

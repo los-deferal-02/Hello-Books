@@ -1,7 +1,6 @@
 import bookModel from '../models/books';
 import ServerResponse from '../responseSpec';
 
-
 const { successfulRequest, badPostRequest } = ServerResponse;
 
 /**
@@ -25,12 +24,7 @@ export default class BooksController {
     try {
       const data = req.body;
       const {
-        title,
-        body,
-        description,
-        genre,
-        pages,
-        author,
+        title, body, description, genre, pages, author
       } = data;
       await bookModel.create(data);
       return successfulRequest(res, 201, {
@@ -39,7 +33,7 @@ export default class BooksController {
         bookDescription: description,
         bookGenre: genre,
         bookPages: pages,
-        bookAuthor: author,
+        bookAuthor: author
       });
     } catch (err) {
       return next(err);
@@ -74,7 +68,7 @@ export default class BooksController {
       const bookRequest = await bookModel.createBookRequest({
         userId: 1,
         title,
-        author,
+        author
       });
 
       return successfulRequest(res, 201, { bookRequest });

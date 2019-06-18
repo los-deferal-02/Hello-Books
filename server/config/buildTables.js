@@ -18,7 +18,9 @@ const userTableQuery = `
     "lastName" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) UNIQUE NOT NULL,
     "password" TEXT NOT NULL,
-    role INTEGER NOT NULL,
+    "resetpasswordtoken" VARCHAR(100),
+    "resettokenexpires" BIGINT,
+    "role" INTEGER DEFAULT 0,
     "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL

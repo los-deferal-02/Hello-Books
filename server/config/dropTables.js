@@ -15,9 +15,9 @@ const otherTables = 'DROP TABLE IF EXISTS user_profiles, books, book_request;';
 const dropTable = async () => {
   try {
     await pool.query(`
+      ${otherTables}
       ${rolesTableQuery}
       ${userTableQuery}
-      ${otherTables}
     `);
     debug('Tables dropped successfully');
   } catch (error) {

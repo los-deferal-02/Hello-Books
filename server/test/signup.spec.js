@@ -1,9 +1,7 @@
-import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
-import pool from '../config';
 
 chai.use(chaiHttp);
 
@@ -16,36 +14,11 @@ describe('User Registration Test', () => {
     it('respond with token when successful', (done) => {
       chai
         .request(app)
-        .post(API_ROUTE)
+        .post('/api/v1/auth/signup')
         .send(validSignUpInputs[0])
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body.data).to.have.property('token');
-          done();
-        });
-    });
-
-    it('should respond with token for successful author signup', (done) => {
-      chai
-        .request(app)
-        .post(API_ROUTE)
-        .send(validSignUpInputs[3])
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          expect(res.body.data).to.have.property('token');
-          done();
-        });
-    });
-
-    it('500 internal error if server encounters error', (done) => {
-      const stub = sinon.stub(pool, 'query').rejects(new Error('Just testing'));
-      chai
-        .request(app)
-        .post(API_ROUTE)
-        .send(validSignUpInputs[0])
-        .end((err, res) => {
-          expect(res).to.have.status(500);
-          stub.restore();
           done();
         });
     });
@@ -57,7 +30,7 @@ describe('User Registration Test', () => {
         .send(invalidSignupInputs[1])
         .end((err, res) => {
           expect(res).to.have.status(400);
-          expect(res.body.data).to.have.property('password');
+          expect(res.body.data).to.have.property('userName');
           done();
         });
     });

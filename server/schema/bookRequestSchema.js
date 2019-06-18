@@ -7,7 +7,8 @@ import Joi from '@hapi/joi';
  */
 export default {
   title: Joi.string()
-    .required().max(255)
+    .required()
+    .max(255)
     .error((errors) => {
       errors.forEach((error) => {
         switch (error.type) {
@@ -18,7 +19,9 @@ export default {
             error.message = 'Title is required';
             break;
           case 'string.max':
-            error.message = `Title should not be more than ${error.context.limit} characters`;
+            error.message = `Title should not be more than ${
+              error.context.limit
+            } characters`;
             break;
           default:
             break;
@@ -28,7 +31,8 @@ export default {
       return errors;
     }),
   author: Joi.string()
-    .required().max(150)
+    .required()
+    .max(150)
     .error((errors) => {
       errors.forEach((error) => {
         switch (error.type) {
@@ -39,7 +43,9 @@ export default {
             error.message = 'Author is required';
             break;
           case 'string.max':
-            error.message = `Author should not be more than ${error.context.limit} characters`;
+            error.message = `Author should not be more than ${
+              error.context.limit
+            } characters`;
             break;
           default:
             break;

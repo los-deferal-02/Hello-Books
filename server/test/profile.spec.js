@@ -12,7 +12,7 @@ describe('View user profile routes', () => {
   it('should return status 200 if request is successful', (done) => {
     chai
       .request(app)
-      .get(`${apiUrl}/1`)
+      .get(`${apiUrl}/2`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.have.property('userId');
@@ -56,7 +56,7 @@ describe('Edit user profile routes', () => {
         const auth = `Bearer ${token}`;
         chai
           .request(app)
-          .patch(`${apiUrl}/1`)
+          .patch(`${apiUrl}/2`)
           .set('authorization', auth)
           .send(data)
           .end((err, response) => {
@@ -82,7 +82,7 @@ describe('Edit user profile routes', () => {
         const auth = `Bearer ${token}`;
         chai
           .request(app)
-          .patch(`${apiUrl}/2`)
+          .patch(`${apiUrl}/3`)
           .set('authorization', auth)
           .send(data)
           .end((err, response) => {
@@ -116,8 +116,9 @@ describe('Edit user profile routes', () => {
       .end((err, response) => {
         expect(response).to.have.status(401);
         expect(response.body.data).to.have.property('message');
-        expect(response.body.data.message)
-          .to.equal('Failed to authenticate token.');
+        expect(response.body.data.message).to.equal(
+          'Failed to authenticate token.'
+        );
         done();
       });
   });
