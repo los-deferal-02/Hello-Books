@@ -12,7 +12,7 @@ let authToken;
 let nonAdminToken;
 describe('User add book test', () => {
   before((done) => {
-    const user = validSignUpInputs[4];
+    const user = validSignUpInputs[5];
     chai
       .request(app)
       .post('/api/v1/auth/signup')
@@ -25,7 +25,7 @@ describe('User add book test', () => {
   });
 
   before((done) => {
-    const user = validSignUpInputs[5];
+    const user = validSignUpInputs[6];
     chai
       .request(app)
       .post('/api/v1/auth/signup')
@@ -64,7 +64,6 @@ describe('User add book test', () => {
       chai
         .request(app)
         .post('/api/v1/books')
-        .set('authorization', authToken)
         .send({
           title: 'Antman & The Wasp',
           body: 'Antman is back!',
@@ -75,6 +74,7 @@ describe('User add book test', () => {
           pages: 70,
           author: 'Stan Lee'
         })
+        .set('authorization', authToken)
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body).to.has.property('data');
