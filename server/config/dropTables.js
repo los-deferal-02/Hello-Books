@@ -10,11 +10,13 @@ const debug = Debug('db');
  */
 const dropTable = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS user_profiles, users, books, roles');
+    await pool.query(`DROP TABLE IF EXISTS user_profiles, users, books, roles, 
+     authors, ebooks, genre CASCADE`);
     debug('Tables dropped successfully');
+    await pool.query('DROP TYPE IF EXISTS verification_status, lend_status');
   } catch (error) {
     debug(error);
-    await pool.query('DROP TABLE IF EXISTS users, books');
+    return error;
   }
 };
 

@@ -28,10 +28,24 @@ export default class Users {
       emailConfirmCode
     } = user;
     let { role } = user;
-    if (role === 'patron') {
-      role = 1;
-    } else if (role === 'author') {
-      role = 2;
+    switch (role) {
+      case 'patron':
+        role = 1;
+        break;
+      case 'author':
+        role = 2;
+        break;
+      case 'cashier':
+        role = 3;
+        break;
+      case 'admin':
+        role = 4;
+        break;
+      case 'superAdmin':
+        role = 5;
+        break;
+      default:
+        break;
     }
     const { rows } = await pool.query(
       `INSERT INTO 

@@ -19,7 +19,7 @@
     "buildTables": "cross-env NODE_ENV=development babel-node server/config/buildTables.js",
     "migration": "npm run dropTables && npm run buildTables",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "clean-tables": "cross-env NODE_ENV=test npm run dropTables-test && cross-env NODE_ENV=test npm run buildTables-test"
+    "clean-tables": "DEBUG=db cross-env NODE_ENV=test npm run dropTables-test && cross-env NODE_ENV=test npm run buildTables-test"
   },
   "husky": {
     "hooks": {

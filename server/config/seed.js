@@ -13,6 +13,8 @@ const { encryptPassword } = encrypt;
 const insertSeed = async () => {
   const hashedPassword = encryptPassword('nonsoDrums');
   const seed = `
+  INSERT INTO genre("name") VALUES ('Fiction');
+  INSERT INTO authors("name") VALUES ('JK Rowling');
   INSERT INTO users(
     "userName", "firstName", "lastName", email, password, role
   )
@@ -21,13 +23,19 @@ const insertSeed = async () => {
     )
   ON CONFLICT (email)
   DO NOTHING;
+  INSERT INTO books("title", "body", "description", "genreId", "pages", 
+  "authorId", "uploadedBy", "hardcopy")
+  VALUES (
+    'Harry Potter', 'Harry Potter and The Prisoner of Azkaban', 
+    'Harry makes a new friend', 1, 455, 1, 1, true
+  );
 `;
 
   try {
     await pool.query(seed);
-    await pool.query(`INSERT INTO roles (name)
-    VALUES
-       ('user'), ('author'), ('cashier'), ('admin'), ('superAdmin');`);
+    // await pool.query(`INSERT INTO roles (name)
+    // VALUES
+    //    ('user'), ('author'), ('cashier'), ('admin'), ('superAdmin');`);
     debug('insert succeeded');
   } catch (error) {
     debug(error);
@@ -36,38 +44,46 @@ const insertSeed = async () => {
 
 insertSeed();
 
-(async () => {
-  let result;
-  const params = [
-    'martinsUsername',
-    'martins@gmail.com',
-    'martins',
-    'obayomi',
-    'martinsPw'];
-  try {
-    result = await pool.query(`INSERT INTO users 
-    (username, email, firstname, lastname, password)
-      VALUES ($1, $2, $3, $4, $5)`, params);
-    return result;
-  } catch (error) {
-    return error;
-  }
-})();
+// (async () => {
+//   let result;
+//   const params = [
+//     'martinsUsername',
+//     'martins@gmail.com',
+//     'martins',
+//     'obayomi',
+//     'martinsPw'
+//   ];
+//   try {
+//     result = await pool.query(
+//       `INSERT INTO users
+//     (username, email, firstname, lastname, password)
+//       VALUES ($1, $2, $3, $4, $5)`,
+//       params
+//     );
+//     return result;
+//   } catch (error) {
+//     return error;
+//   }
+// })();
 
-(async () => {
-  let result;
-  const params = [
-    'Harry Potter',
-    'Harry potter and the goblet of fire',
-    'This is the best series in the harry potter book',
-    'Sci-fiction',
-    350];
-  try {
-    result = await pool.query(`INSERT INTO books 
-      (title, body, description, genre, pages)
-        VALUES ($1, $2, $3, $4, $5)`, params);
-    return result;
-  } catch (error) {
-    return error;
-  }
-})();
+// (async () => {
+//   let result;
+//   const params = [
+//     'Harry Potter',
+//     'Harry potter and the goblet of fire',
+//     'This is the best series in the harry potter book',
+//     'Sci-fiction',
+//     350
+//   ];
+//   try {
+//     result = await pool.query(
+//       `INSERT INTO books
+//       (title, body, description, genre, pages)
+//         VALUES ($1, $2, $3, $4, $5)`,
+//       params
+//     );
+//     return result;
+//   } catch (error) {
+//     return error;
+//   }
+// })();

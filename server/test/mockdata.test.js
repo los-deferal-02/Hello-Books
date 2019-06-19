@@ -19,7 +19,7 @@ const inputs = {
       firstName: 'John',
       lastName: 'Doe',
       password: 'Books123',
-      role: 'patron'
+      role: 'superAdmin'
     },
     {
       userName: 'reader2',
@@ -52,6 +52,22 @@ const inputs = {
       lastName: 'Vader',
       password: 'Empire231',
       role: 'author'
+    },
+    {
+      userName: 'kyloRen',
+      email: 'kyloren@gmail.com',
+      firstName: 'Kylo',
+      lastName: 'Ren',
+      password: 'Empire231',
+      role: 'admin'
+    },
+    {
+      userName: 'erlicBach',
+      email: 'erlich@bachman.com',
+      firstName: 'Erlich',
+      lastName: 'Bachman',
+      password: 'Aviato123',
+      role: 'cashier'
     }
   ],
 
@@ -102,12 +118,13 @@ const inputs = {
     }
   ],
   validAddBookInput: {
-    title: 'newBook',
-    body: 'The newbook from 1996',
-    description: 'The best book of the century',
-    genre: 'Fantacy',
-    author: 'justin',
-    pages: 500
+    title: 'Antman & The Wasp',
+    body: 'Antman is back!',
+    description: 'Scott Lang teams up with the Wasp to save the world again',
+    genre: 'Fantasy',
+    hardcopy: true,
+    pages: 70,
+    author: 'Stan Lee'
   }
 };
 

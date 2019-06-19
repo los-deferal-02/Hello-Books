@@ -34,6 +34,7 @@ describe('View user profile routes', () => {
 
 describe('Edit user profile routes', () => {
   const apiUrl = '/api/v1/userProfile';
+  let userId;
   const data = {
     bio: 'Reading and Chilling',
     favoriteBook: 'You Dont Know JS',
@@ -52,11 +53,12 @@ describe('Edit user profile routes', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.have.property('token');
+        userId = res.body.data.id;
         const { token } = res.body.data;
         const auth = `Bearer ${token}`;
         chai
           .request(app)
-          .patch(`${apiUrl}/1`)
+          .patch(`${apiUrl}/${userId}`)
           .set('authorization', auth)
           .send(data)
           .end((err, response) => {
@@ -82,7 +84,7 @@ describe('Edit user profile routes', () => {
         const auth = `Bearer ${token}`;
         chai
           .request(app)
-          .patch(`${apiUrl}/2`)
+          .patch(`${apiUrl}/9`)
           .set('authorization', auth)
           .send(data)
           .end((err, response) => {
