@@ -12,7 +12,9 @@ const { encryptPassword } = encrypt;
  */
 const insertSeed = async () => {
   const hashedPassword = encryptPassword('nonsoDrums');
-  const userSeed = `
+  const seed = `
+  INSERT INTO genre("name") VALUES ('Fiction');
+  INSERT INTO authors("name") VALUES ('JK Rowling');
   INSERT INTO users(
     "userName", "firstName", "lastName", email, password, role
   )
@@ -23,26 +25,8 @@ const insertSeed = async () => {
   DO NOTHING;
 `;
 
-  const bookSeed = `INSERT INTO books 
-(title, body, description, genre, pages, "authorId")
-  VALUES ('Harry Potter',
-  'Harry potter and the goblet of fire',
-  'This is the best series in the harry potter book',
-  'Sci-fiction',
-  350, 1);`;
-
-  const authorSeed = `INSERT INTO authors (name)
-    VALUES ('Harry Potter');`;
-
-  const roleSeed = `INSERT INTO roles (name)
-    VALUES
-       ('patron'), ('author'), ('cashier'), ('admin'), ('superAdmin');`;
-
   try {
-    await pool.query(roleSeed);
-    await pool.query(authorSeed);
-    await pool.query(userSeed);
-    await pool.query(bookSeed);
+    await pool.query(seed);
     debug('insert succeeded');
   } catch (error) {
     debug(error);

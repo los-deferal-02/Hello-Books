@@ -143,7 +143,7 @@ export default {
     }),
 
   role: Joi.string()
-    .valid('patron', 'author')
+    .valid('patron', 'author', 'cashier', 'admin', 'superAdmin')
     .trim()
     .required()
 };
