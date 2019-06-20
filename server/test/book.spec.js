@@ -266,6 +266,23 @@ describe('User add book test', () => {
       });
   });
 
+  it('Should delete a book', (done) => {
+    chai
+      .request(app)
+      .delete('/api/v1/books/2')
+      .set('authorization', authToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body)
+          .to.has.property('status')
+          .eql('success');
+        expect(res.body)
+          .to.have.nested.property('data.bookId')
+          .eql('This book has been successfully deleted');
+        done();
+      });
+  });
+
   it('Should return a not-found error if there are no books in the DB', (done) => {
     chai
       .request(app)

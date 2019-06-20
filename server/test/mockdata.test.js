@@ -43,7 +43,7 @@ const inputs = {
       firstName: 'chinonso',
       lastName: 'calix',
       password: 'Chinonso123',
-      role: 'patron'
+      role: 'author'
     },
     {
       userName: 'reader3',

@@ -211,7 +211,7 @@ export default class BooksController {
     if (!authorId) {
       return badPostRequest(res, 404, { author: 'Author Not Found' });
     }
-    const authorAdded = await addFavouriteAuthor(req.userId, req.params.id);
+    const authorAdded = await addFavouriteAuthor(req.user.id, req.params.id);
     if (!authorAdded) {
       return badPostRequest(res, 409, {
         author: 'Author is already added as favourite'
@@ -232,7 +232,7 @@ export default class BooksController {
    * @memberof BooksController
    */
   static async viewFavouriteAuthors(req, res) {
-    const favouriteAuthors = await viewFavouriteAuthors(req.userId);
+    const favouriteAuthors = await viewFavouriteAuthors(req.user.id);
     if (!favouriteAuthors) {
       return badGetRequest(res, 404, {
         author: 'You have not yet favourited any author'
@@ -256,7 +256,10 @@ export default class BooksController {
       return badPostRequest(res, 404, { author: 'Author Not Found' });
     }
 
-    const deleteAuthor = await deletefavouriteAuthor(req.userId, req.params.id);
+    const deleteAuthor = await deletefavouriteAuthor(
+      req.user.id,
+      req.params.id
+    );
     if (!deleteAuthor) {
       return badPostRequest(res, 404, {
         author: 'Author Not Found in your Favourite List'

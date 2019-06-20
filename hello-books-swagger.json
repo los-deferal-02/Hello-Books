@@ -290,44 +290,25 @@
         }
       }
     },
-<<<<<<< HEAD
-   "/books": {
-      "post": {
-        "tags": ["Books"],
-        "summary": "Handles books' Adding a new book to the application",
-        "description": "This endpoint adds a new book to the books to the library",
-=======
     "/books": {
       "post": {
         "tags": ["Books"],
         "summary": "Add a Book to The Library",
         "description": "This endpoint enables users to add books to the library",
         "consumes": ["application/json"],
->>>>>>> feature(books):admin CRUD books
         "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
             "name": "body",
-<<<<<<< HEAD
-            "description": "This is the request body object containing books' addition information.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/addBookRequest"
-=======
             "description": "This is the request body object containing books' information",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Book"
->>>>>>> feature(books):admin CRUD books
             }
           }
         ],
         "responses": {
-<<<<<<< HEAD
-          "201": {
-            "description": "Book created successfully"
-=======
           "200": {
             "description": "Book Successfully Added"
           },
@@ -337,7 +318,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
         "tags": ["Books"],
@@ -399,126 +385,10 @@
           },
           "500": {
             "description": "Internal Server Error"
->>>>>>> feature(books):admin CRUD books
           }
         }
       }
     },
-<<<<<<< HEAD
-      "/authors/{authorId}/favourite": {
-         "post": {
-            "tags": [
-               "Books"
-            ],
-            "summary": "Add author as favourite",
-            "description": "This endpoint adds author to user favourite list",
-            "consumes": [
-               "application/json"
-            ],
-            "produces": [
-               "application/json"
-            ],
-            "security": [
-               {
-                  "Bearer": []
-               }
-            ],
-            "parameters": [
-               {
-                  "in": "path",
-                  "name": "authorId",
-                  "type": "integer",
-                  "required": true,
-                  "description": "Author Id"
-               }
-            ],
-            "responses": {
-               "201": {
-                  "description": "Author added to favourite list"
-               },
-               "401": {
-                  "description": "Authentication Error"
-               },
-               "404": {
-                  "description": "Author not found"
-               },
-               "409": {
-                "description": "Author is already added as favourite"
-             },
-               "500": {
-                  "description": "Internal server error"
-               }
-            }
-         },
-         "patch": {
-          "tags": [
-             "Books"
-          ],
-          "summary": "Delete author from favourite list",
-          "description": "This endpoint deletes author from user favourite list",
-          "consumes": [
-             "application/json"
-          ],
-          "produces": [
-             "application/json"
-          ],
-          "security": [
-             {
-                "Bearer": []
-             }
-          ],
-          "parameters": [
-             {
-                "in": "path",
-                "name": "authorId",
-                "type": "integer",
-                "required": true,
-                "description": "Author Id"
-             }
-          ],
-          "responses": {
-             "200": {
-                "description": "Author deleted from favourite list"
-             },
-             "401": {
-                "description": "Authentication Error"
-             },
-             "404": {
-                "description": "Author not found in favourite list or database"
-             },
-             "500": {
-               "description": "Internal server error"
-            }
-           }              
-          }
-      },
-      "/authors/favourites": {
-        "get": {
-          "tags": ["Books"],
-          "summary": "API Endpoint to view all favourite books",
-          "produces": ["application/json"],
-          "security": [
-            {
-               "Bearer": []
-            }],
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Shows list of user favourite authors"
-            },
-           "401": {
-              "description": "Authentication Error"
-           },
-           "404": {
-              "description": "Author not found in favourite list"
-           },
-           "500": {
-             "description": "Internal server error"
-          }
-          }
-        }
-      }
-=======
     "/books/{id}": {
       "patch": {
         "tags": ["Books"],
@@ -566,7 +436,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
         "tags": ["Books"],
@@ -672,8 +547,109 @@
           }
         ]
       }
+    },
+    "/authors/{authorId}/favourite": {
+      "post": {
+        "tags": ["Books"],
+        "summary": "Add author as favourite",
+        "description": "This endpoint adds author to user favourite list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "authorId",
+            "type": "integer",
+            "required": true,
+            "description": "Author Id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Author added to favourite list"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Author not found"
+          },
+          "409": {
+            "description": "Author is already added as favourite"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Books"],
+        "summary": "Delete author from favourite list",
+        "description": "This endpoint deletes author from user favourite list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "authorId",
+            "type": "integer",
+            "required": true,
+            "description": "Author Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author deleted from favourite list"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Author not found in favourite list or database"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/authors/favourites": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "API Endpoint to view all favourite books",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Shows list of user favourite authors"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Author not found in favourite list"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
->>>>>>> feature(books):admin CRUD books
   },
   "definitions": {
     "UserSignupRequest": {
@@ -729,7 +705,7 @@
       },
       "example": {
         "userLogin": "example@user.com",
-        "password": "hellobooks"
+        "password": "Hellobooks2019"
       }
     },
     "UserProfile": {
@@ -765,37 +741,6 @@
         "favoriteAuthor": "Medium"
       }
     },
-<<<<<<< HEAD
-    "addBookRequest": {
-			"title": "Add new book request",
-			"type": "object",
-			"properties": {
-				"title": {
-					"description": "Book title or name",
-					"type": "string"
-				},
-				"body": {
-					"description": "Some little details about the book",
-					"type": "string"
-				},
-				"description": {
-					"description": "Well descriptive details or information about the book and why it should be read",
-					"type": "string"
-				},
-				"genre": {
-					"description": "The style or category of the book",
-					"type": "string"
-				},
-				"pages": {
-					"description": "Number of pages the book has",
-					"type": "integer"
-        },
-        "author": {
-					"description": "The person that wrote the book (book owner)",
-
-					"type": "string"
-				}				
-=======
     "Book": {
       "title": "Book Schema",
       "type": "object",
@@ -828,32 +773,24 @@
           "description": "The person that wrote the book (book owner)",
           "type": "String"
         }
->>>>>>> feature(books):admin CRUD books
       },
       "example": {
         "title": "Harry Potter",
         "body": "Harry Potter and the order of Phoenix",
         "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
         "genre": "Science Fiction",
-<<<<<<< HEAD
-        "pages": 475,
-        "author": "Harry"
-=======
         "hardcopy": true,
         "pages": 475,
         "author": "JK Rowling"
->>>>>>> feature(books):admin CRUD books
       }
     },
-     "UserPasswordResetRequest": {
+    "UserPasswordResetRequest": {
       "title": "User Password Reset Request",
       "type": "object",
       "properties": {
         "userLogin": {
           "description": "Email or Username of an already existing user",
           "type": "string"
-<<<<<<< HEAD
-=======
         },
         "resetPassword": {
           "description": "newPassword and confirmPassword",
@@ -863,12 +800,11 @@
           "userLogin": "example@user.com",
           "newPassword": "1234",
           "confirmPassword": "1234"
->>>>>>> feature(books):admin CRUD books
         }
       },
       "example": {
-        "userLogin":"example@user.com"
-       }
+        "userLogin": "example@user.com"
+      }
     },
     "UserResetPasswordRequest": {
       "title": "User Reset Password Request",
@@ -882,24 +818,17 @@
           "description": "New password",
           "type": "string"
         },
-<<<<<<< HEAD
-        "confirmPassword": {
-          "description": "Confirm password",
-          "type": "string"
-=======
         "example": {
           "userLogin": "example@user.com",
           "newPassword": "1234",
           "confirmPassword": "1234"
->>>>>>> feature(books):admin CRUD books
         }
       },
       "example": {
-        "userLogin":"example@user.com",
+        "userLogin": "example@user.com",
         "newPassword": "1234",
         "confirmPassword": "1234"
       }
     }
-    }
-		}
-  
+  }
+}
