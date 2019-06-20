@@ -45,7 +45,6 @@ export default class BooksController {
         genre,
         pages,
         author,
-
         hardcopy
       } = req.body;
       const bookGenre = await findOrCreateGenre(genre);
