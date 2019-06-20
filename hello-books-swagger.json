@@ -358,12 +358,76 @@
                   "description": "Internal server error"
                }
             }
-         }
+         },
+         "patch": {
+          "tags": [
+             "Books"
+          ],
+          "summary": "Delete author from favourite list",
+          "description": "This endpoint deletes author from user favourite list",
+          "consumes": [
+             "application/json"
+          ],
+          "produces": [
+             "application/json"
+          ],
+          "security": [
+             {
+                "Bearer": []
+             }
+          ],
+          "parameters": [
+             {
+                "in": "path",
+                "name": "authorId",
+                "type": "integer",
+                "required": true,
+                "description": "Author Id"
+             }
+          ],
+          "responses": {
+             "200": {
+                "description": "Author deleted from favourite list"
+             },
+             "401": {
+                "description": "Authentication Error"
+             },
+             "404": {
+                "description": "Author not found in favourite list or database"
+             },
+             "500": {
+               "description": "Internal server error"
+            }
+           }              
+          }
+      },
+      "/authors/favourites": {
+        "get": {
+          "tags": ["Books"],
+          "summary": "API Endpoint to view all favourite books",
+          "produces": ["application/json"],
+          "security": [
+            {
+               "Bearer": []
+            }],
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Shows list of user favourite authors"
+            },
+           "401": {
+              "description": "Authentication Error"
+           },
+           "404": {
+              "description": "Author not found in favourite list"
+           },
+           "500": {
+             "description": "Internal server error"
+          }
+          }
+        }
       }
-   
   },
-
-
   "definitions": {
     "UserSignupRequest": {
       "title": "User Signup Request",
@@ -529,7 +593,6 @@
         "confirmPassword": "1234"
       }
     }
- 
     }
 		}
   

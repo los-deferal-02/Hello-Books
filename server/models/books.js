@@ -40,7 +40,7 @@ export default class Books {
 
   /**
    *
-   * Methond to find author by name
+   * Method to find author by name or id
    * @static
    * @param {string} nameOrId
    * @returns {object} Author data
@@ -72,5 +72,38 @@ export default class Books {
     } catch (err) {
       return false;
     }
+  }
+
+
+  /**
+   *
+   * Method to select all user favourite authors
+   * @static
+   * @param {string} userId
+   * @returns {object} containing user favourite authors
+   * @memberof Books
+   */
+  static async viewFavouriteAuthors(userId) {
+    const data = await pool.query(`SELECT authors.id, authors.name FROM authors 
+    JOIN favourite_authors ON authors.id = favourite_authors."authorId" 
+    WHERE "userId" = $1`, [userId]);
+    if (data.rowCount < 1) return false;
+    return data.rows;
+  }
+
+  /**
+   *
+   * Delete Favourite Author
+   * @static
+   * @param {string} userId
+   * @param {string} authorId
+   * @returns {object} Delete favourite author
+   * @memberof Books
+   */
+  static async deletefavouriteAuthor(userId, authorId) {
+    const data = await pool.query(`DELETE FROM favourite_authors 
+    WHERE "userId" = $1 and "authorId" = $2 RETURNING *`, [userId, authorId]);
+    if (data.rowCount < 1) return false;
+    return data.rows[0];
   }
 }
