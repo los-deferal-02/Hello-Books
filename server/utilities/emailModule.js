@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
-const { log } = console;
 
 /**
  * Contains methods for handling user email services
@@ -34,10 +33,8 @@ class EmailModule {
 
     try {
       await sendGridMail.send(emailData);
-      log('Email sent successfully');
       return true;
     } catch (error) {
-      log(error);
       return false;
     }
   }

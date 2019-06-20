@@ -1,4 +1,7 @@
+import Debug from 'debug';
 import pool from '../config/index';
+
+const debug = Debug('db');
 
 /**
  *
@@ -20,40 +23,109 @@ export default class Books {
       title,
       body,
       description,
-      genre,
       pages,
-      author,
+      hardcopy,
+      genreId,
+      authorId,
+      uploadedBy
     } = book;
-    let authorId = await Books.findAuthor(author);
-    if (!authorId) {
-      authorId = await pool.query(`INSERT INTO authors (name)
-    VALUES($1) RETURNING authors.id`, [author]);
-    }
-    const { rows } = await pool.query(`INSERT INTO books
-    (title, body, description, genre, pages, "authorId")
-    VALUES ($1, $2, $3, $4, $5, $6)
+    const { rows } = await pool.query(
+      `INSERT INTO books
+    ("title", "body", "description", "pages", 
+    "hardcopy", "genreId", "authorId", "uploadedBy") 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *`,
-    [title, body, description, genre, pages, authorId.rows[0].id]);
+      [title, body, description, pages, hardcopy, genreId, authorId, uploadedBy]
+    );
     return rows[0];
   }
 
+  /**
+   * @static
+   * @description Method to select one book with details
+   * @param {number} id Id of the book to be returned
+   * @returns {object} Single book details
+   * @memberof Books
+   */
+  static async selectOneBook(id) {
+    const data = await pool.query(
+      `SELECT books.*, authors."name" AS "authorName", genre."name" AS genre, 
+      users."userName" AS uploader FROM books INNER JOIN authors ON 
+      books."authorId" = authors.id INNER JOIN genre 
+      ON books."genreId" = genre.id INNER JOIN users 
+      ON books."uploadedBy" = users.id WHERE books.id = ${id};`
+    );
+    debug(data.rows[0]);
+    return data.rows[0];
+  }
+
+  /**
+   * @static
+   * @description Method to select all books with details
+   * @param {number} id Id of the book to be returned
+   * @returns {array} All books in the DB
+   * @memberof Books
+   */
+  static async selectAllBooks() {
+    const data = await pool.query(
+      `SELECT books.*, authors."name" AS "authorName", genre."name" AS genre, 
+      users."userName" AS uploader FROM books INNER JOIN authors ON 
+      books."authorId" = authors.id INNER JOIN genre 
+      ON books."genreId" = genre.id INNER JOIN users 
+      ON books."uploadedBy" = users.id`
+    );
+    debug(data.rows);
+    return data.rows;
+  }
+
+  /**
+   * @static
+   * @description Method to select all books with details
+   * @param {number} id Id of the book to be updated
+   * @param {string} status new status of the book
+   * @returns {object} Details of the newly updated book
+   * @memberof Books
+   */
+  static async updateVerification({ verification, id }) {
+    const data = await pool.query(
+      `UPDATE books SET "verification" = '${verification}' 
+      WHERE books.id = ${id} RETURNING *`
+    );
+    debug(data.rows[0]);
+    return data.rows[0];
+  }
+
+  /**
+   * @static
+   * @description Method to delete a book
+   * @param {number} id Id of the book to be deleted
+   * @returns {object} Details of the newly updated book
+   * @memberof Books
+   */
+  static async deleteBook(id) {
+    const data = await pool.query(`DELETE FROM books * WHERE id = ${id}`);
+    debug(data.rows);
+    return data.rows;
+  }
 
   /**
    *
-   * Method to find author by name or id
+   * Methond to find author by name
    * @static
    * @param {string} nameOrId
    * @returns {object} Author data
    * @memberof Books
    */
   static async findAuthor(nameOrId) {
-    const column = (Number.isNaN(Number(nameOrId)) ? 'name' : 'id');
-    const data = await pool.query(`SELECT * FROM authors 
-    WHERE ${column} = $1`, [nameOrId]);
+    const column = Number.isNaN(Number(nameOrId)) ? 'name' : 'id';
+    const data = await pool.query(
+      `SELECT * FROM authors 
+    WHERE ${column} = $1`,
+      [nameOrId]
+    );
     if (data.rowCount < 1) return false;
     return data;
   }
-
 
   /**
    *
@@ -66,14 +138,16 @@ export default class Books {
    */
   static async addFavouriteAuthor(userId, authorId) {
     try {
-      const { rows } = await pool.query(`INSERT INTO favourite_authors 
-    ("userId", "authorId") VALUES($1, $2) RETURNING *`, [userId, authorId]);
+      const { rows } = await pool.query(
+        `INSERT INTO favourite_authors 
+    ("userId", "authorId") VALUES($1, $2) RETURNING *`,
+        [userId, authorId]
+      );
       return rows[0];
     } catch (err) {
       return false;
     }
   }
-
 
   /**
    *
@@ -84,9 +158,12 @@ export default class Books {
    * @memberof Books
    */
   static async viewFavouriteAuthors(userId) {
-    const data = await pool.query(`SELECT authors.id, authors.name FROM authors 
+    const data = await pool.query(
+      `SELECT authors.id, authors.name FROM authors 
     JOIN favourite_authors ON authors.id = favourite_authors."authorId" 
-    WHERE "userId" = $1`, [userId]);
+    WHERE "userId" = $1`,
+      [userId]
+    );
     if (data.rowCount < 1) return false;
     return data.rows;
   }
@@ -101,8 +178,11 @@ export default class Books {
    * @memberof Books
    */
   static async deletefavouriteAuthor(userId, authorId) {
-    const data = await pool.query(`DELETE FROM favourite_authors 
-    WHERE "userId" = $1 and "authorId" = $2 RETURNING *`, [userId, authorId]);
+    const data = await pool.query(
+      `DELETE FROM favourite_authors 
+    WHERE "userId" = $1 and "authorId" = $2 RETURNING *`,
+      [userId, authorId]
+    );
     if (data.rowCount < 1) return false;
     return data.rows[0];
   }

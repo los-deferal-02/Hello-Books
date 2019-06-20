@@ -54,9 +54,11 @@ export default class UsersController {
       data.emailConfirmCode = confirmCode.slice(0, 64);
       const user = await create(data);
       await createProfile(user.id);
-      const token = generateToken(user);
+      const userData = user;
+      delete userData.password;
+      const token = generateToken(userData);
       EmailSender.sendVerifyEmail(data);
-      return successfulRequest(res, 201, { token });
+      return successfulRequest(res, 201, { id: user.id, token });
     } catch (err) {
       return next(err);
     }
@@ -85,8 +87,10 @@ export default class UsersController {
       if (!passwordValid) {
         return badPostRequest(res, 401, { message: 'Invalid Login Details' });
       }
-      const token = await generateToken(user);
-      return successfulRequest(res, 200, { token });
+      const userData = user;
+      delete userData.password;
+      const token = await generateToken(userData);
+      return successfulRequest(res, 200, { id: user.id, token });
     } catch (err) {
       return next(err);
     }
@@ -168,7 +172,7 @@ export default class UsersController {
     try {
       const data = req.body;
       const { id } = req.params;
-      const { userId } = req;
+      const userId = req.user.id;
       if (parseInt(id, 10) !== userId) {
         return badPostRequest(res, 401, {
           message: 'Unauthorized access'
