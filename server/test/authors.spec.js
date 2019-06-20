@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
@@ -9,7 +10,7 @@ const { userSignupInputforAuthor } = inputs;
 let userToken;
 describe('Author Routes Test', () => {
   describe(`Users can favourite authors, 
-  view favourite list and delete favourite`, () => {
+    view favourite list and delete favourite`, () => {
     before(async () => {
       const res = await chai
         .request(app)

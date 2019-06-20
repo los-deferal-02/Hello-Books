@@ -3,10 +3,16 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
+import BookModel from '../models/books';
 
 chai.use(chaiHttp);
 
-const { validSignUpInputs } = inputs;
+const {
+  validSignUpInputs,
+  signupForBookRequest,
+  duplicateNewBookRequestInput,
+  validNewBookRequestInput
+} = inputs;
 
 let authToken;
 let nonAdminToken;
@@ -295,6 +301,68 @@ describe('User add book test', () => {
         expect(res.body)
           .to.have.nested.property('data.message')
           .eql('There are no books at this time');
+        done();
+      });
+  });
+});
+
+describe('POST /api/v1/books/request', () => {
+  let userToken = null;
+
+  before('Get token for book request test', (done) => {
+    const user = signupForBookRequest;
+    chai
+      .request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .end((err, res) => {
+        const { token } = res.body.data;
+        userToken = `Bearer ${token}`;
+        done();
+      });
+  });
+
+  before('Setup book request db', async () => {
+    await BookModel.createBookRequest(duplicateNewBookRequestInput);
+  });
+
+  it('should fail if a duplicate book request is made', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/books/request')
+      .set('authorization', userToken)
+      .send(duplicateNewBookRequestInput)
+      .end((err, res) => {
+        const { status, data } = res.body;
+
+        expect(res).to.have.status(409);
+        expect(res.body).to.have.keys('status', 'data');
+        expect(status).to.match(/fail/i);
+        expect(data.message).to.match(
+          /request has already been made for this book/i
+        );
+        done();
+      });
+  });
+
+  it('should be successful if a new book request is made', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/books/request')
+      .set('authorization', userToken)
+      .send(validNewBookRequestInput)
+      .end((err, res) => {
+        const { status, data } = res.body;
+        const { bookRequest } = res.body.data;
+
+        expect(res).to.have.status(201);
+        expect(res.body).to.have.keys('status', 'data');
+        expect(status).to.match(/success/i);
+        expect(data)
+          .to.be.an('object')
+          .that.has.key('bookRequest');
+        expect(bookRequest).to.be.an('object');
+        expect(bookRequest).to.have.keys('id', 'userId', 'title', 'author');
         done();
       });
   });

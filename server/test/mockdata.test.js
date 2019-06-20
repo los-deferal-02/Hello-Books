@@ -20,6 +20,7 @@ const inputs = {
     password: 'Books123',
     role: 'author'
   },
+
   validSignUpInputs: [
     {
       userName: 'reader1',
@@ -125,6 +126,7 @@ const inputs = {
       password: 'Books231'
     }
   ],
+
   validAddBookInput: {
     title: 'Antman & The Wasp',
     body: 'Antman is back!',
@@ -133,6 +135,26 @@ const inputs = {
     hardcopy: true,
     pages: 70,
     author: 'Stan Lee'
+  },
+
+  signupForBookRequest: {
+    userName: 'darthVad',
+    email: 'darthvad@gmail.com',
+    firstName: 'Darth',
+    lastName: 'Vader',
+    password: 'Empire231',
+    role: 'patron'
+  },
+
+  validNewBookRequestInput: {
+    title: "You don't know JS: Up & Going",
+    author: 'Kylie Simpson'
+  },
+
+  duplicateNewBookRequestInput: {
+    userId: 1,
+    title: "You don't know JS: Scope & Closures",
+    author: 'Kylie Simpson'
   }
 };
 

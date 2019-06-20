@@ -1,17 +1,22 @@
 import express from 'express';
 import bookController from '../controllers/booksController';
-import Auth from '../middlewares/auth';
 import BookValidation from '../middlewares/bookValidation';
+import Auth from '../middlewares/auth';
 
 const { verifyToken } = Auth;
-const { validateBookAdd, validateBookVerification } = BookValidation;
+const {
+  validateBookAdd,
+  validateBookVerification,
+  validateBookRequest
+} = BookValidation;
 
 const {
   addBook,
   getSingleBook,
   getAllBooks,
   adminUpdateVerification,
-  deleteABook
+  deleteABook,
+  addBookRequest
 } = bookController;
 
 const router = express.Router();
@@ -26,5 +31,6 @@ router.patch(
   adminUpdateVerification
 );
 router.delete('/:id', verifyToken, deleteABook);
+router.post('/request', validateBookRequest, verifyToken, addBookRequest);
 
 export default router;

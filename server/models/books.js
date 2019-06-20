@@ -31,12 +31,63 @@ export default class Books {
     } = book;
     const { rows } = await pool.query(
       `INSERT INTO books
-    ("title", "body", "description", "pages", 
-    "hardcopy", "genreId", "authorId", "uploadedBy") 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-    RETURNING *`,
+      ("title", "body", "description", "pages", 
+      "hardcopy", "genreId", "authorId", "uploadedBy") 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *`,
       [title, body, description, pages, hardcopy, genreId, authorId, uploadedBy]
     );
+    return rows[0];
+  }
+
+  /**
+   * Store book request made by user to the database
+   *
+   * @static
+   * @async
+   * @name createBookRequest
+   * @param {object} bookRequestEntity - Details of the book request
+   * @returns {object} Details of the book request entity from database
+   * @memberof Books
+   */
+  static async createBookRequest(bookRequestEntity) {
+    const { userId, title, author } = bookRequestEntity;
+    const { rows } = await pool.query(
+      `INSERT INTO book_requests
+        ("userId", title, author) 
+      VALUES
+        ($1, $2, $3)
+      RETURNING *`,
+      [userId, title.toLowerCase(), author]
+    );
+
+    return rows[0];
+  }
+
+  /**
+   * Store book request made by user to the database
+   *
+   * @static
+   * @async
+   * @name findABookRequest
+   * @param {string} bookTitle - Title of the book that was requested
+   * @returns {object} Details of the book that was searched
+   * @memberof Books
+   */
+  static async findABookRequest(bookTitle) {
+    const { rows } = await pool.query(
+      `SELECT
+        id,
+        "userId",
+        title,
+        author
+      FROM
+        book_requests
+      WHERE
+        title = $1;`,
+      [bookTitle.toLowerCase()]
+    );
+
     return rows[0];
   }
 

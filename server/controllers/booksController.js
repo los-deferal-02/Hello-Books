@@ -47,8 +47,10 @@ export default class BooksController {
         author,
         hardcopy
       } = req.body;
+
       const bookGenre = await findOrCreateGenre(genre);
       const bookAuthor = await findOrCreateAuthor(author);
+
       const data = {
         title,
         body,
@@ -61,6 +63,7 @@ export default class BooksController {
       data.authorId = bookAuthor[0].id;
       data.uploadedBy = req.user.id;
       await create(data);
+
       return successfulRequest(res, 201, {
         bookTitle: title,
         bookBody: body,
@@ -127,6 +130,41 @@ export default class BooksController {
       });
     } catch (err) {
       return next(err);
+    }
+  }
+
+  /**
+   * Store book request made by user to the database
+   *
+   * @static
+   * @async
+   * @name addBookRequest
+   * @param {object} req - Express request object
+   * @param {object} res - Express response object
+   * @param {function} next - Function to be called if all checks pass
+   * @returns {boolean} Information about whether or not the operation succeeds
+   * @memberof Books
+   */
+  static async addBookRequest(req, res, next) {
+    try {
+      const { title, author } = req.body;
+
+      const existingBookRequest = await bookModel.findABookRequest(title);
+      if (existingBookRequest) {
+        return badPostRequest(res, 409, {
+          message: 'A request has already been made for this book'
+        });
+      }
+
+      const bookRequest = await bookModel.createBookRequest({
+        userId: req.user.id,
+        title,
+        author
+      });
+
+      return successfulRequest(res, 201, { bookRequest });
+    } catch (error) {
+      return next(error);
     }
   }
 

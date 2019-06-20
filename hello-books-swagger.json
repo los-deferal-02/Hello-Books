@@ -126,6 +126,65 @@
         }
       }
     },
+    "/books": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles addition of books",
+        "description": "This endpoint adds a new book to the library",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing book's information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddBook"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book created successfully"
+          }
+        }
+      }
+    },
+    "/books/request": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Handles the creation of book request by users",
+        "description": "This endpoint enables user to be able to make request for a book that is not yet in the library",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "This is the body of the request object containing information about the book the user wants to request for.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book request was created successfully"
+          },
+          "409": {
+            "description": "Duplicate request was made for a book"
+          },
+          "422": {
+            "description": "Invalid data format"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/verifyEmail/:email/:verifyCode": {
       "patch": {
         "tags": ["Users"],
@@ -290,336 +349,49 @@
         }
       }
     },
-    "/books": {
-      "post": {
-        "tags": ["Books"],
-        "summary": "Add a Book to The Library",
-        "description": "This endpoint enables users to add books to the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "This is the request body object containing books' information",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Book"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Book Successfully Added"
-          },
-          "400": {
-            "description": "Incorrectly field filled"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      },
-      "get": {
-        "tags": ["Books"],
-        "summary": "Get all Books in The Library",
-        "description": "This endpoint enables users fetch all books the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Books Successfully Returned",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string",
-                  "example": "success"
-                },
-                "data": {
-                  "type": "array",
-                  "example": [
-                    {
-                      "id": 2,
-                      "title": "Antman & The Wasp",
-                      "body": "Antman is back!",
-                      "description": "Scott Lang teams up with the Wasp to save the world again",
-                      "pages": "70",
-                      "verification": "pending",
-                      "createdOn": "2019-06-19T11:48:57.366Z",
-                      "hardcopy": true,
-                      "status": "available",
-                      "uploadId": null,
-                      "authorName": "Stan Lee",
-                      "genre": "Fantasy",
-                      "uploader": "kyloRen"
-                    },
-                    {
-                      "id": 3,
-                      "title": "X-Men: First Class",
-                      "body": "Travel back in time with the X-Men!",
-                      "description": "The X-Men is born, a new breed of mutants save the world",
-                      "pages": "70",
-                      "verification": "pending",
-                      "createdOn": "2019-06-19T11:48:57.374Z",
-                      "hardcopy": true,
-                      "status": "available",
-                      "uploadId": null,
-                      "authorName": "Stan Lee",
-                      "genre": "Fantasy",
-                      "uploader": "kyloRen"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No books found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/books/{id}": {
-      "patch": {
-        "tags": ["Books"],
-        "summary": "Reject or Verify a Book",
-        "description": "This endpoint enables admins to verify or reject books added to the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of book",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "This is the request body object containing books' information",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "verification": {
-                  "type": "object",
-                  "example": "verified"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Book Verification status successfully changed"
-          },
-          "400": {
-            "description": "Incorrectly filled field"
-          },
-          "401": {
-            "description": "Unauthorized access by a non-admin"
-          },
-          "404": {
-            "description": "Book to be verified does not exist"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      },
-      "get": {
-        "tags": ["Books"],
-        "summary": "Get a Book in The Library",
-        "description": "This endpoint enables users fetch a book the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of book",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Book Successfully Returned",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string",
-                  "example": "success"
-                },
-                "data": {
-                  "type": "object",
-                  "example": {
-                    "id": 2,
-                    "title": "Antman & The Wasp",
-                    "body": "Antman is back!",
-                    "description": "Scott Lang teams up with the Wasp to save the world again",
-                    "pages": "70",
-                    "verification": "pending",
-                    "createdOn": "2019-06-19T11:48:57.366Z",
-                    "hardcopy": true,
-                    "status": "available",
-                    "uploadId": null,
-                    "authorName": "Stan Lee",
-                    "genre": "Fantasy",
-                    "uploader": "kyloRen"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Book not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Books"],
-        "summary": "Delete a Book",
-        "description": "This endpoint deletes a book from the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of book",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Book deleted successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string",
-                  "example": "success"
-                },
-                "data": {
-                  "type": "object",
-                  "example": {
-                    "bookId": "This book has been successfully deleted"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unathorized access"
-          },
-          "404": {
-            "description": "Book to be deleted not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
     "/authors/{authorId}/favourite": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+            "Books"
+        ],
         "summary": "Add author as favourite",
         "description": "This endpoint adds author to user favourite list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
         "security": [
-          {
-            "Bearer": []
-          }
+            {
+              "Bearer": []
+            }
         ],
         "parameters": [
-          {
-            "in": "path",
-            "name": "authorId",
-            "type": "integer",
-            "required": true,
-            "description": "Author Id"
-          }
+            {
+              "in": "path",
+              "name": "authorId",
+              "type": "integer",
+              "required": true,
+              "description": "Author Id"
+            }
         ],
         "responses": {
-          "201": {
-            "description": "Author added to favourite list"
-          },
-          "401": {
-            "description": "Authentication Error"
-          },
-          "404": {
-            "description": "Author not found"
-          },
-          "409": {
+            "201": {
+              "description": "Author added to favourite list"
+            },
+            "401": {
+              "description": "Authentication Error"
+            },
+            "404": {
+              "description": "Author not found"
+            },
+            "409": {
             "description": "Author is already added as favourite"
           },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      },
-      "patch": {
-        "tags": ["Books"],
-        "summary": "Delete author from favourite list",
-        "description": "This endpoint deletes author from user favourite list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "authorId",
-            "type": "integer",
-            "required": true,
-            "description": "Author Id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Author deleted from favourite list"
-          },
-          "401": {
-            "description": "Authentication Error"
-          },
-          "404": {
-            "description": "Author not found in favourite list or database"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
+            "500": {
+              "description": "Internal server error"
+            }
         }
       }
     },
@@ -630,9 +402,8 @@
         "produces": ["application/json"],
         "security": [
           {
-            "Bearer": []
-          }
-        ],
+              "Bearer": []
+          }],
         "parameters": [],
         "responses": {
           "200": {
@@ -646,7 +417,7 @@
           },
           "500": {
             "description": "Internal server error"
-          }
+        }
         }
       }
     }
@@ -705,7 +476,7 @@
       },
       "example": {
         "userLogin": "example@user.com",
-        "password": "Hellobooks2019"
+        "password": "hellobooks"
       }
     },
     "UserProfile": {
@@ -741,8 +512,8 @@
         "favoriteAuthor": "Medium"
       }
     },
-    "Book": {
-      "title": "Book Schema",
+    "AddBook": {
+      "title": "Add new book",
       "type": "object",
       "properties": {
         "title": {
@@ -761,27 +532,39 @@
           "description": "The style or category of the book",
           "type": "string"
         },
-        "hardcopy": {
-          "description": "The type of book could be softcopy or paperback",
-          "type": "boolean"
-        },
         "pages": {
           "description": "Number of pages the book has",
-          "type": "number"
+          "type": "Number"
         },
         "author": {
           "description": "The person that wrote the book (book owner)",
           "type": "String"
+        },
+        "example": {
+          "title": "Harry Potter",
+          "body": "Harry Potter and the order of Phoenix",
+          "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+          "genre": "Science Fiction",
+          "pages": 475
+        }
+      }
+    },
+    "BookRequest": {
+      "title": "Make new book request",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Title of the book",
+          "type": "String"
+        },
+        "author": {
+          "description": "The author of the book",
+          "type": "String"
         }
       },
       "example": {
-        "title": "Harry Potter",
-        "body": "Harry Potter and the order of Phoenix",
-        "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
-        "genre": "Science Fiction",
-        "hardcopy": true,
-        "pages": 475,
-        "author": "JK Rowling"
+        "title": "You don't know JS: Scope & Closures",
+        "author": "Kylie Simpson"
       }
     },
     "UserPasswordResetRequest": {
@@ -791,20 +574,11 @@
         "userLogin": {
           "description": "Email or Username of an already existing user",
           "type": "string"
-        },
-        "resetPassword": {
-          "description": "newPassword and confirmPassword",
-          "type": "string or number"
-        },
-        "example": {
-          "userLogin": "example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
         }
       },
       "example": {
-        "userLogin": "example@user.com"
-      }
+        "userLogin":"example@user.com"
+       }
     },
     "UserResetPasswordRequest": {
       "title": "User Reset Password Request",
@@ -818,17 +592,17 @@
           "description": "New password",
           "type": "string"
         },
-        "example": {
-          "userLogin": "example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
+        "confirmPassword": {
+          "description": "Confirm password",
+          "type": "string"
         }
       },
       "example": {
-        "userLogin": "example@user.com",
+        "userLogin":"example@user.com",
         "newPassword": "1234",
         "confirmPassword": "1234"
       }
     }
   }
 }
+  

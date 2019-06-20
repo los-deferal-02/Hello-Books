@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import Debug from 'debug';
 import pool from '.';
 import encrypt from '../helpers/encrypt';
@@ -13,21 +15,21 @@ const { encryptPassword } = encrypt;
 const insertSeed = async () => {
   const hashedPassword = encryptPassword('nonsoDrums');
   const seed = `
-  INSERT INTO genre("name") VALUES ('Fiction');
-  INSERT INTO authors("name") VALUES ('JK Rowling');
-  INSERT INTO users(
-    "userName", "firstName", "lastName", email, password, role
-  )
-  VALUES (
-    'xwebyna', 'Tolu', 'Martins', 'nero.abdul@gmail.com', '${hashedPassword}', 1
+    INSERT INTO genre("name") VALUES ('Fiction');
+    INSERT INTO authors("name") VALUES ('JK Rowling');
+    INSERT INTO users(
+      "userName", "firstName", "lastName", email, password, role
     )
-  ON CONFLICT (email)
-  DO NOTHING;
-`;
+    VALUES (
+      'xwebyna', 'Tolu', 'Martins', 'nero.abdul@gmail.com', '${hashedPassword}', 1
+    )
+    ON CONFLICT (email)
+    DO NOTHING;
+  `;
 
   try {
     await pool.query(seed);
-    debug('insert succeeded');
+    debug('Insert succeeded');
   } catch (error) {
     debug(error);
   }

@@ -6,7 +6,9 @@ import tryCatch from '../middlewares/tryCatchHandler';
 const { verifyToken } = Auth;
 
 const {
-  favouriteAuthor, viewFavouriteAuthors, deleteFavouriteAuthor
+  favouriteAuthor,
+  viewFavouriteAuthors,
+  deleteFavouriteAuthor
 } = bookController;
 
 const router = express.Router();
