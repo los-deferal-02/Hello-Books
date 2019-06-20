@@ -1,4 +1,5 @@
 import express from 'express';
+import passport from 'passport';
 import dotenv from 'dotenv';
 import Debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
@@ -17,6 +18,7 @@ const debug = Debug('dev');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 app.use(logger('dev'));
 
 app.use('/api/v1', routes);

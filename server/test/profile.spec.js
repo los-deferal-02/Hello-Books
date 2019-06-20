@@ -12,7 +12,7 @@ describe('View user profile routes', () => {
   it('should return status 200 if request is successful', (done) => {
     chai
       .request(app)
-      .get(`${apiUrl}/1`)
+      .get(`${apiUrl}/2`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.have.property('userId');
