@@ -2,7 +2,8 @@ import bookModel from '../models/books';
 import ServerResponse from '../responseSpec';
 
 
-const { successfulRequest } = ServerResponse;
+const { successfulRequest, badPostRequest } = ServerResponse;
+const { create, findAuthor, addFavouriteAuthor } = bookModel;
 
 /**
  *
@@ -32,7 +33,7 @@ export default class BooksController {
         pages,
         author,
       } = data;
-      await bookModel.create(data);
+      await create(data);
       return successfulRequest(res, 201, {
         bookTitle: title,
         bookBody: body,
@@ -43,6 +44,35 @@ export default class BooksController {
       });
     } catch (err) {
       return next(err);
+    }
+  }
+
+
+  /**
+   *
+   * Method to add favourite author to user list
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} Success message when successful
+   * @memberof BooksController
+   */
+  static async favouriteAuthor(req, res, next) {
+    try {
+      const authorId = await findAuthor(req.params.id);
+      if (!authorId) {
+        return badPostRequest(res, 404, { author: 'Author Not Found' });
+      }
+      const authorAdded = await addFavouriteAuthor(req.userId, req.params.id);
+      if (!authorAdded) {
+        return badPostRequest(res, 409,
+          { author: 'Author is already added as favourite' });
+      }
+      return successfulRequest(res, 201,
+        { message: 'Author added to your favourite list' });
+    } catch (err) {
+      next(err);
     }
   }
 }

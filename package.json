@@ -4,22 +4,20 @@
   "description": "Book library management system",
   "main": "index.js",
   "scripts": {
-    "test": "npm run clean-tables && cross-env NODE_ENV=test nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 5000 --exit",
     "lint": "eslint **/*.js",
     "lint:fix": "prettier-eslint **/*.js --write",
+    "test": "cross-env NODE_ENV=test npm run migration && nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 8000 --color --exit",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
-    "dev": "cross-env NODE_ENV=development DEBUG=d* nodemon --exec babel-node index.js",
+    "dev": "cross-env NODE_ENV=development DEBUG=dev nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
     "build": "npm run clean && npm run build-babel",
     "clean": "rm -rf build && mkdir build && cp hello-books-swagger.json build",
-    "dropTables": "cross-env NODE_ENV=development babel-node server/config/dropTables.js",
-    "seed": "babel-node server/config/seed.js",
-    "dropTables-test": "cross-env NODE_ENV=test babel-node server/config/dropTables.js",
-    "buildTables-test": "cross-env NODE_ENV=test babel-node server/config/buildTables.js",
-    "buildTables": "cross-env NODE_ENV=development babel-node server/config/buildTables.js",
-    "migration": "npm run dropTables && npm run buildTables",
+    "drop-tables": "cross-env DEBUG=db babel-node server/config/dropTables.js",
+    "build-tables": "cross-env DEBUG=db babel-node server/config/buildTables.js",
+    "seed": "cross-env DEBUG=db babel-node server/config/seed.js",
+    "migration": "npm run clean-tables && npm run seed",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "clean-tables": "cross-env NODE_ENV=test npm run dropTables-test && cross-env NODE_ENV=test npm run buildTables-test"
+    "clean-tables": "npm run drop-tables && npm run build-tables"
   },
   "husky": {
     "hooks": {

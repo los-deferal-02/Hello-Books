@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "Hello Books Application API",
     "contact": {
-      "email": "email@address"
+      "email": "email@address.com"
     },
     "license": {
       "name": "Apache 2.0",
@@ -122,34 +122,6 @@
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/books": {
-      "post": {
-        "tags": [
-          "Books"
-        ],
-        "summary": "Handles books' Adding a new book to the application",
-        "description": "This endpoint adds a new book to the books to the library",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "This is the request body object containing books' addition information.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/addBookRequest"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Book created successfully"
           }
         }
       }
@@ -317,8 +289,81 @@
           }
         }
       }
-    }
+    },
+   "/books": {
+      "post": {
+        "tags": ["Books"],
+        "summary": "Handles books' Adding a new book to the application",
+        "description": "This endpoint adds a new book to the books to the library",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "This is the request body object containing books' addition information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addBookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book created successfully"
+          }
+        }
+      }
+    },
+      "/authors/{authorId}/favourite": {
+         "post": {
+            "tags": [
+               "Books"
+            ],
+            "summary": "Add author as favourite",
+            "description": "This endpoint adds author to user favourite list",
+            "consumes": [
+               "application/json"
+            ],
+            "produces": [
+               "application/json"
+            ],
+            "security": [
+               {
+                  "Bearer": []
+               }
+            ],
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "authorId",
+                  "type": "integer",
+                  "required": true,
+                  "description": "Author Id"
+               }
+            ],
+            "responses": {
+               "201": {
+                  "description": "Author added to favourite list"
+               },
+               "401": {
+                  "description": "Authentication Error"
+               },
+               "404": {
+                  "description": "Author not found"
+               },
+               "409": {
+                "description": "Author is already added as favourite"
+             },
+               "500": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      }
+   
   },
+
+
   "definitions": {
     "UserSignupRequest": {
       "title": "User Signup Request",
@@ -409,7 +454,7 @@
         "favoriteAuthor": "Medium"
       }
     },
-    "AddBookRequest": {
+    "addBookRequest": {
 			"title": "Add new book request",
 			"type": "object",
 			"properties": {
@@ -431,58 +476,60 @@
 				},
 				"pages": {
 					"description": "Number of pages the book has",
-					"type": "Number"
+					"type": "integer"
         },
         "author": {
 					"description": "The person that wrote the book (book owner)",
-					"type": "String"
-				},
-        "example": {
-          "title": "Harry Potter",
-          "body": "Harry Potter and the order of Phoenix",
-          "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
-          "genre": "Science Fiction",
-          "pages": 475
-        }
+
+					"type": "string"
+				}				
+      },
+      "example": {
+        "title": "Harry Potter",
+        "body": "Harry Potter and the order of Phoenix",
+        "description": "The book gives insight about Loyalty, friendship and bravery by young people. And also defeating evil and restoring glory to a great school",
+        "genre": "Science Fiction",
+        "pages": 475,
+        "author": "Harry"
       }
     },
-    "UserPasswordResetRequest": {
+     "UserPasswordResetRequest": {
       "title": "User Password Reset Request",
       "type": "object",
       "properties": {
         "userLogin": {
-          "description": "Email of an already existing user",
+          "description": "Email or Username of an already existing user",
           "type": "string"
-        },
-        "resetPassword": {
-          "description": "newPassword and confirmPassword",
-          "type": "string or number"
-        },
-        "example": {
-          "userLogin":"example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
         }
-      }
+      },
+      "example": {
+        "userLogin":"example@user.com"
+       }
     },
-    "UserResetPassword": {
+    "UserResetPasswordRequest": {
       "title": "User Reset Password Request",
       "type": "object",
       "properties": {
         "userLogin": {
-          "description": "Email of an already existing user",
+          "description": "Email or username of an already existing user",
           "type": "string"
         },
-        "resetPassword": {
-          "description": "newPassword and confirmPassword",
-          "type": "string or number"
+        "newPassword": {
+          "description": "New password",
+          "type": "string"
         },
-        "example": {
-          "userLogin":"example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
+        "confirmPassword": {
+          "description": "Confirm password",
+          "type": "string"
         }
+      },
+      "example": {
+        "userLogin":"example@user.com",
+        "newPassword": "1234",
+        "confirmPassword": "1234"
       }
     }
-  }
-}
+ 
+    }
+		}
+  
