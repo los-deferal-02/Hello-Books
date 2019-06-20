@@ -28,11 +28,7 @@
     "**/*.js": [
       "npm run lint:fix",
       "git add"
-    ],
-    "buildTables": "babel-node server/config/buildTables.js",
-    "migration": "npm run buildTables && npm run seed",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "clean-tables": "cross-env NODE_ENV=test npm run dropTables && cross-env NODE_ENV=test npm run buildTables"
+    ]
   },
   "repository": {
     "type": "git",

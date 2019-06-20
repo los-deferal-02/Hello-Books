@@ -3,14 +3,18 @@ import pool from '.';
 
 const debug = Debug('db');
 
-const rolesTableQuery = `
-  CREATE TABLE IF NOT EXISTS roles(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL
+const tablesQuery = `
+  CREATE TYPE "verification_status" AS ENUM (
+    'verified',
+    'rejected',
+    'pending'
   );
-`;
 
-const userTableQuery = `
+  CREATE TYPE "lend_status" AS ENUM (
+    'borrowed',
+    'available'
+  );
+
   CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     "userName" VARCHAR(100) UNIQUE NOT NULL,
@@ -20,14 +24,35 @@ const userTableQuery = `
     "password" TEXT NOT NULL,
     "resetpasswordtoken" VARCHAR(100),
     "resettokenexpires" BIGINT,
-    role INTEGER NOT NULL REFERENCES roles (id) ON DELETE CASCADE,
+    "role" INTEGER DEFAULT 0,
     "isAdmin" boolean NOT NULL DEFAULT false,
     "emailConfirmCode" VARCHAR(64),
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL
   );
-`;
 
-const userProfileTableQuery = `
+  CREATE TABLE IF NOT EXISTS "books" (
+    "id" SERIAL PRIMARY KEY,
+    "title" VARCHAR(100) NOT NULL,
+    "body" VARCHAR(100) NOT NULL,
+    "description" TEXT NOT NULL,
+    "genreId" INT NOT NULL,
+    "pages" NUMERIC(250) NOT NULL,
+    "authorId" INT NOT NULL,
+    "uploadedBy" INT NOT NULL,
+    "verification" "verification_status" DEFAULT 'pending',
+    "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL,
+    "hardcopy" boolean,
+    "status" "lend_status" DEFAULT 'available',
+    "uploadId" INT
+  );
+
+  CREATE TABLE IF NOT EXISTS "book_requests" (
+    "id" SERIAL PRIMARY KEY,
+    "userId" INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    "title" VARCHAR(100) UNIQUE NOT NULL,
+    "author" VARCHAR(100) NOT NULL
+  );
+
   CREATE TABLE IF NOT EXISTS user_profiles(
     "userId" INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     "bio" VARCHAR,
@@ -38,42 +63,41 @@ const userProfileTableQuery = `
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL,
     PRIMARY KEY ("userId")
   );
-`;
 
-const authorsTableQuery = `
-CREATE TABLE IF NOT EXISTS authors(
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) UNIQUE NOT NULL
-);
-`;
-
-const favouriteAuthorsTableQuery = `
-CREATE TABLE IF NOT EXISTS favourite_authors(
-  "userId" INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-  "authorId" INTEGER NOT NULL REFERENCES authors (id) ON DELETE CASCADE,
-  PRIMARY KEY ("userId", "authorId")
-);
-`;
-
-const bookTableQuery = `
-  CREATE TABLE IF NOT EXISTS books(
+  CREATE TABLE IF NOT EXISTS roles(
     id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    body VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    genre VARCHAR(100) NOT NULL,
-    "authorId" INTEGER NOT NULL REFERENCES authors (id) ON DELETE CASCADE,
-    pages NUMERIC(250) NOT NULL
+    name VARCHAR(100) UNIQUE NOT NULL
   );
-`;
 
-const bookRequestTableQuery = `
-  CREATE TABLE IF NOT EXISTS book_request(
-    id SERIAL PRIMARY KEY,
+  CREATE TABLE IF NOT EXISTS "authors" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR
+  );
+
+  CREATE TABLE IF NOT EXISTS favourite_authors(
     "userId" INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    title VARCHAR(255) UNIQUE NOT NULL,
-    author VARCHAR(150) NOT NULL
+    "authorId" INTEGER NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
+    PRIMARY KEY("userId", "authorId")
   );
+
+  CREATE TABLE IF NOT EXISTS "ebooks" (
+    id SERIAL PRIMARY KEY,
+    "filename" varchar,
+    "filePath" varchar UNIQUE
+  );
+
+  CREATE TABLE IF NOT EXISTS "genre" (
+    id SERIAL PRIMARY KEY,
+    "name" VARCHAR
+  );
+
+  ALTER TABLE "users" ADD FOREIGN KEY ("role") REFERENCES "roles" ("id");
+  ALTER TABLE "books" ADD FOREIGN KEY ("genreId") REFERENCES "genre" ("id");
+  ALTER TABLE "books" ADD FOREIGN KEY ("authorId") REFERENCES "authors" ("id");
+  ALTER TABLE "books" ADD FOREIGN KEY ("uploadedBy") REFERENCES "users" ("id");
+  ALTER TABLE "books" ADD FOREIGN KEY ("uploadId") REFERENCES "ebooks" ("id");
+  INSERT INTO roles (name) 
+    VALUES ('user'), ('author'), ('cashier'), ('admin'), ('superAdmin');
 `;
 
 /**
@@ -83,19 +107,11 @@ const bookRequestTableQuery = `
  */
 const createTable = async () => {
   try {
-    await pool.query(`
-      ${rolesTableQuery}
-      ${userTableQuery}
-      ${userProfileTableQuery}
-      ${authorsTableQuery}
-      ${favouriteAuthorsTableQuery}
-      ${bookTableQuery}
-      ${bookRequestTableQuery}
-    `);
-
+    await pool.query(`${tablesQuery}`);
     debug('Tables created successfully');
   } catch (error) {
     debug(error);
+    return error;
   }
 };
 

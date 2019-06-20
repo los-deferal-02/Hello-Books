@@ -350,55 +350,78 @@
       }
     },
     "/authors/{authorId}/favourite": {
-        "post": {
-          "tags": [
-              "Books"
-          ],
-          "summary": "Add author as favourite",
-          "description": "This endpoint adds author to user favourite list",
-          "consumes": [
-              "application/json"
-          ],
-          "produces": [
-              "application/json"
-          ],
-          "security": [
-              {
-                "Bearer": []
-              }
-          ],
-          "parameters": [
-              {
-                "in": "path",
-                "name": "authorId",
-                "type": "integer",
-                "required": true,
-                "description": "Author Id"
-              }
-          ],
-          "responses": {
-              "201": {
-                "description": "Author added to favourite list"
-              },
-              "401": {
-                "description": "Authentication Error"
-              },
-              "404": {
-                "description": "Author not found"
-              },
-              "409": {
-              "description": "Author is already added as favourite"
+      "post": {
+        "tags": [
+            "Books"
+        ],
+        "summary": "Add author as favourite",
+        "description": "This endpoint adds author to user favourite list",
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "security": [
+            {
+              "Bearer": []
+            }
+        ],
+        "parameters": [
+            {
+              "in": "path",
+              "name": "authorId",
+              "type": "integer",
+              "required": true,
+              "description": "Author Id"
+            }
+        ],
+        "responses": {
+            "201": {
+              "description": "Author added to favourite list"
             },
-              "500": {
-                "description": "Internal server error"
-              }
-          }
+            "401": {
+              "description": "Authentication Error"
+            },
+            "404": {
+              "description": "Author not found"
+            },
+            "409": {
+            "description": "Author is already added as favourite"
+          },
+            "500": {
+              "description": "Internal server error"
+            }
         }
+      }
+    },
+    "/authors/favourites": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "API Endpoint to view all favourite books",
+        "produces": ["application/json"],
+        "security": [
+          {
+              "Bearer": []
+          }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Shows list of user favourite authors"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Author not found in favourite list"
+          },
+          "500": {
+            "description": "Internal server error"
+        }
+        }
+      }
     }
-
   },
-
-
   "definitions": {
     "UserSignupRequest": {
       "title": "User Signup Request",

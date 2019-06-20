@@ -28,7 +28,7 @@ const inputs = {
       firstName: 'John',
       lastName: 'Doe',
       password: 'Books123',
-      role: 'patron'
+      role: 'superAdmin'
     },
     {
       userName: 'reader2',
@@ -44,7 +44,7 @@ const inputs = {
       firstName: 'chinonso',
       lastName: 'calix',
       password: 'Chinonso123',
-      role: 'patron'
+      role: 'author'
     },
     {
       userName: 'reader3',
@@ -61,6 +61,22 @@ const inputs = {
       lastName: 'Vader',
       password: 'Empire231',
       role: 'author'
+    },
+    {
+      userName: 'kyloRen',
+      email: 'kyloren@gmail.com',
+      firstName: 'Kylo',
+      lastName: 'Ren',
+      password: 'Empire231',
+      role: 'admin'
+    },
+    {
+      userName: 'erlicBach',
+      email: 'erlich@bachman.com',
+      firstName: 'Erlich',
+      lastName: 'Bachman',
+      password: 'Aviato123',
+      role: 'cashier'
     }
   ],
 
@@ -112,27 +128,27 @@ const inputs = {
   ],
 
   validAddBookInput: {
-    title: 'newBook',
-    body: 'The newbook from 1996',
-    description: 'The best book of the century',
-    genre: 'Fantacy',
-    author: 'justin',
-    pages: 500
+    title: 'Antman & The Wasp',
+    body: 'Antman is back!',
+    description: 'Scott Lang teams up with the Wasp to save the world again',
+    genre: 'Fantasy',
+    hardcopy: true,
+    pages: 70,
+    author: 'Stan Lee'
+  },
+
+  signupForBookRequest: {
+    userName: 'darthVad',
+    email: 'darthvad@gmail.com',
+    firstName: 'Darth',
+    lastName: 'Vader',
+    password: 'Empire231',
+    role: 'patron'
   },
 
   validNewBookRequestInput: {
-    userId: 1,
     title: "You don't know JS: Up & Going",
     author: 'Kylie Simpson'
-  },
-
-  userSeedForBookRequest: {
-    userName: 'patron360',
-    email: 'patron@domain.com',
-    firstName: 'Patron',
-    lastName: 'Hello',
-    password: encypt.encryptPassword('Patron360'),
-    role: 'patron'
   },
 
   duplicateNewBookRequestInput: {

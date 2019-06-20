@@ -35,7 +35,7 @@ export default class Auth {
           message: 'Failed to authenticate token.'
         });
       }
-      req.userId = decoded.id;
+      req.user = decoded;
       return next();
     });
   }
