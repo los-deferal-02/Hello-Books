@@ -82,7 +82,7 @@ describe('Edit user profile routes', () => {
         const auth = `Bearer ${token}`;
         chai
           .request(app)
-          .patch(`${apiUrl}/3`)
+          .patch(`${apiUrl}/500`)
           .set('authorization', auth)
           .send(data)
           .end((err, response) => {

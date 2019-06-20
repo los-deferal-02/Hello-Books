@@ -1,25 +1,9 @@
 import express from 'express';
-import userController from '../controllers/userController';
-import AuthValidation from '../middlewares/authValidation';
-import Auth from '../middlewares/auth';
 import authRouter from './userAuthRouter';
 import booksRouter from './booksRouter';
 import emailVerificationRouter from './emailVerificationRouter';
 import profileRouter from './profileRouter';
-
-const {
-  signUp,
-  login,
-  forgotPassword,
-  resetPassword,
-  verifyEmail,
-  editUserProfile,
-  viewUserProfile
-} = userController;
-
-const { validateRegistration, validateLogIn } = AuthValidation;
-
-const { verifyToken } = Auth;
+import authorsRouter from './authorsRouter';
 
 const router = express.Router();
 
@@ -30,15 +14,9 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/auth/signup', validateRegistration, signUp);
-router.post('/auth/login', validateLogIn, login);
-router.post('/auth/forgot', forgotPassword);
-router.post('/auth/reset/:token', resetPassword);
-router.patch('/verifyEmail/:email/:verifyCode', verifyEmail);
-router.patch('/userProfile/:id', verifyToken, editUserProfile);
-router.get('/userProfile/:id', viewUserProfile);
 router.use('/auth', authRouter);
 router.use('/books', booksRouter);
+router.use('/authors', authorsRouter);
 router.use('/userProfile', profileRouter);
 router.use('/verifyEmail', emailVerificationRouter);
 

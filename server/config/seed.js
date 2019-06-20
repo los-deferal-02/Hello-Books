@@ -12,7 +12,7 @@ const { encryptPassword } = encrypt;
  */
 const insertSeed = async () => {
   const hashedPassword = encryptPassword('nonsoDrums');
-  const seed = `
+  const userSeed = `
   INSERT INTO users(
     "userName", "firstName", "lastName", email, password, role
   )
@@ -23,11 +23,26 @@ const insertSeed = async () => {
   DO NOTHING;
 `;
 
-  try {
-    await pool.query(seed);
-    await pool.query(`INSERT INTO roles (name)
+  const bookSeed = `INSERT INTO books 
+(title, body, description, genre, pages, "authorId")
+  VALUES ('Harry Potter',
+  'Harry potter and the goblet of fire',
+  'This is the best series in the harry potter book',
+  'Sci-fiction',
+  350, 1);`;
+
+  const authorSeed = `INSERT INTO authors (name)
+    VALUES ('Harry Potter');`;
+
+  const roleSeed = `INSERT INTO roles (name)
     VALUES
-       ('user'), ('author'), ('cashier'), ('admin'), ('superAdmin');`);
+       ('patron'), ('author'), ('cashier'), ('admin'), ('superAdmin');`;
+
+  try {
+    await pool.query(roleSeed);
+    await pool.query(authorSeed);
+    await pool.query(userSeed);
+    await pool.query(bookSeed);
     debug('insert succeeded');
   } catch (error) {
     debug(error);
@@ -35,47 +50,3 @@ const insertSeed = async () => {
 };
 
 insertSeed();
-
-(async () => {
-  let result;
-  const params = [
-    'martinsUsername',
-    'martins@gmail.com',
-    'martins',
-    'obayomi',
-    'martinsPw'
-  ];
-  try {
-    result = await pool.query(
-      `INSERT INTO users 
-    (username, email, firstname, lastname, password)
-      VALUES ($1, $2, $3, $4, $5)`,
-      params
-    );
-    return result;
-  } catch (error) {
-    return error;
-  }
-})();
-
-(async () => {
-  let result;
-  const params = [
-    'Harry Potter',
-    'Harry potter and the goblet of fire',
-    'This is the best series in the harry potter book',
-    'Sci-fiction',
-    350
-  ];
-  try {
-    result = await pool.query(
-      `INSERT INTO books 
-      (title, body, description, genre, pages)
-        VALUES ($1, $2, $3, $4, $5)`,
-      params
-    );
-    return result;
-  } catch (error) {
-    return error;
-  }
-})();
