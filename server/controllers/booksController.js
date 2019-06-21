@@ -290,7 +290,8 @@ export default class BooksController {
       return next(error);
     }
   }
-   *
+  
+  / *
    * Method to add favourite book to user list
    * @static
    * @param {object} req
