@@ -291,7 +291,7 @@ export default class BooksController {
     }
   }
   
-  / *
+  /*
    * Method to add favourite book to user list
    * @static
    * @param {object} req
