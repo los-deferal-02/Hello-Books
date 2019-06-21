@@ -220,7 +220,7 @@ export default class Books {
     return data;
   }
 
-   *
+   /*
    * Add Favourite Book
    * @static
    * @param {string} userId
