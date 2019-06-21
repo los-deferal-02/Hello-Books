@@ -42,6 +42,7 @@
   "homepage": "https://github.com/los-deferal-02/Hello-Books#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
     "@hapi/joi": "^15.0.3",
     "@sendgrid/mail": "^6.4.0",
     "bcryptjs": "^2.4.3",
@@ -61,6 +62,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.0",
     "babel-plugin-istanbul": "^5.1.1",
@@ -77,8 +79,8 @@
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",
-    "sinon": "^7.3.2",
     "prettier-eslint": "^8.8.2",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "sinon": "^7.3.2"
   }
 }

@@ -13,6 +13,9 @@ const {
   addFavouriteAuthor,
   viewFavouriteAuthors,
   deletefavouriteAuthor,
+  addFavouriteBook,
+  viewFavouriteBooks,
+  deletefavouriteBook,
   selectOneBook,
   selectAllBooks,
   updateVerification,
@@ -264,6 +267,76 @@ export default class BooksController {
 
     return successfulRequest(res, 200, {
       message: 'Author deleted from your favourite list'
+    });
+  }
+
+  /**
+   *
+   * Method to add favourite book to user list
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Success message when successful
+   * @memberof BooksController
+   */
+  static async favouriteBook(req, res) {
+    const bookId = await selectOneBook(req.params.id);
+    if (!bookId) {
+      return badPostRequest(res, 404, { book: 'Book Not Found' });
+    }
+    const bookAdded = await addFavouriteBook(req.user.id, req.params.id);
+    if (!bookAdded) {
+      return badPostRequest(res, 409, {
+        book: 'Book is already added as favourite'
+      });
+    }
+    return successfulRequest(res, 201, {
+      message: 'Book added to your favourite list'
+    });
+  }
+
+  /**
+   *
+   * Controller method to get all user favourite books
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} containing list of user favourite books
+   * @memberof BooksController
+   */
+  static async viewFavouriteBooks(req, res) {
+    const favouriteBooks = await viewFavouriteBooks(req.user.id);
+    if (!favouriteBooks) {
+      return badGetRequest(res, 404, {
+        book: 'You have not yet favourited any books'
+      });
+    }
+    return successfulRequest(res, 200, favouriteBooks);
+  }
+
+  /**
+   *
+   * Method to delete book from favourite list
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} containing response to the user
+   * @memberof BooksController
+   */
+  static async deleteFavouriteBook(req, res) {
+    const bookId = await selectOneBook(req.params.id);
+    if (!bookId) {
+      return badPostRequest(res, 404, { book: 'Book Not Found' });
+    }
+    const deletedBook = await deletefavouriteBook(req.user.id, req.params.id);
+    if (!deletedBook) {
+      return badPostRequest(res, 404, {
+        book: 'Book Not Found in your Favourite List'
+      });
+    }
+
+    return successfulRequest(res, 200, {
+      message: 'Book deleted from your favourite list'
     });
   }
 }
