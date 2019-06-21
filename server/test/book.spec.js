@@ -402,4 +402,112 @@ describe('GET paginated books', () => {
         done();
       });
   });
+
+  describe('POST /api/v1/books/:id/favourites', () => {
+    it('Respond with a status of 200 if book is favoruted successfully', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/books/3/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body).to.has.property('data');
+          done();
+        });
+    });
+
+    it('Respond with a status of 404 if book is not found', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/books/13/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.data.book).to.equal('Book Not Found');
+          done();
+        });
+    });
+
+    it('Respond with a status of 409 if book has already been added', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/books/3/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(409);
+          expect(res.body.data.book).to.equal(
+            'Book is already added as favourite'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/v1/books/all/favourites', () => {
+    it('Respond with a status of 200 if favorite list is available', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/books/all/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.has.property('data');
+          done();
+        });
+    });
+
+    it('Respond with a status of 404 if favorite list is not available', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/books/all/favourites')
+        .set('authorization', nonAdminToken)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.data.book).to.equal(
+            'You have not yet favourited any books'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/books/:id/favourites', () => {
+    it('Respond with a status of 200 if book is removed favourite list', (done) => {
+      chai
+        .request(app)
+        .delete('/api/v1/books/3/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.has.property('data');
+          done();
+        });
+    });
+
+    it('Respond with a status of 404 if book does not exist', (done) => {
+      chai
+        .request(app)
+        .delete('/api/v1/books/89/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.data.book).to.equal('Book Not Found');
+          done();
+        });
+    });
+
+    it('Respond with a status of 404 if book is not in favorite list', (done) => {
+      chai
+        .request(app)
+        .delete('/api/v1/books/4/favourites')
+        .set('authorization', authToken)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.data.book).to.equal(
+            'Book Not Found in your Favourite List'
+          );
+          done();
+        });
+    });
+  });
 });
