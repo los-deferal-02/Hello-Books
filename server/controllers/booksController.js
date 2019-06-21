@@ -143,9 +143,6 @@ export default class BooksController {
    */
   static async adminUpdateVerification(req, res, next) {
     try {
-      if (req.user.role !== 4) {
-        return badGetRequest(res, 401, { message: 'You are not authorized!' });
-      }
       const { id } = req.params;
       const { verification } = req.body;
       const data = {};

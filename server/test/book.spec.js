@@ -117,6 +117,33 @@ describe('User add book test', () => {
         });
     });
 
+    it('Should not add a new book if user is not admin or author', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/books')
+        .set('authorization', nonAdminToken)
+        .send({
+          title: 'X-Men: First Class',
+          body: 'Travel back in time with the X-Men!',
+          description:
+            'The X-Men is born, a new breed of mutants save the world',
+          genre: 'Fantasy',
+          hardcopy: true,
+          pages: 70,
+          author: 'Stan Lee'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body)
+            .to.has.property('status')
+            .eql('fail');
+          expect(res.body)
+            .to.have.nested.property('data.message')
+            .eql('You are not authorized!');
+          done();
+        });
+    });
+
     it('Should not add a book if a required field is missing', (done) => {
       chai
         .request(app)
@@ -231,7 +258,7 @@ describe('User add book test', () => {
     chai
       .request(app)
       .patch('/api/v1/books/2')
-      .set('authorization', nonAdminToken)
+      .set('authorization', authToken)
       .send({
         verification: 'checked'
       })
