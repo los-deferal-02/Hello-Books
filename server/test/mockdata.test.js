@@ -10,7 +10,7 @@ const inputs = {
     firstName: 'namey',
     lastName: 'Lastname',
     password: 'Njdudubb82828',
-    role: 'patron'
+    role: 'author'
   },
   sameEmailSignup: {
     userName: 'readerUnknown',
@@ -75,7 +75,7 @@ const inputs = {
       firstName: 'Erlich',
       lastName: 'Bachman',
       password: 'Aviato123',
-      role: 'cashier'
+      role: 'patron'
     }
   ],
 
