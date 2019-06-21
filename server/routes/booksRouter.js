@@ -13,7 +13,10 @@ const {
   getSingleBook,
   getAllBooks,
   adminUpdateVerification,
-  deleteABook
+  deleteABook,
+  favouriteBook,
+  viewFavouriteBooks,
+  deleteFavouriteBook
 } = bookController;
 
 const router = express.Router();
@@ -29,5 +32,8 @@ router.patch(
   adminUpdateVerification
 );
 router.delete('/:id', verifyToken, admin, deleteABook);
+router.post('/:id/favourites', verifyToken, favouriteBook);
+router.get('/all/favourites', verifyToken, viewFavouriteBooks);
+router.delete('/:id/favourites', verifyToken, deleteFavouriteBook);
 
 export default router;
