@@ -16,7 +16,8 @@ const {
   selectOneBook,
   selectAllBooks,
   updateVerification,
-  deleteBook
+  deleteBook,
+  findUserBorrowedBooks
 } = bookModel;
 
 /**
@@ -268,5 +269,26 @@ export default class BooksController {
     return successfulRequest(res, 200, {
       message: 'Author deleted from your favourite list'
     });
+  }
+
+  /**
+   *
+   * Controller method to get all user borrowed books
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @return {object} response containing borrowed books stats
+   * @memberof BooksController
+   */
+  static async getAllBorrowedBooks(req, res) {
+    const borrowedBooks = await findUserBorrowedBooks(req.user.id);
+    if (!borrowedBooks) {
+      return badPostRequest(res, 404, {
+        borrowedBooks: 'You have not read any book'
+      });
+    }
+    const returned = borrowedBooks.filter(book => book.due);
+    const possession = borrowedBooks.filter(book => !book.due);
+    return successfulRequest(res, 200, { possession, returned });
   }
 }

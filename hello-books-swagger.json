@@ -649,6 +649,26 @@
           }
         }
       }
+    },
+    "/books/stats/borrowed": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "API Endpoint fro user to get borrowing stats",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response"
+          },
+          "400": {
+            "description": "Not Found response - User doesn't have any borrowed books"
+          }
+        }
+      }
     }
   },
   "definitions": {

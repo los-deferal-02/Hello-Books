@@ -52,6 +52,17 @@ const tablesQuery = `
     "createdOn" TIMESTAMPTZ DEFAULT now() NOT NULL,
     PRIMARY KEY ("userId")
   );
+
+  CREATE TABLE IF NOT EXISTS checkouts(
+    id SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL,
+    "bookId" VARCHAR(100) NOT NULL,
+    "rentalFee" INTEGER,
+    "checkoutDate" TIMESTAMPTZ DEFAULT now() NOT NULL,
+    "returnDate" TIMESTAMPTZ DEFAULT now() NOT NULL,
+    due boolean
+    );
+
   CREATE TABLE IF NOT EXISTS roles(
       id SERIAL PRIMARY KEY,
       name VARCHAR(100) UNIQUE NOT NULL

@@ -15,7 +15,7 @@ const {
   FACEBOOK_ID,
   FACEBOOK_SECRET,
   TWITTER_CONSUMER_KEY,
-  TWITTER_CONSUMER_SECRET,
+  TWITTER_CONSUMER_SECRET
 } = process.env;
 
 const { findUserInput } = Users;
