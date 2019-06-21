@@ -2,20 +2,27 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
+import userModel from '../models/users';
 
 chai.use(chaiHttp);
 const { userSignupInputforAuthor } = inputs;
+const { findUserInput } = userModel;
 
 let userToken;
 describe('Author Routes Test', () => {
   describe(`Users can favourite authors, 
   view favourite list and delete favourite`, () => {
     before(async () => {
-      const res = await chai
+      await chai
         .request(app)
         .post('/api/v1/auth/signup')
         .send(userSignupInputforAuthor);
-      userToken = res.body.data.token;
+      const { email } = userSignupInputforAuthor;
+      const { emailConfirmCode } = await findUserInput(email);
+      const response = await chai
+        .request(app)
+        .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`);
+      userToken = response.body.data.token;
     });
 
     before((done) => {

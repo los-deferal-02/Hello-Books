@@ -1,5 +1,6 @@
 {
   "exclude": [
-    "server/schema/*.js"
+    "server/schema/*.js",
+    "server/config/*.js"
   ]
 }

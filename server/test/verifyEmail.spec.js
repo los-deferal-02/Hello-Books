@@ -24,11 +24,11 @@ describe('Email verification test', () => {
     };
     await userModel.create(data);
   });
+
   it('should verify email when user makes valid request', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
-      .send(validSignUpInputs[3])
+      .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.have.property('message');
@@ -40,8 +40,7 @@ describe('Email verification test', () => {
   it('should return a 404 if requested email does not exist', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/verifyEmail/marsman@yahoo.com/${email}`)
-      .send(validSignUpInputs[3])
+      .get(`/api/v1/verifyEmail/marsman@yahoo.com/${email}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.status).to.equal('fail');
@@ -53,14 +52,10 @@ describe('Email verification test', () => {
   it('should throw an error when verification code is wrong', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/verifyEmail/${email}/${email}`)
-      .send(validSignUpInputs[3])
+      .get(`/api/v1/verifyEmail/${email}/${email}`)
       .end((err, res) => {
-        expect(res).to.have.status(500);
-        expect(res.body.status).to.equal('error');
-        expect(res.body.message).to.equal(
-          'Sorry, something unusual happened, we are working on a fix'
-        );
+        expect(res).to.have.status(404);
+        expect(res.body.status).to.equal('fail');
         done();
       });
   });
@@ -71,8 +66,7 @@ describe('Email verification test', () => {
       .rejects(new Error('Test server error'));
     chai
       .request(app)
-      .patch(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
-      .send(validSignUpInputs[3])
+      .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
       .end((err, res) => {
         expect(res).to.have.status(500);
         stub.restore();

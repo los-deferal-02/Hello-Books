@@ -11,14 +11,13 @@ const API_ROUTE = '/api/v1/auth/signup';
 
 describe('User Registration Test', () => {
   describe('POST /api/v1/auth/signup', () => {
-    it('respond with token when successful', (done) => {
+    it('sign user up when successful', (done) => {
       chai
         .request(app)
         .post('/api/v1/auth/signup')
         .send(validSignUpInputs[0])
         .end((err, res) => {
           expect(res).to.have.status(201);
-          expect(res.body.data).to.have.property('token');
           done();
         });
     });

@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "lint:fix": "prettier-eslint **/*.js --write",
-    "test": "cross-env NODE_ENV=test npm run migration && nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 8000 --color --exit",
+    "test": "cross-env NODE_ENV=test npm run migration && nyc --reporter=text mocha ./server/test/*.spec.js --require @babel/register --require @babel/polyfill --slow 400 --timeout 20000 --color --exit",
     "start": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
     "dev": "cross-env NODE_ENV=development DEBUG=d* nodemon --exec babel-node index.js",
     "build-babel": "babel -d ./build index.js && babel ./server --out-dir build/server",
@@ -74,6 +74,7 @@
     "eslint-plugin-mocha": "^5.3.0",
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
+    "faker": "^4.1.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",

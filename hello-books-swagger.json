@@ -127,7 +127,7 @@
       }
     },
     "/verifyEmail/:email/:verifyCode": {
-      "patch": {
+      "get": {
         "tags": ["Users"],
         "summary": "Handles verification of email address provided by user during signup",
         "description": "This endpoint verifies the user's email address",
@@ -286,6 +286,43 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/books/pages": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "Implements pagination to get books by pages",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of books to return per page",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to return",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shows list of books in requested page and total number of pagess"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }

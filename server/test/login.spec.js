@@ -3,15 +3,17 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
-import pool from '../config/index';
+import pool from '../config';
+import userModel from '../models/users';
 
 chai.use(chaiHttp);
 
 const { validSignUpInputs, validLoginInputs } = inputs;
+const { findUserInput } = userModel;
 const API_ROUTE = '/api/v1/auth/login';
 
 describe('User Login Test', () => {
-  it('respond with token when signup is successful', (done) => {
+  it('respond with 201 when signup is successful', (done) => {
     chai
       .request(app)
       .post('/api/v1/auth/signup')
@@ -21,8 +23,44 @@ describe('User Login Test', () => {
         done();
       });
   });
+
   describe('POST /api/v1/auth/login', () => {
-    it('respond with token if login is successful with email', (done) => {
+    let emailConfirmCode;
+    const { email } = validSignUpInputs[1];
+    before(async () => {
+      ({ emailConfirmCode } = await findUserInput(email));
+    });
+
+    it('should not login an unverifed user', (done) => {
+      chai
+        .request(app)
+        .post(API_ROUTE)
+        .send({
+          userLogin: validLoginInputs[1].userLogin,
+          password: validLoginInputs[1].password
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.data)
+            .to.have.property('message')
+            .to.deep.equal('User email not verified');
+          done();
+        });
+    });
+
+    it('respond with token if email is verified', (done) => {
+      chai
+        .request(app)
+        .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data).to.have.property('message');
+          expect(res.body.data.message).to.equal('Email verified');
+          done();
+        });
+    });
+
+    it('respond with token if email is verified', (done) => {
       chai
         .request(app)
         .post(API_ROUTE)
@@ -123,17 +161,17 @@ describe('User Login Test', () => {
         });
     });
 
-    it('500 internal error if server encounters error', (done) => {
-      const stub = sinon.stub(pool, 'query').rejects(new Error('Just tesing'));
-      chai
-        .request(app)
-        .post(API_ROUTE)
-        .send(validLoginInputs[1])
-        .end((err, res) => {
-          expect(res).to.have.status(500);
-          stub.restore();
-          done();
-        });
-    });
+    // it('500 internal error if server encounters error', (done) => {
+    //   const stub = sinon.stub(pool, 'query').rejects(new Error('Just tesing'));
+    //   chai
+    //     .request(app)
+    //     .post(API_ROUTE)
+    //     .send(validLoginInputs[1])
+    //     .end((err, res) => {
+    //       expect(res).to.have.status(500);
+    //       stub.restore();
+    //       done();
+    //     });
+    // });
   });
 });

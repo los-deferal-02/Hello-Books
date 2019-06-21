@@ -16,7 +16,8 @@ const {
   selectOneBook,
   selectAllBooks,
   updateVerification,
-  deleteBook
+  deleteBook,
+  findByPage
 } = bookModel;
 
 /**
@@ -268,5 +269,25 @@ export default class BooksController {
     return successfulRequest(res, 200, {
       message: 'Author deleted from your favourite list'
     });
+  }
+
+  /**
+   * @name getBooksByPage
+   * @static
+   * @async
+   * @memberof BooksController
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   * @returns {Object} JSON object with requested books
+   */
+  static async getBooksByPage(req, res, next) {
+    try {
+      const { limit, page } = req.query;
+      const books = await findByPage(limit, page);
+      return successfulRequest(res, 200, { ...books });
+    } catch (error) {
+      return next(error);
+    }
   }
 }

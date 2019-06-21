@@ -7,13 +7,17 @@ import '../config/passport';
 const {
   signUp, login, forgotPassword, resetPassword
 } = userController;
-const { validateRegistration, validateLogIn } = AuthValidation;
+const {
+  validateRegistration,
+  validateLogIn,
+  validateVerifiedEmail
+} = AuthValidation;
 
 const router = express.Router();
 
 // User Routes
 router.post('/signup', validateRegistration, signUp);
-router.post('/login', validateLogIn, login);
+router.post('/login', validateLogIn, validateVerifiedEmail, login);
 router.post('/forgot', forgotPassword);
 router.post('/reset/:token', resetPassword);
 

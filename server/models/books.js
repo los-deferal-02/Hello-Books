@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import pool from '../config/index';
+import pool from '../config';
 
 const debug = Debug('db');
 
@@ -185,5 +185,38 @@ export default class Books {
     );
     if (data.rowCount < 1) return false;
     return data.rows[0];
+  }
+
+  /**
+   * @name findByPage
+   * @static
+   * @async
+   * @param {Number} limit Uses default parameter of 10
+   * @param {Number} page Uses default parameter of 1
+   * @returns {Object} Books specified in query
+   * @memberof Books
+   */
+  static async findByPage(limit = 10, page = 1) {
+    const offset = (page - 1) * limit;
+    const [
+      { rows },
+      {
+        rows: [{ count }]
+      }
+    ] = await pool.query(
+      `
+        SELECT * FROM books 
+        ORDER BY "createdOn" 
+        LIMIT ${limit} OFFSET ${offset};
+        SELECT COUNT(*) FROM books
+    `
+    );
+    const data = {
+      currentPage: Number(page),
+      pages: Math.ceil(count / limit),
+      itemCount: Number(count),
+      items: rows
+    };
+    return data;
   }
 }
