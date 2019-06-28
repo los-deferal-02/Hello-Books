@@ -189,6 +189,65 @@ export default class Books {
 
   /**
    *
+   * Add Favourite Book
+   * @static
+   * @param {string} userId
+   * @param {string} bookId
+   * @returns {object} Favourite Book
+   * @memberof Books
+   */
+  static async addFavouriteBook(userId, bookId) {
+    try {
+      const { rows } = await pool.query(
+        `INSERT INTO favourite_books 
+    ("userId", "bookId") VALUES($1, $2) RETURNING *`,
+        [userId, bookId]
+      );
+      return rows[0];
+    } catch (err) {
+      return false;
+    }
+  }
+
+  /**
+   *
+   * Method to select all user favourite books
+   * @static
+   * @param {string} userId
+   * @returns {object} containing user favourite books
+   * @memberof Books
+   */
+  static async viewFavouriteBooks(userId) {
+    const data = await pool.query(
+      `SELECT books.id, books.title FROM books 
+      JOIN favourite_books ON books.id = favourite_books."bookId" 
+      WHERE "userId" = $1`,
+      [userId]
+    );
+    if (data.rowCount < 1) return false;
+    return data.rows;
+  }
+
+  /**
+   *
+   * Delete Favourite Author
+   * @static
+   * @param {string} userId
+   * @param {string} bookId
+   * @returns {object} Delete favourite author
+   * @memberof Books
+   */
+  static async deletefavouriteBook(userId, bookId) {
+    const data = await pool.query(
+      `DELETE FROM favourite_books 
+    WHERE "userId" = $1 and "bookId" = $2 RETURNING *`,
+      [userId, bookId]
+    );
+    if (data.rowCount < 1) return false;
+    return data.rows[0];
+  }
+
+  /**
    * Get all user's borrowed books
    * @static
    * @param {string} userId
@@ -205,7 +264,6 @@ export default class Books {
     const borrowedBookData = data.rows.map((borrowedBook) => {
       delete borrowedBook.id;
       delete borrowedBook.userId;
-      delete borrowedBook.checkoutDate;
       delete borrowedBook.returnDate;
       return borrowedBook;
     });

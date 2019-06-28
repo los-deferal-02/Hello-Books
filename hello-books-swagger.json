@@ -12,7 +12,6 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost:4000",
   "basePath": "/api/v1",
   "securityDefinitions": {
     "Bearer": {
@@ -32,13 +31,20 @@
       "description": "Operations to be carried out only by the users"
     }
   ],
-  "schemes": ["https", "http"],
+  "schemes": [
+    "https",
+    "http"
+  ],
   "paths": {
     "/": {
       "get": {
-        "tags": ["Base"],
+        "tags": [
+          "Base"
+        ],
         "summary": "API Endpoint Home Path",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -58,10 +64,14 @@
     },
     "/auth/signup": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles the creation of new user",
         "description": "This endpoint creates a new user and persist input data to the database",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -91,11 +101,17 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles users' sign in into the application",
         "description": "This endpoint sign in users afer authentications",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -128,11 +144,17 @@
     },
     "/verifyEmail/:email/:verifyCode": {
       "patch": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles verification of email address provided by user during signup",
         "description": "This endpoint verifies the user's email address",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -149,10 +171,14 @@
     },
     "/userProfile/{id}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles viewing user profile",
         "description": "This endpoint gets a user profile",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -175,11 +201,17 @@
         }
       },
       "patch": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles editing user profile",
         "description": "This endpoint edits a user profile",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -218,11 +250,17 @@
     },
     "/auth/forgot": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles users' forgot password request",
         "description": "This endpoint enables users to request for password reset",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -255,11 +293,17 @@
     },
     "/auth/reset/:token": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Handles users' reset password",
         "description": "This endpoint enables users to reset their password",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -292,11 +336,17 @@
     },
     "/books": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Add a Book to The Library",
         "description": "This endpoint enables users to add books to the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -326,11 +376,17 @@
         ]
       },
       "get": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Get all Books in The Library",
         "description": "This endpoint enables users fetch all books the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -344,6 +400,7 @@
                 },
                 "data": {
                   "type": "array",
+                  "items": {},
                   "example": [
                     {
                       "id": 2,
@@ -391,11 +448,17 @@
     },
     "/books/{id}": {
       "patch": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Reject or Verify a Book",
         "description": "This endpoint enables admins to verify or reject books added to the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -444,11 +507,17 @@
         ]
       },
       "get": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Get a Book in The Library",
         "description": "This endpoint enables users fetch a book the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -498,11 +567,17 @@
         }
       },
       "delete": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Delete a Book",
         "description": "This endpoint deletes a book from the library",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -548,13 +623,137 @@
         ]
       }
     },
+    "/books/{bookId}/favourites": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Add book as favourite",
+        "description": "This endpoint adds book to user favourite list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "type": "integer",
+            "required": true,
+            "description": "Book Id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book added to favourite list"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Book not found"
+          },
+          "409": {
+            "description": "Book is already added as favourite"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Delete book from favourite list",
+        "description": "This endpoint deletes book from user favourite list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "type": "integer",
+            "required": true,
+            "description": "book Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book deleted from favourite list"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Book not found in favourite list or database"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/books/all/favourites": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "API Endpoint to view all favourite books",
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Shows list of user favourite books"
+          },
+          "401": {
+            "description": "Authentication Error"
+          },
+          "404": {
+            "description": "Book not found in favourite list"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/authors/{authorId}/favourite": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Add author as favourite",
         "description": "This endpoint adds author to user favourite list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "security": [
           {
             "Bearer": []
@@ -588,11 +787,17 @@
         }
       },
       "patch": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Delete author from favourite list",
         "description": "This endpoint deletes author from user favourite list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "security": [
           {
             "Bearer": []
@@ -625,9 +830,13 @@
     },
     "/authors/favourites": {
       "get": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "API Endpoint to view all favourite books",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "security": [
           {
             "Bearer": []
@@ -791,7 +1000,7 @@
         },
         "author": {
           "description": "The person that wrote the book (book owner)",
-          "type": "String"
+          "type": "string"
         }
       },
       "example": {
@@ -814,16 +1023,13 @@
         },
         "resetPassword": {
           "description": "newPassword and confirmPassword",
-          "type": "string or number"
-        },
-        "example": {
-          "userLogin": "example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
+          "type": "string"
         }
       },
       "example": {
-        "userLogin": "example@user.com"
+        "userLogin": "example@user.com",
+        "newPassword": "1234",
+        "confirmPassword": "1234"
       }
     },
     "UserResetPasswordRequest": {
@@ -837,11 +1043,6 @@
         "newPassword": {
           "description": "New password",
           "type": "string"
-        },
-        "example": {
-          "userLogin": "example@user.com",
-          "newPassword": "1234",
-          "confirmPassword": "1234"
         }
       },
       "example": {

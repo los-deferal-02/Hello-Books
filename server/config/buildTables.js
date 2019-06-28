@@ -76,6 +76,11 @@ const tablesQuery = `
   "authorId" INTEGER NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
   PRIMARY KEY("userId", "authorId")
   );
+  CREATE TABLE IF NOT EXISTS favourite_books(
+    "userId" INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    "bookId" INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    PRIMARY KEY("userId", "bookId")
+    );
   CREATE TABLE "ebooks" (
   id SERIAL PRIMARY KEY,
   "filename" varchar,
