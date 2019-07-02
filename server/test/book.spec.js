@@ -9,6 +9,7 @@ chai.use(chaiHttp);
 const { validSignUpInputs } = inputs;
 
 let authToken;
+let authToken1;
 let nonAdminToken;
 describe('User add book test', () => {
   before((done) => {
@@ -432,5 +433,38 @@ describe('User add book test', () => {
           done();
         });
     });
+  });
+});
+
+describe('Borrowing Stats Test', () => {
+  before((done) => {
+    const user = {
+      userLogin: 'xwebyna',
+      password: 'nonsoDrums'
+    };
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        const { token } = res.body.data;
+        authToken1 = `Bearer ${token}`;
+        done();
+      });
+  });
+  it('Should get all user borrowing stats - 200 OK', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/books/stats/borrowed')
+      .set('authorization', authToken1);
+    expect(res).to.have.status(200);
+  });
+
+  it('respond not found error if user never read any book - 404', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/books/stats/borrowed')
+      .set('authorization', authToken);
+    expect(res).to.have.status(404);
   });
 });
