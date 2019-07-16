@@ -23,6 +23,12 @@ const insertSeed = async () => {
     )
   ON CONFLICT (email)
   DO NOTHING;
+  INSERT INTO checkouts("userId", "bookId","rentalFee", due) VALUES 
+(1, 'Supinghdd cbs', 20, 'false'),
+(1, 'Harry', 23, 'false'),
+(1, 'Chima', 20, 'false'),
+(1, 'Tusks', 40, 'true'),
+(1, 'Supinghdd cbs', 20, 'true')
 `;
 
   try {

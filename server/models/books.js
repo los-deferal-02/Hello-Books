@@ -278,4 +278,27 @@ export default class Books {
     if (data.rowCount < 1) return false;
     return data.rows[0];
   }
+
+  /**
+   * Get all user's borrowed books
+   * @static
+   * @param {string} userId
+   * @returns {object} containg books data
+   * @memberof Books
+   */
+  static async findUserBorrowedBooks(userId) {
+    const data = await pool.query(
+      'select * from checkouts where "userId" = $1',
+      [userId]
+    );
+    if (data.rowCount < 1) return false;
+
+    const borrowedBookData = data.rows.map((borrowedBook) => {
+      delete borrowedBook.id;
+      delete borrowedBook.userId;
+      delete borrowedBook.returnDate;
+      return borrowedBook;
+    });
+    return borrowedBookData;
+  }
 }

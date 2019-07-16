@@ -5,7 +5,6 @@ import emailVerificationRouter from './emailVerificationRouter';
 import profileRouter from './profileRouter';
 import authorsRouter from './authorsRouter';
 
-
 const router = express.Router();
 
 // Hello-Books API Default Route
@@ -20,6 +19,5 @@ router.use('/books', booksRouter);
 router.use('/authors', authorsRouter);
 router.use('/userProfile', profileRouter);
 router.use('/verifyEmail', emailVerificationRouter);
-
 
 export default router;
