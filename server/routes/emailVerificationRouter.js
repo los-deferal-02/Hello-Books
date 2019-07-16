@@ -5,6 +5,6 @@ const { verifyEmail } = userController;
 
 const router = express.Router();
 
-router.patch('/:email/:verifyCode', verifyEmail);
+router.get('/:email/:verifyCode', verifyEmail);
 
 export default router;

@@ -2,8 +2,10 @@ import Joi from '@hapi/joi';
 import userRegistrationSchema from '../schema/userRegistration';
 import userLoginSchema from '../schema/userLogin';
 import ResponseSpec from '../responseSpec';
+import userModel from '../models/users';
 
-const { badPostRequest } = ResponseSpec;
+const { badPostRequest, badGetRequest } = ResponseSpec;
+const { findUserInput } = userModel;
 
 /**
  * @description Class representing Validation of incoming auth requests
@@ -58,5 +60,27 @@ export default class AuthValidation {
       }
       return next();
     });
+  }
+
+  /**
+   * @name validateVerifiedEmail
+   * @static
+   * @async
+   * @description - Validation function for checking for verified users
+   * @param {Object} req - the Express request object
+   * @param {Object} res - the Express request object
+   * @param {Function} next - the function to be called if all checks pass
+   * @returns {(JSON|Function)} - Returns an error
+   */
+  static async validateVerifiedEmail(req, res, next) {
+    const user = await findUserInput(req.body.userLogin);
+    if (!user) {
+      return badPostRequest(res, 404, { message: 'Invalid Login Details' });
+    }
+    const { emailConfirmCode } = user;
+    if (emailConfirmCode) {
+      return badGetRequest(res, 401, { message: 'User email not verified' });
+    }
+    return next();
   }
 }

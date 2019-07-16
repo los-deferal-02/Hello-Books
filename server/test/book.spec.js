@@ -1,41 +1,53 @@
-/* eslint-disable max-len */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../index';
 import inputs from './mockdata.test';
+import bookModel from '../models/books';
+import userModel from '../models/users';
 
 chai.use(chaiHttp);
 
-const { validSignUpInputs } = inputs;
+const { validSignUpInputs, generateBooks } = inputs;
+const { findUserInput } = userModel;
 
 let authToken;
 let authToken1;
 let nonAdminToken;
 describe('User add book test', () => {
-  before((done) => {
+  before(async () => {
     const user = validSignUpInputs[5];
-    chai
+    const { email } = user;
+    await chai
       .request(app)
       .post('/api/v1/auth/signup')
-      .send(user)
-      .end((err, res) => {
-        const { token } = res.body.data;
-        authToken = `Bearer ${token}`;
-        done();
-      });
+      .send(user);
+    const { emailConfirmCode } = await findUserInput(email);
+    const {
+      body: {
+        data: { token }
+      }
+    } = await chai
+      .request(app)
+      .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`);
+    authToken = `Bearer ${token}`;
   });
 
-  before((done) => {
+  before(async () => {
     const user = validSignUpInputs[6];
-    chai
+    const { email } = validSignUpInputs[6];
+    await chai
       .request(app)
       .post('/api/v1/auth/signup')
-      .send(user)
-      .end((err, res) => {
-        const { token } = res.body.data;
-        nonAdminToken = `Bearer ${token}`;
-        done();
-      });
+      .send(user);
+    const { emailConfirmCode } = await findUserInput(email);
+    const {
+      body: {
+        data: { token }
+      }
+    } = await chai
+      .request(app)
+      .get(`/api/v1/verifyEmail/${email}/${emailConfirmCode}`);
+    nonAdminToken = `Bearer ${token}`;
   });
 
   before((done) => {
@@ -46,8 +58,8 @@ describe('User add book test', () => {
       .send({
         title: 'A Song of Ice & Fire',
         body: 'The Game of Thrones',
-        description:
-          'The five kingdoms are at war and all houses are fighting for who will sit on the iron throne',
+        description: `The five kingdoms are at war and all houses are 
+          fighting for who will sit on the iron throne`,
         genre: 'Fiction',
         hardcopy: true,
         pages: 1003,
@@ -61,27 +73,28 @@ describe('User add book test', () => {
   });
 
   describe('POST /api/v1/books', () => {
-    it('Respond with a status of 201 and book details on successful book add', (done) => {
-      chai
-        .request(app)
-        .post('/api/v1/books')
-        .send({
-          title: 'Antman & The Wasp',
-          body: 'Antman is back!',
-          description:
-            'Scott Lang teams up with the Wasp to save the world again',
-          genre: 'Fantasy',
-          hardcopy: true,
-          pages: 70,
-          author: 'Stan Lee'
-        })
-        .set('authorization', authToken)
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          expect(res.body).to.has.property('data');
-          done();
-        });
-    });
+    it('Respond with a status of 201 and book details on successful book add',
+      (done) => {
+        chai
+          .request(app)
+          .post('/api/v1/books')
+          .send({
+            title: 'Antman & The Wasp',
+            body: 'Antman is back!',
+            description:
+              'Scott Lang teams up with the Wasp to save the world again',
+            genre: 'Fantasy',
+            hardcopy: true,
+            pages: 70,
+            author: 'Stan Lee'
+          })
+          .set('authorization', authToken)
+          .end((err, res) => {
+            expect(res).to.have.status(201);
+            expect(res.body).to.has.property('data');
+            done();
+          });
+      });
 
     it('Should add a new book with existing author and genre', (done) => {
       chai
@@ -169,21 +182,22 @@ describe('User add book test', () => {
       });
   });
 
-  it('Should return a not-found error requesting a non-existent book', (done) => {
-    chai
-      .request(app)
-      .get('/api/v1/books/80')
-      .end((err, res) => {
-        expect(res).to.have.status(404);
-        expect(res.body)
-          .to.has.property('status')
-          .eql('fail');
-        expect(res.body)
-          .to.have.nested.property('data.bookId')
-          .eql('Book not found');
-        done();
-      });
-  });
+  it('Should return a not-found error requesting a non-existent book',
+    (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/books/80')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body)
+            .to.has.property('status')
+            .eql('fail');
+          expect(res.body)
+            .to.have.nested.property('data.bookId')
+            .eql('Book not found');
+          done();
+        });
+    });
 
   it('Should return all books with their details', (done) => {
     chai
@@ -219,7 +233,8 @@ describe('User add book test', () => {
       });
   });
 
-  it('Should not modify the verification status of a book if requested by non-admin', (done) => {
+  it(`Should not modify the verification status of a book 
+      if requested by non-admin`, (done) => {
     chai
       .request(app)
       .patch('/api/v1/books/2')
@@ -239,7 +254,8 @@ describe('User add book test', () => {
       });
   });
 
-  it('Should not modify the verification status of a book if an invalid status is provided', (done) => {
+  it(`Should not modify the verification status of a book if an 
+      invalid status is provided`, (done) => {
     chai
       .request(app)
       .patch('/api/v1/books/2')
@@ -257,25 +273,26 @@ describe('User add book test', () => {
       });
   });
 
-  it('Should return a not-found error when modifying a non-existent book', (done) => {
-    chai
-      .request(app)
-      .patch('/api/v1/books/80')
-      .set('authorization', authToken)
-      .send({
-        verification: 'verified'
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(404);
-        expect(res.body)
-          .to.has.property('status')
-          .eql('fail');
-        expect(res.body)
-          .to.have.nested.property('data.bookId')
-          .eql('Book not found');
-        done();
-      });
-  });
+  it('Should return a not-found error when modifying a non-existent book',
+    (done) => {
+      chai
+        .request(app)
+        .patch('/api/v1/books/80')
+        .set('authorization', authToken)
+        .send({
+          verification: 'verified'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body)
+            .to.has.property('status')
+            .eql('fail');
+          expect(res.body)
+            .to.have.nested.property('data.bookId')
+            .eql('Book not found');
+          done();
+        });
+    });
 
   it('Should delete a book', (done) => {
     chai
@@ -311,18 +328,78 @@ describe('User add book test', () => {
       });
   });
 
-  it('Should return a not-found error if there are no books in the DB', (done) => {
+  it('Should return a not-found error if there are no books in the DB',
+    (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/books')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body)
+            .to.has.property('status')
+            .eql('fail');
+          expect(res.body)
+            .to.have.nested.property('data.message')
+            .eql('There are no books at this time');
+          done();
+        });
+    });
+});
+
+describe('GET paginated books', () => {
+  before(async () => {
+    let i = 0;
+    const data = [];
+    while (i < 5) {
+      data.push(generateBooks());
+      i += 1;
+    }
+    await Promise.all(data.map(item => bookModel.create(item)));
+  });
+
+  it('should return requested page', (done) => {
     chai
       .request(app)
-      .get('/api/v1/books')
+      .get('/api/v1/books/pages/?page=2&limit=2')
       .end((err, res) => {
-        expect(res).to.have.status(404);
-        expect(res.body)
-          .to.has.property('status')
-          .eql('fail');
-        expect(res.body)
-          .to.have.nested.property('data.message')
-          .eql('There are no books at this time');
+        expect(res).to.have.status(200);
+        expect(res.body.data.currentPage).to.equal(2);
+        done();
+      });
+  });
+
+  it('return the first page when a default request is made', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/books/pages')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.currentPage).to.equal(1);
+        done();
+      });
+  });
+
+  it('should return requested number of books', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/books/pages/?page=1&limit=5')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.items).to.be.an('array');
+        expect(res.body.data.items.length).to.equal(5);
+        done();
+      });
+  });
+
+  it('should return an error when wrong query is given', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/books/pages/?page=g&limit=1')
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data)
+          .to.be.an('array')
+          .that.includes('page must be a number');
         done();
       });
   });

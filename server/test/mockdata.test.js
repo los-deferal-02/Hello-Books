@@ -1,3 +1,4 @@
+import faker from 'faker';
 import encypt from '../helpers/encrypt';
 
 const password1 = encypt.encryptPassword('Chinonso1234');
@@ -133,6 +134,19 @@ const inputs = {
     hardcopy: true,
     pages: 70,
     author: 'Stan Lee'
+  },
+  generateBooks: () => {
+    const data = {
+      title: faker.name.findName(),
+      body: faker.random.words(5),
+      description: faker.company.catchPhrase(),
+      genreId: Math.ceil(Math.random() * 2),
+      hardcopy: faker.random.boolean(),
+      authorId: Math.ceil(Math.random() * 2),
+      uploadedBy: Math.ceil(Math.random() * 2),
+      pages: faker.random.number()
+    };
+    return data;
   }
 };
 

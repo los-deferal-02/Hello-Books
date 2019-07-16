@@ -3,7 +3,7 @@ import ResponseSpec from '../responseSpec';
 import addBookSchema from '../schema/addBook';
 import verifyBookSchema from '../schema/bookVerification';
 
-const { badPostRequest } = ResponseSpec;
+const { badPostRequest, badGetRequest } = ResponseSpec;
 
 /**
  * @description Class representing Validation of incoming book requests
@@ -52,5 +52,30 @@ export default class BookValidation {
       }
       return next();
     });
+  }
+
+  /**
+   * @description Validation function for getting books by page
+   * @name validateGetBooks
+   * @static
+   * @async
+   * @memberof AuthValidation
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   * @returns {(object|Function)} an error object if validation fails
+   */
+  static async validateGetBooksByPage(req, res, next) {
+    try {
+      const schema = {
+        page: Joi.number().optional(),
+        limit: Joi.number().optional()
+      };
+      await Joi.validate(req.query, schema, { abortEarly: false });
+      next();
+    } catch (error) {
+      const errors = error.details.map(x => x.message.replace(/([\\"])/g, ''));
+      return badGetRequest(res, 400, errors);
+    }
   }
 }

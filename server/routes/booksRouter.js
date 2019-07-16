@@ -6,7 +6,11 @@ import Roles from '../middlewares/roles';
 import tryCatch from '../middlewares/tryCatchHandler';
 
 const { verifyToken } = Auth;
-const { validateBookAdd, validateBookVerification } = BookValidation;
+const {
+  validateBookAdd,
+  validateBookVerification,
+  validateGetBooksByPage
+} = BookValidation;
 const { restrictUser, admin } = Roles;
 
 const {
@@ -15,6 +19,7 @@ const {
   getAllBooks,
   adminUpdateVerification,
   deleteABook,
+  getBooksByPage,
   favouriteBook,
   viewFavouriteBooks,
   deleteFavouriteBook,
@@ -24,6 +29,7 @@ const {
 const router = express.Router();
 
 router.post('/', verifyToken, validateBookAdd, restrictUser, addBook);
+router.get('/pages', validateGetBooksByPage, getBooksByPage);
 router.get('/', getAllBooks);
 router.get('/stats/borrowed', verifyToken, tryCatch(getAllBorrowedBooks));
 router.get('/:id', getSingleBook);

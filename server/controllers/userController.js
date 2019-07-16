@@ -56,9 +56,8 @@ export default class UsersController {
       await createProfile(user.id);
       const userData = user;
       delete userData.password;
-      const token = generateToken(userData);
       EmailSender.sendVerifyEmail(data);
-      return successfulRequest(res, 201, { id: user.id, token });
+      return successfulRequest(res, 201, { id: user.id });
     } catch (err) {
       return next(err);
     }
@@ -80,9 +79,6 @@ export default class UsersController {
       const { userLogin, password } = data;
       // Login with username or email address
       const user = await findUserInput(userLogin);
-      if (!user) {
-        return badPostRequest(res, 404, { message: 'Invalid Login Details' });
-      }
       const passwordValid = await decryptPassword(password, user.password);
       if (!passwordValid) {
         return badPostRequest(res, 401, { message: 'Invalid Login Details' });
@@ -113,8 +109,15 @@ export default class UsersController {
       if (!user) {
         return badGetRequest(res, 404, { message: 'User not found' });
       }
+      const { emailConfirmCode } = user;
+      if (!emailConfirmCode) {
+        return badGetRequest(res, 404, {
+          message: 'Email already verified'
+        });
+      }
       await userModel.verifyEmail(verifyCode);
-      return successfulRequest(res, 200, { message: 'Email verified' });
+      const token = generateToken(user);
+      return successfulRequest(res, 200, { message: 'Email verified', token });
     } catch (err) {
       return next(err);
     }

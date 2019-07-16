@@ -18,7 +18,7 @@ export default class EmailSender {
    * @returns {Boolean} true
    */
   static sendVerifyEmail(data) {
-    const { SERVER_URL, PRODUCTION_URL } = process.env;
+    const { PRODUCTION_URL } = process.env;
     const { email, emailConfirmCode } = data;
     const content = `
     <div style="text-align:center">
@@ -31,7 +31,7 @@ export default class EmailSender {
     <p style="margin:30px">
     <a style="text-decoration:none; background-color:blue;
     padding:15px; color:white; border-radius:4px"
-    href=${SERVER_URL}/verifyEmail/${email}/${emailConfirmCode}>
+    href=${PRODUCTION_URL}/verifyEmail/${email}/${emailConfirmCode}>
     Confirm Email</a></p>
     <p>Kindly disregard this email 
     if you did not sign up for an Hello-Books account.</p>
